@@ -1,0 +1,1 @@
+-- example migration to ensure Liquibase is working
