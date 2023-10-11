@@ -12,3 +12,4 @@ mybatis:
   type-aliases-package: com.sourcery.oirs.config.mybatis
   configuration:
     map-underscore-to-camel-case: true
+
