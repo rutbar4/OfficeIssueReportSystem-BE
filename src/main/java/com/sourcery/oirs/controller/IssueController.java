@@ -19,4 +19,6 @@ public class IssueController {
     public List<Issue> getAllIssues() {
         return issueService.getAllIssue();
     }
+
+    //new
 }
