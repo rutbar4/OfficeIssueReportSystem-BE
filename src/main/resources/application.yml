@@ -1,4 +1,4 @@
-asdsaw  s spring:
+spring:
   datasource:
     url: jdbc:postgresql://localhost:5433/postgres?currentSchema=app
     username: dbuser
