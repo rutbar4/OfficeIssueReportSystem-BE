@@ -37,3 +37,11 @@ Run directly via IDEA (Shift + F10) or
 ```bash
 ./gradlew bootRun
 ```
+
+## Accessing Swagger UI
+
+Access Swagger by opening a web browser and navigating to the URL:
+
+```bash
+http://localhost:8080/swagger-ui/index.html
+```
