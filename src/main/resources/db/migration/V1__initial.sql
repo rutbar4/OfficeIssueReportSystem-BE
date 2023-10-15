@@ -14,18 +14,18 @@ create table Office (
 
 create table Employee(
                          ID UUID not null primary key,
-                         FULL_NAME varchar (50) not null,
-                         EMAIL varchar (50) not null,
+                         FULL_NAME varchar (150) not null,
+                         EMAIL varchar (100) not null,
                          PASSWORD varchar (20) not null,
                          PHONE_NUMBER varchar (50) not null,
-                         AVATAR varchar (150)
+                         AVATAR varchar (250)
 );
 
 create table Address(
                         ID UUID not null primary key,
                         STREET varchar (150),
                         POST_CODE varchar (10) not null,
-                        State_Province varchar (15),
+                        State_Province varchar (150),
                         CITY varchar (50) not null,
                         COUNTRY_ID UUID,
                         EMPLOYEE_ID UUID,
@@ -42,7 +42,7 @@ create table Issue (
                        ISSUE_NAME varchar (150) not null unique,
                        ISSUE_STATUS varchar (15) not null,
                        START_TIME timestamp not null ,
-                       FINISH_TIME timestamp not null,
+                       FINISH_TIME timestamp ,
                        RATING int default 0,
                        DESCRIPTION varchar(254) not null,
                        EMPLOYEE_ID UUID,
