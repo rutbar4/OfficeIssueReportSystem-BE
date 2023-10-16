@@ -58,7 +58,7 @@ public class IssueService {
     public IssueDetailsResponseDto GetIssueDetails(UUID id) {
         IssueDetailsResponseDto issue = issueRepository.findById(id)
                 .orElseThrow(() -> new IssueNotFoundException(String.format(ISSUE_NOT_FOUND, id)));
-        return IssueDetailsResponseDto.of(issue);
+        return issue;
     }
 
 }
