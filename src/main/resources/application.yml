@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5433/postgres?currentSchema=app
-    username: dbuser
-    password: pass
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:postgres}?currentSchema=app
+    username: ${POSTGRES_USER:dbuser}
+    password: ${POSTGRES_PASSWORD:pass}
     driver-class-name: org.postgresql.Driver
   flyway:
     locations: classpath:db/migration
