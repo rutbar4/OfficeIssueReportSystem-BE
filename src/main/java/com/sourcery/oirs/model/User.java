@@ -24,6 +24,5 @@ public class User {
                 .address(Address.buildMockAdress())
                 .country(Country.LITHUANIA)
                 .build();
-
     }
 }
