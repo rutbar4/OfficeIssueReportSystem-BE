@@ -18,6 +18,7 @@ public class IssueDetailsResponseDto{
     private String description;
     private String status;
     private Long rating;
+    private Long commentCount;
     private LocalDate dateCreated;
     private String employeeName;
     private String officeName;
