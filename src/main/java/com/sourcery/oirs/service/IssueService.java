@@ -23,36 +23,8 @@ public class IssueService {
 
 
     public List<Issue> getAllIssue() {
-        return Stream.of(
-                new Issue(UUID.randomUUID(),
-                        "Example Issue 1",
-                        "There is not enough parking slots in Kaunas office.",
-                        "Open",
-                        4L,
-                        2L,
-                        LocalDate.of(2023, 10, 8), UUID.randomUUID(), UUID.randomUUID()),
-                new Issue(UUID.randomUUID(),
-                        "Example Issue 2",
-                        "Equipment failures occur during presentation or client meeting.",
-                        "Open"
-                        , 108L,
-                        5L,
-                        LocalDate.of(2023, 10, 8), UUID.randomUUID(), UUID.randomUUID()),
-                new Issue(UUID.randomUUID(),
-                        "Example Issue 3",
-                        "Frequent connectivity issues and slow internet connection hinder productivity.",
-                        "Open"
-                        , 9L,
-                        1L,
-                        LocalDate.of(2023, 10, 8), UUID.randomUUID(), UUID.randomUUID()),
-                new Issue(UUID.randomUUID(),
-                        "Example Issue 4",
-                        "Equipment failures occur during presentation or client meeting.",
-                        "Open"
-                        , 108L,
-                        5L,
-                        LocalDate.of(2023, 10, 8), UUID.randomUUID(), UUID.randomUUID())
-                        ).collect(Collectors.toList());
+        List<Issue> allIssues = issueRepository.findAll();
+        return allIssues;
     }
 
     public IssueDetailsResponseDto GetIssueDetails(UUID id) {
