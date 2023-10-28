@@ -1,3 +1,6 @@
+security:
+  jwt:
+    secret-key: secretkeydevbridgesourceryacademybackendagne
 spring:
   datasource:
     url: jdbc:postgresql://${POSTGRES_HOST:localhost}:5432/${POSTGRES_DB:postgres}?currentSchema=app
@@ -13,3 +16,5 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
 
+server:
+  port: 9090
