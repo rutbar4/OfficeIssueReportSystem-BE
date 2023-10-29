@@ -2,6 +2,7 @@ package com.sourcery.oirs.security;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 
+
 public class UserPrincipalAuthToken extends AbstractAuthenticationToken {
     private final CustomUserDetails customUserDetails;
 

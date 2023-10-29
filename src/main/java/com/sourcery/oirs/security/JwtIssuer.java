@@ -14,15 +14,15 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 public class JwtIssuer {
-    private final JwtProperties jwtProperties;
+    private final RsaKeyProperties keys;
 
     public String issue(UUID id, String email, List<String> roles) {
+        Algorithm algorithm = Algorithm.RSA256(keys.getPrivateKey());
         return JWT.create()
                 .withSubject(String.valueOf(id))
                 .withExpiresAt(Instant.now().plus(Duration.of(600, ChronoUnit.MINUTES)))
-                .withClaim("email", email)
-                .withClaim("authorities", roles)
-                .sign(Algorithm.HMAC256(jwtProperties.getSecretKey()));
+                .withClaim("e", email)
+                .withClaim("au", roles)
+                .sign(algorithm);
     }
 }
-

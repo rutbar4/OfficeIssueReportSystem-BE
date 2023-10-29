@@ -15,7 +15,6 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/issue")
 @RequiredArgsConstructor
-
 public class IssueController {
     private final IssueService issueService;
 
@@ -29,5 +28,4 @@ public class IssueController {
     public IssueDetailsResponseDto GetIssueDetails(@PathVariable UUID id){
         return issueService.GetIssueDetails(id);
     }
-
 }
