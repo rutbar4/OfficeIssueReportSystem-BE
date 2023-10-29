@@ -33,4 +33,6 @@ public interface IssueRepository {
             "Issue.OFFICE_ID as officeId " +
             "FROM issue ")
     List<Issue> findAll();
+
+    //new
 }
