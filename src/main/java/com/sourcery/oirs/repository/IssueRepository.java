@@ -34,5 +34,9 @@ public interface IssueRepository {
             "FROM issue ")
     List<Issue> findAll();
 
-    //new
+    @Select("SELECT * FROM issue WHERE id = #{id}")
+    Optional<Issue> findIssue(@Param("id") UUID id);
+
+    @Delete("DELETE from issue where id = #{id}")
+    void delete(@Param("id") UUID id);
 }
