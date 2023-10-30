@@ -1,7 +1,7 @@
-package com.sourcery.oirs.repository;
+package com.sourcery.oirs.database.repository;
 
 
-import com.sourcery.oirs.dto.IssueDetailsResponseDto;
+import com.sourcery.oirs.model.IssueDetailsResponseDto;
 import com.sourcery.oirs.model.Issue;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

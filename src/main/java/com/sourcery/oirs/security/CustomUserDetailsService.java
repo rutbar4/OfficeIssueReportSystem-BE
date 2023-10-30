@@ -1,8 +1,8 @@
 package com.sourcery.oirs.security;
 
-import com.sourcery.oirs.entity.UserEntity;
+import com.sourcery.oirs.database.entity.UserEntity;
 import com.sourcery.oirs.model.Role;
-import com.sourcery.oirs.repository.UserRepository;
+import com.sourcery.oirs.database.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

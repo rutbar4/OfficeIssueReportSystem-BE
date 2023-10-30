@@ -1,6 +1,6 @@
 package com.sourcery.oirs.controller;
 
-import com.sourcery.oirs.dto.IssueDetailsResponseDto;
+import com.sourcery.oirs.model.IssueDetailsResponseDto;
 import com.sourcery.oirs.model.Issue;
 import com.sourcery.oirs.service.IssueService;
 import lombok.RequiredArgsConstructor;
@@ -28,4 +28,7 @@ public class IssueController {
     public IssueDetailsResponseDto GetIssueDetails(@PathVariable UUID id){
         return issueService.GetIssueDetails(id);
     }
+
+
+
 }
