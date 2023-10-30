@@ -15,6 +15,8 @@ public class JwtToPrincipalConverter {
         return CustomUserDetails.builder()
                 .id(UUID.fromString(jwt.getSubject()))
                 .email(jwt.getClaim("email").asString())
+                .name(jwt.getClaim("fullName").asString())
+                .position(jwt.getClaim("position").asString())
                 .roles(extractAuthFromClaim(jwt).stream()
                         .map(SimpleGrantedAuthority::getAuthority)
                         .map(Role::valueOf).toList())

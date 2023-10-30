@@ -29,7 +29,11 @@ public class AuthenticationService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
         List<String> roles = customUserDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
-        String token = jwtIssuer.issue(customUserDetails.getId(), customUserDetails.getEmail(), roles);
+        String token = jwtIssuer.issue(customUserDetails.getId(),
+                customUserDetails.getEmail(),
+                customUserDetails.getName(),
+                customUserDetails.getPosition(),
+                roles);
         return LoginResponse.builder()
                 .jwt(token)
                 .build();

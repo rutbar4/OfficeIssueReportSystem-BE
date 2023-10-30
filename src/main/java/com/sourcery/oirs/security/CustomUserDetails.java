@@ -19,8 +19,10 @@ import java.util.UUID;
 public class CustomUserDetails implements UserDetails {
     private final UUID id;
     private final String email;
+    private final String name;
     @JsonIgnore
     private final String password;
+    private final String position;
     private final List<Role> roles;
 
     @Override

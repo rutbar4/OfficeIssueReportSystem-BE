@@ -16,7 +16,7 @@ create table Employee(
                          ID UUID not null primary key,
                          FULL_NAME varchar (150) not null,
                          EMAIL varchar (100) not null,
-                         PASSWORD varchar (150) not null,
+                         PASSWORD varchar (255) not null,
                          PHONE_NUMBER varchar (50) not null,
                          AVATAR varchar (250)
 );

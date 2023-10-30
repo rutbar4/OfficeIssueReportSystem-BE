@@ -16,12 +16,14 @@ import java.util.UUID;
 public class JwtIssuer {
     private final RsaKeyProperties keys;
 
-    public String issue(UUID id, String email, List<String> roles) {
+    public String issue(UUID id, String email, String name, String position, List<String> roles) {
         Algorithm algorithm = Algorithm.RSA256(keys.getPrivateKey());
         return JWT.create()
                 .withSubject(String.valueOf(id))
                 .withExpiresAt(Instant.now().plus(Duration.of(600, ChronoUnit.MINUTES)))
                 .withClaim("email", email)
+                .withClaim("fullName", name)
+                .withClaim("position", position)
                 .withClaim("roles", roles)
                 .sign(algorithm);
     }

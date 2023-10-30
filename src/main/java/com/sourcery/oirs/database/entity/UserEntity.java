@@ -24,6 +24,7 @@ public class UserEntity {
     private String password;
     private List<Role> roles;
     private String phoneNumber;
+    private String position;
     private String avatar;
 }
 
