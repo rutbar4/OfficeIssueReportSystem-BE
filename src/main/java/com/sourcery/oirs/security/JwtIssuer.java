@@ -21,8 +21,8 @@ public class JwtIssuer {
         return JWT.create()
                 .withSubject(String.valueOf(id))
                 .withExpiresAt(Instant.now().plus(Duration.of(600, ChronoUnit.MINUTES)))
-                .withClaim("e", email)
-                .withClaim("au", roles)
+                .withClaim("email", email)
+                .withClaim("roles", roles)
                 .sign(algorithm);
     }
 }

@@ -7,6 +7,5 @@ import lombok.Value;
 @Builder
 public class LoginResponse {
     String jwt;
-    String user;
 }
 

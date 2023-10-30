@@ -32,7 +32,6 @@ public class AuthenticationService {
         String token = jwtIssuer.issue(customUserDetails.getId(), customUserDetails.getEmail(), roles);
         return LoginResponse.builder()
                 .jwt(token)
-                .user(customUserDetails.getEmail())
                 .build();
     }
 }

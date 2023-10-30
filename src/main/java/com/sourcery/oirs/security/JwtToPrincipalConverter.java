@@ -14,7 +14,7 @@ public class JwtToPrincipalConverter {
     public CustomUserDetails convert(DecodedJWT jwt) {
         return CustomUserDetails.builder()
                 .id(UUID.fromString(jwt.getSubject()))
-                .email(jwt.getClaim("e").asString())
+                .email(jwt.getClaim("email").asString())
                 .roles(extractAuthFromClaim(jwt).stream()
                         .map(SimpleGrantedAuthority::getAuthority)
                         .map(Role::valueOf).toList())
@@ -22,7 +22,7 @@ public class JwtToPrincipalConverter {
     }
 
     private List<SimpleGrantedAuthority> extractAuthFromClaim(DecodedJWT jwt) {
-        Claim claim = jwt.getClaim("au");
+        Claim claim = jwt.getClaim("roles");
         if (claim.isNull() || claim.isMissing()) {
             return List.of();
         }
