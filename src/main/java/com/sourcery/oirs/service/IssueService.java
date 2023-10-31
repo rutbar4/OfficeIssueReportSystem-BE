@@ -22,7 +22,7 @@ public class IssueService {
         return allIssues;
     }
 
-    public IssueDetailsResponseDto GetIssueDetails(UUID id) {
+    public IssueDetailsResponseDto getIssueDetails(UUID id) {
         IssueDetailsResponseDto issue = issueRepository.findById(id)
                 .orElseThrow(() -> new IssueNotFoundException(String.format(ISSUE_NOT_FOUND, id)));
         return issue;

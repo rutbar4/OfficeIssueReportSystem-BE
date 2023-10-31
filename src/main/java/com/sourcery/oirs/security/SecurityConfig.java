@@ -32,6 +32,7 @@ public class SecurityConfig {
             .formLogin(AbstractHttpConfigurer::disable)
             .securityMatcher("/**")
             .authorizeHttpRequests(registry -> registry
+                    .requestMatchers("/**").permitAll()   // Allow access to all requests without authentication (delete this line to require authentication)
                     .requestMatchers("/login").permitAll()
                     .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/v2/api-docs/**", "/v1/auth/**").permitAll()
                     .anyRequest().authenticated()
