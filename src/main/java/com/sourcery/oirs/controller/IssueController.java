@@ -4,10 +4,9 @@ import com.sourcery.oirs.model.IssueDetailsResponseDto;
 import com.sourcery.oirs.model.Issue;
 import com.sourcery.oirs.service.IssueService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -27,6 +26,13 @@ public class IssueController {
     @GetMapping("/{id}")
     public IssueDetailsResponseDto getIssueDetails(@PathVariable UUID id){
         return issueService.getIssueDetails(id);
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    @PostMapping (value = "/issue")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void reportIssue (@RequestBody Issue issue){
+        issueService.ReportNewIssue(issue);
     }
 
 
