@@ -28,7 +28,7 @@ public class IssueController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteFoodPlace(@PathVariable(value="id") UUID id) {
+    public void deleteIssue(@PathVariable(value="id") UUID id) {
         issueService.deleteIssue(id);
     }
 
