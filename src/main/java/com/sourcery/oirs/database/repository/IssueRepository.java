@@ -3,6 +3,7 @@ package com.sourcery.oirs.database.repository;
 
 import com.sourcery.oirs.model.IssueDetailsResponseDto;
 import com.sourcery.oirs.model.Issue;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -35,4 +36,10 @@ public interface IssueRepository {
             "Issue.OFFICE_ID as officeId " +
             "FROM issue ")
     List<Issue> findAll();
+
+    @Select("SELECT * FROM issue WHERE id = #{id}")
+    Optional<Issue> findIssue(@Param("id") UUID id);
+
+    @Delete("DELETE from issue where id = #{id}")
+    void delete(@Param("id") UUID id);
 }
