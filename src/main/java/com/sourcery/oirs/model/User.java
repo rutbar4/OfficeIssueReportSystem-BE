@@ -20,7 +20,7 @@ public class User {
         return User.builder()
                 .fullName("John Doe")
                 .department(Department.IT)
-                .role(Role.EMPLOYEE)
+                .role(Role.USER)
                 .address(Address.buildMockAdress())
                 .country(Country.LITHUANIA)
                 .build();

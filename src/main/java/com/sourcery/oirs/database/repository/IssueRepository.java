@@ -1,9 +1,12 @@
-package com.sourcery.oirs.repository;
+package com.sourcery.oirs.database.repository;
 
 
-import com.sourcery.oirs.dto.IssueDetailsResponseDto;
+import com.sourcery.oirs.model.IssueDetailsResponseDto;
 import com.sourcery.oirs.model.Issue;
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

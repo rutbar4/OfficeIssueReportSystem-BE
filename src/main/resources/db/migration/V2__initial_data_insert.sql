@@ -10,9 +10,9 @@ values ('48a95af7-8b83-4a08-8001-0f865db8ea28', 'Kaunas', '48a95af7-8b83-4a08-80
        ('48a95af7-8b83-4a08-8001-0f865db8ea31', 'Chicago', '48a95af7-8b83-4a08-8001-0f865db8ea26');
 
 insert into employee (id, full_name, email, password, phone_number, avatar )
-values ('d06cb831-9427-41ee-adcc-271f7b02d626', 'Agne Moleikaityte', 'agne@devbridge.com', 'alio', '+370868700100', 'https://upload.wikimedia.org/wikipedia/en/thumb/4/4b/Pok%C3%A9mon_Mew_art.png/220px-Pok%C3%A9mon_Mew_art.png' ),
-       ('d06cb831-9427-41ee-adcc-271f7b02d627', 'Sarunas Jurevicius', 'sarunas@devbridge.com', 'alio', '+370868700200', 'https://cdn.pixabay.com/photo/2021/12/26/17/31/pokemon-6895600_960_720.png' ),
-       ('d06cb831-9427-41ee-adcc-271f7b02d628', 'Lukas Zareckas', 'lukas@devbridge.com', 'alio', '+370868700300', 'https://upload.wikimedia.org/wikipedia/en/1/1f/Pok%C3%A9mon_Charizard_art.png' );
+values ('d06cb831-9427-41ee-adcc-271f7b02d626', 'Agne Moleikaityte', 'agne@devbridge.com', '$2a$10$cqCBacKxmGCkuSaKfdGEZeXNi8E4vGVOpdjWplv4W2dEo/zD.QZnO', '+370868700100', 'https://upload.wikimedia.org/wikipedia/en/thumb/4/4b/Pok%C3%A9mon_Mew_art.png/220px-Pok%C3%A9mon_Mew_art.png' ),
+       ('d06cb831-9427-41ee-adcc-271f7b02d627', 'Sarunas Jurevicius', 'sarunas@devbridge.com', '$2a$10$sPi11IJmih8k7Eh5nGJVEuytg562C1IId..3rIEE6CmosUhQa/Lxq', '+370868700200', 'https://cdn.pixabay.com/photo/2021/12/26/17/31/pokemon-6895600_960_720.png' ),
+       ('d06cb831-9427-41ee-adcc-271f7b02d628', 'Lukas Zareckas', 'lukas@devbridge.com', '$2a$10$8RT7hWdqLy/CYakYaIGhW.XllngTry/r2DobYGujIpj0AO69cdmqe', '+370868700300', 'https://upload.wikimedia.org/wikipedia/en/1/1f/Pok%C3%A9mon_Charizard_art.png' );
 
 insert into address (id, street, post_code, state_province, city, country_id, employee_id)
 values ('25a95af7-8b83-4a08-8001-0f865db8ea31', 'Savanoriu pr. 1-1', 'LT44203', 'Kauno raj.', 'Kaunas', '48a95af7-8b83-4a08-8001-0f865db8ea25', 'd06cb831-9427-41ee-adcc-271f7b02d626'),
