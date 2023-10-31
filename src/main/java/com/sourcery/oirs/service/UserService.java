@@ -3,6 +3,7 @@ package com.sourcery.oirs.service;
 
 import com.sourcery.oirs.database.entity.UserEntity;
 import com.sourcery.oirs.database.repository.UserRepository;
+import com.sourcery.oirs.exceptions.UserNotFoundException;
 import com.sourcery.oirs.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public User getUserById(UUID id) {
+    public User getUserById(UUID id) throws UserNotFoundException {
 
         List<Role> roles = userRepository.getRolesById(id);
 
