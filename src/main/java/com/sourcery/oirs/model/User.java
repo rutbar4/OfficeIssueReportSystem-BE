@@ -5,24 +5,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+import java.util.UUID;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Builder
 public class User {
+    private UUID id;
     private String fullName;
-    private Department department;
-    private Role role;
+    private String email;
+    private List<Role> roles;
     private Address address;
     private Country country;
-
-    public static User buildMockData(){
-        return User.builder()
-                .fullName("John Doe")
-                .department(Department.IT)
-                .role(Role.USER)
-                .address(Address.buildMockAdress())
-                .country(Country.LITHUANIA)
-                .build();
+    private Office office;
     }
-}

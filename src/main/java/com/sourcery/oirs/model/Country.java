@@ -1,5 +1,13 @@
 package com.sourcery.oirs.model;
 
-public enum Country {
-    LITHUANIA, SWEDEN, POLAND, LATVIA
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.UUID;
+
+@Getter
+@Setter
+public class Country {
+    private UUID id;
+    String name;
 }
