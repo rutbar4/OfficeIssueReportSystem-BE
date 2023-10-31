@@ -1,6 +1,6 @@
 package com.sourcery.oirs.controller;
 
-import com.sourcery.oirs.dto.IssueDetailsResponseDto;
+import com.sourcery.oirs.model.IssueDetailsResponseDto;
 import com.sourcery.oirs.model.Issue;
 import com.sourcery.oirs.service.IssueService;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,6 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/issue")
 @RequiredArgsConstructor
-
 public class IssueController {
     private final IssueService issueService;
 
@@ -26,8 +25,10 @@ public class IssueController {
 
 
     @GetMapping("/{id}")
-    public IssueDetailsResponseDto GetIssueDetails(@PathVariable UUID id){
-        return issueService.GetIssueDetails(id);
+    public IssueDetailsResponseDto getIssueDetails(@PathVariable UUID id){
+        return issueService.getIssueDetails(id);
     }
+
+
 
 }
