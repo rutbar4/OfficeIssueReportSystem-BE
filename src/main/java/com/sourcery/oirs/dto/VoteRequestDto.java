@@ -14,8 +14,8 @@ import java.util.UUID;
 @SuperBuilder(toBuilder = true)
 public class VoteRequestDto{
     @NotBlank
-    private UUID issueId;
+    public UUID issueId;
     @NotBlank
-    private UUID employeeId;
+    public UUID employeeId;
 }
 

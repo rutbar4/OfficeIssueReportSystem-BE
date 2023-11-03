@@ -1,11 +1,13 @@
 package com.sourcery.oirs.service;
 
+import com.sourcery.oirs.database.repository.IssueRepository;
 import com.sourcery.oirs.dto.VoteRequestDto;
 import com.sourcery.oirs.dto.response.IsVotedResponseDto;
 import com.sourcery.oirs.dto.response.VoteCountResponseDto;
 import com.sourcery.oirs.dto.response.VoteResponseDto;
 import com.sourcery.oirs.model.Vote;
 import com.sourcery.oirs.database.repository.VoteRepository;
+import com.sourcery.oirs.database.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
@@ -19,17 +21,28 @@ public class VoteService {
     private static final String ISSUE_NOT_FOUND = "Vote with %s id not found";
 
     private final VoteRepository _voteRepository;
+    private final IssueRepository _issueRepository;
+    private final UserRepository _userRepository;
 
 
     @Transactional
     public VoteResponseDto CreateVote(VoteRequestDto voteRequestDto) {
+        if(!_issueRepository.findById(voteRequestDto.issueId).isPresent()){
+            return null;
+        }
+
+        if(!_userRepository.findByID(voteRequestDto.employeeId).isPresent()){
+            return null;
+        }
+
         Vote vote = Vote.builder()
                 .id(UUID.randomUUID())
                 .issueId(voteRequestDto.getIssueId())
                 .employeeId(voteRequestDto.getEmployeeId())
-                .build();
+                .build();{
         _voteRepository.insert(vote);
         return VoteResponseDto.of(vote);
+                }
     }
 
     @Transactional

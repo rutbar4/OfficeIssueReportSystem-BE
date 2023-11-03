@@ -7,6 +7,7 @@ import com.sourcery.oirs.service.VoteService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -20,9 +21,13 @@ public class VoteController{
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public VoteResponseDto TakeVote(@Valid @RequestBody VoteRequestDto requestDto){
+    public ResponseEntity TakeVote(@Valid @RequestBody VoteRequestDto requestDto){
         //check if that issue and user exist
-        return _voteService.CreateVote(requestDto);
+        var vote = _voteService.CreateVote(requestDto);
+        if(vote == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Issue or User does not exist");
+        }
+        else return ResponseEntity.status(HttpStatus.CREATED).body(vote);
     }
 
     @GetMapping("/{issueId}/{userId}")
@@ -34,6 +39,7 @@ public class VoteController{
         return _voteService.VoteCount(issueId);
     }
     @DeleteMapping("/{issueId}/{userId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void DeleteVote(@PathVariable UUID issueId, @PathVariable UUID userId) {
         _voteService.DeleteVote(issueId, userId);
     }
