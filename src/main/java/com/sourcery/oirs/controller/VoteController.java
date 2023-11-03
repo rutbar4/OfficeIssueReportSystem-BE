@@ -19,9 +19,8 @@ public class VoteController{
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public VoteResponseDto TakeVote(@Valid @RequestBody VoteRequestDto requestDto){
+    public VoteResponseDto TakeVote(@Valid @RequestBody VoteRequestDto requestDto){ //update votes count
         //check if that issue and user exist
-        //check if the same vote already exists
         return _voteService.CreateVote(requestDto);
     }
 
@@ -31,7 +30,7 @@ public class VoteController{
     }
 
     @DeleteMapping("/{issueId}/{userId}")
-    public void DeleteVote(@PathVariable UUID issueId, @PathVariable UUID userId) {
+    public void DeleteVote(@PathVariable UUID issueId, @PathVariable UUID userId) { //update votes count
         _voteService.DeleteVote(issueId, userId);
     }
 }

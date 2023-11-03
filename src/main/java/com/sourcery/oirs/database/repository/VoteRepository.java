@@ -12,9 +12,14 @@ import java.util.UUID;
 @Repository
 public interface VoteRepository {
 //    @Select("SELECT EXISTS ( SELECT * FROM table WHERE issue.ID = #{IssueId} AND user.ID = #{UserId}")
+//@Insert("INSERT INTO Vote (id, issue_id, employee_id) VALUES (#{id}, #{issueId}, #{employeeId})")
+//void insert(Vote vote);
 
-    @Insert("INSERT INTO Vote (id, issue_id, employee_id)"
-            + "VALUES (#{id}, #{issueId}, #{employeeId})")
+    @Insert("INSERT INTO Vote (id, issue_id, employee_id) " +
+            "SELECT #{id}, #{issueId}, #{employeeId} " +
+            "WHERE " +
+            "NOT EXISTS (" +
+            "SELECT issue_id, employee_id FROM Vote WHERE issue_id = #{issueId} AND employee_id = #{employeeId})")
     void insert(Vote vote);
 
     @Select("SELECT * FROM Vote WHERE ISSUE_ID = #{IssueId} AND EMPLOYEE_ID= #{employeeId}")
