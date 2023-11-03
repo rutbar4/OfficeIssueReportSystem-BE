@@ -16,8 +16,6 @@ import java.util.UUID;
 @RequestMapping("/vote")
 public class VoteController{
         private final VoteService _voteService;
-    //Delete
-        //iskvieciamas gauna issueId ir UserID tada istrina toki komponenta Vote lentelej
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
