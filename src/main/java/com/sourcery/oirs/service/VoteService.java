@@ -19,14 +19,6 @@ public class VoteService {
 
     private final VoteRepository _voteRepository;
 
-    @Transactional
-    public IsVotedResponseDto IsVoted(UUID issueId, UUID employeeId) {
-        Optional<VoteResponseDto> voteDto = _voteRepository.GetVote(issueId, employeeId);
-        IsVotedResponseDto responseDto = IsVotedResponseDto.builder()
-                .isVoted(voteDto.isPresent())
-                .build();
-        return responseDto;
-    }
 
     @Transactional
     public VoteResponseDto CreateVote(VoteRequestDto voteRequestDto) {
@@ -39,4 +31,17 @@ public class VoteService {
         return VoteResponseDto.of(vote);
     }
 
+    @Transactional
+    public IsVotedResponseDto IsVoted(UUID issueId, UUID employeeId) {
+        Optional<VoteResponseDto> voteDto = _voteRepository.GetVote(issueId, employeeId);
+        IsVotedResponseDto responseDto = IsVotedResponseDto.builder()
+                .isVoted(voteDto.isPresent())
+                .build();
+        return responseDto;
+    }
+
+    @Transactional
+    public void DeleteVote(UUID issueId, UUID employeeId) {
+        _voteRepository.DeleteVote(issueId, employeeId);
+    }
 }
