@@ -1,7 +1,7 @@
 package com.sourcery.oirs.database.repository;
 
 
-import com.sourcery.oirs.model.IssueDetailsResponseDto;
+import com.sourcery.oirs.dto.response.IssueDetailsResponseDto;
 import com.sourcery.oirs.model.Issue;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;

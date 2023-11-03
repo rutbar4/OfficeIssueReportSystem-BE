@@ -3,7 +3,7 @@ package com.sourcery.oirs.service;
 import com.sourcery.oirs.database.repository.IssueRepository;
 import com.sourcery.oirs.exceptions.IssueNotFoundException;
 import com.sourcery.oirs.model.Issue;
-import com.sourcery.oirs.model.IssueDetailsResponseDto;
+import com.sourcery.oirs.dto.response.IssueDetailsResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

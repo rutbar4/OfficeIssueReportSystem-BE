@@ -1,4 +1,4 @@
-package com.sourcery.oirs.model;
+package com.sourcery.oirs.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
