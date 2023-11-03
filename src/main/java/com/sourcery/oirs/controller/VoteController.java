@@ -22,26 +22,25 @@ public class VoteController{
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity TakeVote(@Valid @RequestBody VoteRequestDto requestDto){
-        //check if that issue and user exist
         var vote = _voteService.CreateVote(requestDto);
         if(vote == null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Issue or User does not exist");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Issue or Employee does not exist");
         }
         else return ResponseEntity.status(HttpStatus.CREATED).body(vote);
     }
 
-    @GetMapping("/{issueId}/{userId}")
-    public IsVotedResponseDto Vote(@PathVariable UUID issueId, @PathVariable UUID userId) {
-        return _voteService.IsVoted(issueId, userId);
+    @GetMapping("/{issueId}/{employeeId}")
+    public IsVotedResponseDto Vote(@PathVariable UUID issueId, @PathVariable UUID employeeId) {
+        return _voteService.IsVoted(issueId, employeeId);
     }
     @GetMapping("/Count/{issueId}")
     public VoteCountResponseDto VoteCount(@PathVariable UUID issueId) {
         return _voteService.VoteCount(issueId);
     }
-    @DeleteMapping("/{issueId}/{userId}")
+    @DeleteMapping("/{issueId}/{employeeId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void DeleteVote(@PathVariable UUID issueId, @PathVariable UUID userId) {
-        _voteService.DeleteVote(issueId, userId);
+    public void DeleteVote(@PathVariable UUID issueId, @PathVariable UUID employeeId) {
+        _voteService.DeleteVote(issueId, employeeId);
     }
 
 }

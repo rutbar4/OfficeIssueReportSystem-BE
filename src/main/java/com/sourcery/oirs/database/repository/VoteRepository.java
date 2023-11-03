@@ -12,10 +12,6 @@ import java.util.UUID;
 @Mapper
 @Repository
 public interface VoteRepository {
-//    @Select("SELECT EXISTS ( SELECT * FROM table WHERE issue.ID = #{IssueId} AND user.ID = #{UserId}")
-//@Insert("INSERT INTO Vote (id, issue_id, employee_id) VALUES (#{id}, #{issueId}, #{employeeId})")
-//void insert(Vote vote);
-
     @Insert("INSERT INTO Vote (id, issue_id, employee_id) " +
             "SELECT #{id}, #{issueId}, #{employeeId} " +
             "WHERE " +
@@ -24,12 +20,12 @@ public interface VoteRepository {
     void insert(Vote vote);
 
     @Select("SELECT * FROM Vote WHERE ISSUE_ID = #{IssueId} AND EMPLOYEE_ID= #{employeeId}")
-    Optional<VoteResponseDto> GetVote(@Param("IssueId") UUID IssueId, @Param("employeeId") UUID UserId);
+    Optional<VoteResponseDto> GetVote(@Param("IssueId") UUID IssueId, @Param("employeeId") UUID EmployeeId);
 
     @Select("SELECT COUNT(*) FROM Vote WHERE ISSUE_ID = #{IssueId}")
     VoteCountResponseDto GetVoteCount(@Param("IssueId") UUID IssueId);
 
     @Select("DELETE FROM Vote WHERE ISSUE_ID = #{IssueId} AND EMPLOYEE_ID= #{employeeId}")
-    Optional<VoteResponseDto> DeleteVote(@Param("IssueId") UUID IssueId, @Param("employeeId") UUID UserId);
+    Optional<VoteResponseDto> DeleteVote(@Param("IssueId") UUID IssueId, @Param("employeeId") UUID EmployeeId);
 
 }
