@@ -1,6 +1,7 @@
 package com.sourcery.oirs.controller;
 import com.sourcery.oirs.dto.VoteRequestDto;
 import com.sourcery.oirs.dto.response.IsVotedResponseDto;
+import com.sourcery.oirs.dto.response.VoteCountResponseDto;
 import com.sourcery.oirs.dto.response.VoteResponseDto;
 import com.sourcery.oirs.service.VoteService;
 import jakarta.validation.Valid;
@@ -19,7 +20,7 @@ public class VoteController{
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public VoteResponseDto TakeVote(@Valid @RequestBody VoteRequestDto requestDto){ //update votes count
+    public VoteResponseDto TakeVote(@Valid @RequestBody VoteRequestDto requestDto){
         //check if that issue and user exist
         return _voteService.CreateVote(requestDto);
     }
@@ -28,9 +29,13 @@ public class VoteController{
     public IsVotedResponseDto Vote(@PathVariable UUID issueId, @PathVariable UUID userId) {
         return _voteService.IsVoted(issueId, userId);
     }
-
+    @GetMapping("/Count/{issueId}")
+    public VoteCountResponseDto VoteCount(@PathVariable UUID issueId) {
+        return _voteService.VoteCount(issueId);
+    }
     @DeleteMapping("/{issueId}/{userId}")
-    public void DeleteVote(@PathVariable UUID issueId, @PathVariable UUID userId) { //update votes count
+    public void DeleteVote(@PathVariable UUID issueId, @PathVariable UUID userId) {
         _voteService.DeleteVote(issueId, userId);
     }
+
 }

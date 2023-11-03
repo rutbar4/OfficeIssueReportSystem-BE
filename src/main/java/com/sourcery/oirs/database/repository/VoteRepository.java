@@ -1,5 +1,6 @@
 package com.sourcery.oirs.database.repository;
 
+import com.sourcery.oirs.dto.response.VoteCountResponseDto;
 import com.sourcery.oirs.dto.response.VoteResponseDto;
 import com.sourcery.oirs.model.Vote;
 import org.apache.ibatis.annotations.*;
@@ -24,6 +25,9 @@ public interface VoteRepository {
 
     @Select("SELECT * FROM Vote WHERE ISSUE_ID = #{IssueId} AND EMPLOYEE_ID= #{employeeId}")
     Optional<VoteResponseDto> GetVote(@Param("IssueId") UUID IssueId, @Param("employeeId") UUID UserId);
+
+    @Select("SELECT COUNT(*) FROM Vote WHERE ISSUE_ID = #{IssueId}")
+    VoteCountResponseDto GetVoteCount(@Param("IssueId") UUID IssueId);
 
     @Select("DELETE FROM Vote WHERE ISSUE_ID = #{IssueId} AND EMPLOYEE_ID= #{employeeId}")
     Optional<VoteResponseDto> DeleteVote(@Param("IssueId") UUID IssueId, @Param("employeeId") UUID UserId);

@@ -2,6 +2,7 @@ package com.sourcery.oirs.service;
 
 import com.sourcery.oirs.dto.VoteRequestDto;
 import com.sourcery.oirs.dto.response.IsVotedResponseDto;
+import com.sourcery.oirs.dto.response.VoteCountResponseDto;
 import com.sourcery.oirs.dto.response.VoteResponseDto;
 import com.sourcery.oirs.model.Vote;
 import com.sourcery.oirs.database.repository.VoteRepository;
@@ -38,6 +39,12 @@ public class VoteService {
                 .isVoted(voteDto.isPresent())
                 .build();
         return responseDto;
+    }
+
+    @Transactional
+    public VoteCountResponseDto VoteCount(UUID issueId) {
+        VoteCountResponseDto voteCountDto = _voteRepository.GetVoteCount(issueId);
+        return voteCountDto;
     }
 
     @Transactional
