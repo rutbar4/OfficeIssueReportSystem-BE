@@ -27,4 +27,9 @@ public class IssueService {
                 .orElseThrow(() -> new IssueNotFoundException(String.format(ISSUE_NOT_FOUND, id)));
         return issue;
     }
+    public void deleteIssue(UUID id) {
+        issueRepository.findIssue(id)
+                .orElseThrow(() -> new IssueNotFoundException(String.format(ISSUE_NOT_FOUND, id)));
+        issueRepository.delete(id);
+    }
 }

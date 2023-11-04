@@ -4,10 +4,7 @@ import com.sourcery.oirs.model.IssueDetailsResponseDto;
 import com.sourcery.oirs.model.Issue;
 import com.sourcery.oirs.service.IssueService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -29,6 +26,9 @@ public class IssueController {
         return issueService.getIssueDetails(id);
     }
 
-
+    @DeleteMapping("/{id}")
+    public void deleteIssue(@PathVariable(value="id") UUID id){
+        issueService.deleteIssue(id);
+    }
 
 }
