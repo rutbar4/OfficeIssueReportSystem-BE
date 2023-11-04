@@ -28,7 +28,7 @@ public class UserService {
 
         CountryEntity countryEntity = userRepository.getCountryById(addressEntity.getCountryId());
 
-        UserEntity entity = userRepository.findById(id);
+        UserEntity entity = userRepository.findById(id).orElseThrow(()-> new UserNotFoundException(String.format("User %s not found", id)));
 
         entity.setRoles(roles);
 

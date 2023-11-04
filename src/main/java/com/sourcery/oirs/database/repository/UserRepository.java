@@ -75,7 +75,7 @@ public interface UserRepository {
             @Result(property = "avatar", column = "avatar"),
             @Result(property = "roles", column = "id", javaType = List.class, many = @Many(select = "getRolesById"))
     })
-    UserEntity findById(@Param("id") UUID id);
+    Optional<UserEntity> findById(@Param("id") UUID id);
 
 }
 
