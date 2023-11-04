@@ -27,8 +27,25 @@ public interface UserRepository {
     })
     Optional<UserEntity> findByEmail(@Param("email") String email);
 
+
+    @Select("SELECT e.email FROM employee e" +
+            " LEFT JOIN employee_office eo ON e.id = eo.employee_id" +
+            " WHERE eo.office_id = #{id} AND e.id IN (SELECT r.employee_id FROM roles r WHERE r.role_type = 'ADMIN')")
+    @Results(value = {
+            @Result(property = "id", column = "id", typeHandler = UuidTypeHandler.class),
+            @Result(property = "fullName", column = "full_name"),
+            @Result(property = "email", column = "email"),
+            @Result(property = "roles", column = "id", javaType = List.class, many = @Many(select = "getRolesById"))
+    })
+    List<UserEntity> getAdminsByOfficeId(@Param("id") UUID id);
+
+
     @Select("SELECT r.role_type FROM roles r WHERE r.employee_id = #{id}")
     List<Role> getRolesById(@Param("id") UUID id);
+
+    @Select("SELECT e.full_name FROM employee e WHERE e.email = #{email}")
+    String getUserNameByEmail(@Param("email") String email);
+
 }
 
 
