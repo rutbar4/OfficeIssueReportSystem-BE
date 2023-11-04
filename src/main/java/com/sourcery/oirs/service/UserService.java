@@ -1,17 +1,19 @@
 package com.sourcery.oirs.service;
 
 
+import com.sourcery.oirs.database.entity.AddressEntity;
+import com.sourcery.oirs.database.entity.CountryEntity;
+import com.sourcery.oirs.database.entity.OfficeEntity;
 import com.sourcery.oirs.database.entity.UserEntity;
 import com.sourcery.oirs.database.repository.UserRepository;
 import com.sourcery.oirs.exceptions.UserNotFoundException;
 import com.sourcery.oirs.model.*;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
-
+@Builder
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -22,22 +24,16 @@ public class UserService {
 
         List<Role> roles = userRepository.getRolesById(id);
 
-        Address address = userRepository.findUserAddressByEmployeeId(id);
+        AddressEntity addressEntity = userRepository.findUserAddressByEmployeeId(id);
 
-        Country country = userRepository.getCountryById(address.getCountryId());
+        CountryEntity countryEntity = userRepository.getCountryById(addressEntity.getCountryId());
 
         UserEntity entity = userRepository.findById(id);
 
-        Office office = userRepository.getOfficeByCountryId(country.getId());
+        entity.setRoles(roles);
 
-        return new User(
-                entity.getId(),
-                entity.getFullName(),
-                entity.getEmail(),
-                roles,
-                address,
-                country,
-                office
-                );
+        OfficeEntity officeEntity = userRepository.getOfficeByCountryId(countryEntity.getId());
+
+        return User.convert(entity,countryEntity, addressEntity, officeEntity);
     }
 }

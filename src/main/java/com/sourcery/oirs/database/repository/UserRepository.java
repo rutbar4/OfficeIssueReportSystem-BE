@@ -1,14 +1,13 @@
 package com.sourcery.oirs.database.repository;
 
 import com.sourcery.oirs.config.mybatis.UuidTypeHandler;
+import com.sourcery.oirs.database.entity.AddressEntity;
+import com.sourcery.oirs.database.entity.CountryEntity;
+import com.sourcery.oirs.database.entity.OfficeEntity;
 import com.sourcery.oirs.database.entity.UserEntity;
-import com.sourcery.oirs.model.Address;
-import com.sourcery.oirs.model.Country;
-import com.sourcery.oirs.model.Office;
 import com.sourcery.oirs.model.Role;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -34,10 +33,10 @@ public interface UserRepository {
     List<Role> getRolesById(@Param("id") UUID id);
 
     @Select("SELECT * FROM office o WHERE o.country_id = #{id}")
-    Office getOfficeByCountryId (@Param("id") UUID id);
+    OfficeEntity getOfficeByCountryId(@Param("id") UUID id);
 
     @Select("SELECT * FROM country c WHERE c.id = #{id}")
-    Country getCountryById (@Param("id") UUID id);
+    CountryEntity getCountryById(@Param("id") UUID id);
 
     @Select("SELECT * FROM address e WHERE e.USER_ID = #{id}")
     @Results(value = {
@@ -48,8 +47,8 @@ public interface UserRepository {
             @Result(property = "state", column = "state"),
             @Result(property = "postcode", column = "post_code"),
             @Result(property = "countryId", column = "country_id"),
-               })
-    Address findUserAddressByEmployeeId(@Param("id") UUID id);
+    })
+    AddressEntity findUserAddressByEmployeeId(@Param("id") UUID id);
 
     @Select("SELECT * FROM employee e WHERE e.id = #{id}")
     @Results(value = {

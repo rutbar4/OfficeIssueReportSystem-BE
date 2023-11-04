@@ -1,8 +1,18 @@
 package com.sourcery.oirs.model;
 
-import java.util.UUID;
+import com.sourcery.oirs.database.entity.OfficeEntity;
+import lombok.Builder;
+import lombok.Data;
 
+@Data
+@Builder
 public class Office {
-    private UUID id;
     private String name;
+
+    public static Office convert(OfficeEntity entity) {
+        return Office.builder()
+                .name(entity.getName())
+                .build();
+    }
+
 }
