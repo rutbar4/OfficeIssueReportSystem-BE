@@ -7,6 +7,19 @@ spring:
   flyway:
     locations: classpath:db/migration
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: asdfissuereporter@gmail.com
+    password: gvgm xwud xkps ajut
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+
 mybatis:
   type-handlers-package: com.sourcery.oirs.config.mybatis
   type-aliases-package: com.sourcery.oirs.config.mybatis
