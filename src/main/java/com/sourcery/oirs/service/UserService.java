@@ -11,7 +11,6 @@ import com.sourcery.oirs.model.*;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import java.util.List;
 import java.util.UUID;
 @Builder
 @Service
@@ -22,15 +21,11 @@ public class UserService {
 
     public User getUserById(UUID id) throws UserNotFoundException {
 
-        List<Role> roles = userRepository.getRolesById(id);
-
         AddressEntity addressEntity = userRepository.findUserAddressByEmployeeId(id);
 
         CountryEntity countryEntity = userRepository.getCountryById(addressEntity.getCountryId());
 
         UserEntity entity = userRepository.findById(id).orElseThrow(()-> new UserNotFoundException(String.format("User %s not found", id)));
-
-        entity.setRoles(roles);
 
         OfficeEntity officeEntity = userRepository.getOfficeByCountryId(countryEntity.getId());
 

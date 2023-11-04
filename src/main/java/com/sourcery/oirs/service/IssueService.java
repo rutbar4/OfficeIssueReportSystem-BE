@@ -64,10 +64,10 @@ public class IssueService {
                                        String description,
                                        LocalDate time) {
         return String.format("""
-                New Issue: %s\n
-                Created by %s\n
-                Email: %s/\n
-                Created at %s\n
+                New Issue: %s%n
+                Created by %s%n
+                Email: %s/%n
+                Created at %s%n
                 Issue description: %s""", issueName, employee, email, time, description);
     }
 }
