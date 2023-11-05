@@ -29,8 +29,15 @@ public class UserService {
 
         UserEntity entity = userRepository.findById(id).orElseThrow(()-> new UserNotFoundException(String.format("User %s not found", id)));
 
-        OfficeEntity officeEntity = userRepository.getOfficeByCountryId(countryEntity.getId()).orElseThrow(() -> new OfficeNotFoundException("User has no office assigned"));
+        OfficeEntity officeEntity = getOfficeByUser(id);
 
         return User.convert(entity,countryEntity, addressEntity, officeEntity);
     }
+
+    public OfficeEntity getOfficeByUser (UUID userId){
+        UUID officeId = userRepository.getOfficeIdByEmployeeId(userId).orElseThrow(()-> new OfficeNotFoundException(String.format("user %S has no office assigned", userId)));
+        return userRepository.getOfficeById(officeId).orElseThrow(() -> new OfficeNotFoundException(String.format("Office %s was not found", officeId)));
+
+    }
+
 }

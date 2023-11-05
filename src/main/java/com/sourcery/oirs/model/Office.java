@@ -15,6 +15,7 @@ public class Office {
     public static Office convert(OfficeEntity entity) {
         return Office.builder()
                 .name(entity.getName())
+                .id(entity.getId())
                 .build();
     }
 

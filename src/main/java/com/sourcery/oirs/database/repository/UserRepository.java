@@ -46,21 +46,29 @@ public interface UserRepository {
     @Select("SELECT e.full_name FROM employee e WHERE e.email = #{email}")
     String getUserNameByEmail(@Param("email") String email);
 
-    @Select("SELECT * FROM office o WHERE o.country_id = #{id}")
-    Optional <OfficeEntity> getOfficeByCountryId(@Param("id") UUID id);
+    @Select("SELECT * FROM office o WHERE o.id = #{id}")
+    @Results(value = {
+            @Result(property = "id", column = "id", typeHandler = UuidTypeHandler.class),
+            @Result(property = "name", column = "office_name")
+    })
+    Optional <OfficeEntity> getOfficeById(@Param("id") UUID id);
 
     @Select("SELECT * FROM country c WHERE c.id = #{id}")
+    @Results(value = {
+            @Result(property = "id", column = "id", typeHandler = UuidTypeHandler.class),
+            @Result(property = "name", column = "country_name")
+    })
     Optional <CountryEntity> getCountryById(@Param("id") UUID id);
 
-    @Select("SELECT * FROM address e WHERE e.USER_ID = #{id}")
+    @Select("SELECT * FROM address e WHERE e.employee_id = #{id}")
     @Results(value = {
             @Result(property = "id", column = "id", typeHandler = UuidTypeHandler.class),
             @Result(property = "street", column = "street"),
-            @Result(property = "city", column = "city"),
-            @Result(property = "password", column = "password"),
-            @Result(property = "state", column = "state"),
             @Result(property = "postcode", column = "post_code"),
-            @Result(property = "countryId", column = "country_id"),
+            @Result(property = "state", column = "state_province"),
+            @Result(property = "city", column = "city"),
+            @Result(property = "countryId", column = "country_id", typeHandler = UuidTypeHandler.class),
+            @Result(property = "employeeId", column = "employee_id", typeHandler = UuidTypeHandler.class)
     })
     Optional <AddressEntity> findUserAddressByEmployeeId(@Param("id") UUID id);
 
@@ -76,6 +84,9 @@ public interface UserRepository {
             @Result(property = "roles", column = "id", javaType = List.class, many = @Many(select = "getRolesById"))
     })
     Optional<UserEntity> findById(@Param("id") UUID id);
+
+    @Select("SELECT office_id FROM employee_office WHERE employee_id = #{id}")
+    Optional<UUID> getOfficeIdByEmployeeId (@Param("id") UUID id);
 
 }
 
