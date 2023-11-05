@@ -47,10 +47,10 @@ public interface UserRepository {
     String getUserNameByEmail(@Param("email") String email);
 
     @Select("SELECT * FROM office o WHERE o.country_id = #{id}")
-    OfficeEntity getOfficeByCountryId(@Param("id") UUID id);
+    Optional <OfficeEntity> getOfficeByCountryId(@Param("id") UUID id);
 
     @Select("SELECT * FROM country c WHERE c.id = #{id}")
-    CountryEntity getCountryById(@Param("id") UUID id);
+    Optional <CountryEntity> getCountryById(@Param("id") UUID id);
 
     @Select("SELECT * FROM address e WHERE e.USER_ID = #{id}")
     @Results(value = {
@@ -62,7 +62,7 @@ public interface UserRepository {
             @Result(property = "postcode", column = "post_code"),
             @Result(property = "countryId", column = "country_id"),
     })
-    AddressEntity findUserAddressByEmployeeId(@Param("id") UUID id);
+    Optional <AddressEntity> findUserAddressByEmployeeId(@Param("id") UUID id);
 
     @Select("SELECT * FROM employee e WHERE e.id = #{id}")
     @Results(value = {
