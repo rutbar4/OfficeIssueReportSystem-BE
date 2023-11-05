@@ -17,6 +17,7 @@ public class Country {
     public static Country convert(CountryEntity entity) {
         return Country.builder()
                 .name(entity.getName())
+                .id(entity.getId())
                 .build();
     }
 }

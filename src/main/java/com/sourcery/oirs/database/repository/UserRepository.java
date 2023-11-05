@@ -1,9 +1,6 @@
 package com.sourcery.oirs.database.repository;
 
 import com.sourcery.oirs.config.mybatis.UuidTypeHandler;
-import com.sourcery.oirs.database.entity.AddressEntity;
-import com.sourcery.oirs.database.entity.CountryEntity;
-import com.sourcery.oirs.database.entity.OfficeEntity;
 import com.sourcery.oirs.database.entity.UserEntity;
 import com.sourcery.oirs.model.Role;
 import org.apache.ibatis.annotations.*;
@@ -46,25 +43,7 @@ public interface UserRepository {
     @Select("SELECT e.full_name FROM employee e WHERE e.email = #{email}")
     String getUserNameByEmail(@Param("email") String email);
 
-    @Select("SELECT * FROM office o WHERE o.country_id = #{id}")
-    Optional <OfficeEntity> getOfficeByCountryId(@Param("id") UUID id);
-
-    @Select("SELECT * FROM country c WHERE c.id = #{id}")
-    Optional <CountryEntity> getCountryById(@Param("id") UUID id);
-
-    @Select("SELECT * FROM address e WHERE e.USER_ID = #{id}")
-    @Results(value = {
-            @Result(property = "id", column = "id", typeHandler = UuidTypeHandler.class),
-            @Result(property = "street", column = "street"),
-            @Result(property = "city", column = "city"),
-            @Result(property = "password", column = "password"),
-            @Result(property = "state", column = "state"),
-            @Result(property = "postcode", column = "post_code"),
-            @Result(property = "countryId", column = "country_id"),
-    })
-    Optional <AddressEntity> findUserAddressByEmployeeId(@Param("id") UUID id);
-
-    @Select("SELECT * FROM employee e WHERE e.id = #{id}")
+        @Select("SELECT * FROM employee e WHERE e.id = #{id}")
     @Results(value = {
             @Result(property = "id", column = "id", typeHandler = UuidTypeHandler.class),
             @Result(property = "fullName", column = "full_Name"),
@@ -76,6 +55,8 @@ public interface UserRepository {
             @Result(property = "roles", column = "id", javaType = List.class, many = @Many(select = "getRolesById"))
     })
     Optional<UserEntity> findById(@Param("id") UUID id);
+
+
 
 }
 

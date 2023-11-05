@@ -12,4 +12,5 @@ public class AddressEntity {
     private String state;
     private String postcode;
     private UUID countryId;
+    private UUID employeeId;
 }
