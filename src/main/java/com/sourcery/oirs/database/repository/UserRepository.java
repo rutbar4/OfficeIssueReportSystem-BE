@@ -3,7 +3,6 @@ package com.sourcery.oirs.database.repository;
 import com.sourcery.oirs.config.mybatis.UuidTypeHandler;
 import com.sourcery.oirs.database.entity.AddressEntity;
 import com.sourcery.oirs.database.entity.CountryEntity;
-import com.sourcery.oirs.database.entity.OfficeEntity;
 import com.sourcery.oirs.database.entity.UserEntity;
 import com.sourcery.oirs.model.Role;
 import org.apache.ibatis.annotations.*;
@@ -46,14 +45,7 @@ public interface UserRepository {
     @Select("SELECT e.full_name FROM employee e WHERE e.email = #{email}")
     String getUserNameByEmail(@Param("email") String email);
 
-    @Select("SELECT * FROM office o WHERE o.id = #{id}")
-    @Results(value = {
-            @Result(property = "id", column = "id", typeHandler = UuidTypeHandler.class),
-            @Result(property = "name", column = "office_name")
-    })
-    Optional <OfficeEntity> getOfficeById(@Param("id") UUID id);
-
-    @Select("SELECT * FROM country c WHERE c.id = #{id}")
+        @Select("SELECT * FROM country c WHERE c.id = #{id}")
     @Results(value = {
             @Result(property = "id", column = "id", typeHandler = UuidTypeHandler.class),
             @Result(property = "name", column = "country_name")
@@ -85,8 +77,7 @@ public interface UserRepository {
     })
     Optional<UserEntity> findById(@Param("id") UUID id);
 
-    @Select("SELECT office_id FROM employee_office WHERE employee_id = #{id}")
-    Optional<UUID> getOfficeIdByEmployeeId (@Param("id") UUID id);
+
 
 }
 

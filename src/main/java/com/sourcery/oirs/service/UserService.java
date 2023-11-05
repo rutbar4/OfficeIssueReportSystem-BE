@@ -4,6 +4,7 @@ import com.sourcery.oirs.database.entity.AddressEntity;
 import com.sourcery.oirs.database.entity.CountryEntity;
 import com.sourcery.oirs.database.entity.OfficeEntity;
 import com.sourcery.oirs.database.entity.UserEntity;
+import com.sourcery.oirs.database.repository.OfficeRepository;
 import com.sourcery.oirs.database.repository.UserRepository;
 import com.sourcery.oirs.exceptions.AddressNotFoundException;
 import com.sourcery.oirs.exceptions.CountryNotFoundException;
@@ -20,6 +21,7 @@ import java.util.UUID;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final OfficeRepository officeRepository;
 
     public User getUserById(UUID id) throws UserNotFoundException {
 
@@ -35,8 +37,8 @@ public class UserService {
     }
 
     public OfficeEntity getOfficeByUser (UUID userId){
-        UUID officeId = userRepository.getOfficeIdByEmployeeId(userId).orElseThrow(()-> new OfficeNotFoundException(String.format("user %S has no office assigned", userId)));
-        return userRepository.getOfficeById(officeId).orElseThrow(() -> new OfficeNotFoundException(String.format("Office %s was not found", officeId)));
+        UUID officeId = officeRepository.getOfficeIdByEmployeeId(userId).orElseThrow(()-> new OfficeNotFoundException(String.format("user %S has no office assigned", userId)));
+        return officeRepository.getOfficeById(officeId).orElseThrow(() -> new OfficeNotFoundException(String.format("Office %s was not found", officeId)));
 
     }
 
