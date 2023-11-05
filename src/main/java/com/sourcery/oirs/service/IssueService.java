@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -88,7 +89,7 @@ public class IssueService {
                         .status("open")
                         .description(issue.getDescription())
                         .commentCount(0.00)
-                        .startTime(Timestamp.valueOf(issue.getTime()))
+                        .startTime(Timestamp.valueOf(LocalDateTime.now()))
                         .finishTime(null)
                         .employeeId(issue.getEmployeeId())
                         .officeId(officeId)

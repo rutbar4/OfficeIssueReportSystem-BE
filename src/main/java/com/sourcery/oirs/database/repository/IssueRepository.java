@@ -35,7 +35,7 @@ public interface IssueRepository {
             "FROM issue ")
     List<Issue> findAll();
 
-    @Insert("INSERT INTO issue (id, issue_name, issue_status, start_time, rating, description, employee_id, office_id)" +
+    @Insert("INSERT INTO issue (id, issue_name, issue_status, start_time, finish_time, rating, description, employee_id, office_id)" +
             "VALUES (#{i.id}, #{i.name}, #{i.status}, #{i.startTime}, #{i.finishTime}, #{i.rating}, #{i.description}, #{i.employeeId}, #{i.officeId}) ")
     void insertIssue (@Param ("i") IssueEntity issue);
 
