@@ -10,7 +10,6 @@ import com.sourcery.oirs.model.IssueDetailsResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -64,10 +63,10 @@ public class IssueService {
                                        String description,
                                        LocalDate time) {
         return String.format("""
-                New Issue: %s\n
-                Created by %s\n
-                Email: %s/\n
-                Created at %s\n
+                New Issue: %s%n
+                Created by %s%n
+                Email: %s/%n
+                Created at %s%n
                 Issue description: %s""", issueName, employee, email, time, description);
     }
 }
