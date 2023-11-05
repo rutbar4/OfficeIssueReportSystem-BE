@@ -5,8 +5,7 @@ import lombok.Data;
 import java.util.UUID;
 
 @Data
-public class OfficeEntity {
+public class CountryEntity {
     private UUID id;
-    private String name;
+    String name;
 }
-
