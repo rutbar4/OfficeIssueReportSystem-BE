@@ -5,6 +5,7 @@ import com.sourcery.oirs.model.Issue;
 import com.sourcery.oirs.service.IssueService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +30,7 @@ public class IssueController {
     }
 
     @PreAuthorize("hasRole('USER')")
-    @PostMapping (value = "/issue")
+    @PostMapping (consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public void reportIssue (@RequestBody Issue issue){
         issueService.ReportNewIssue(issue);

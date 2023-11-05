@@ -1,20 +1,26 @@
 package com.sourcery.oirs.service;
 
+import com.sourcery.oirs.database.entity.IssueEntity;
 import com.sourcery.oirs.database.entity.UserEntity;
 import com.sourcery.oirs.database.repository.IssueRepository;
 import com.sourcery.oirs.database.repository.UserRepository;
 import com.sourcery.oirs.email.EmailService;
+import com.sourcery.oirs.exceptions.BusyIssueNameException;
 import com.sourcery.oirs.exceptions.IssueNotFoundException;
 import com.sourcery.oirs.model.Issue;
 import com.sourcery.oirs.model.IssueDetailsResponseDto;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
+@Builder
 @Service
 @RequiredArgsConstructor
 public class IssueService {
@@ -49,7 +55,7 @@ public class IssueService {
         String emailOfIssueCreator = SecurityContextHolder.getContext().getAuthentication().getName();
         String nameOfIssueCreator = userRepository.getUserNameByEmail(emailOfIssueCreator);
         String messageToAdmin = createIssueMessage(nameOfIssueCreator, emailOfIssueCreator, issue.getName(),
-                issue.getDescription(), issue.getTime());
+                issue.getDescription(), LocalDate.from(issue.getTime()));
         emailsOfAdmins.forEach(email -> emailService.sendEmail(email, issue.getName(), messageToAdmin));
     }
 
@@ -64,10 +70,41 @@ public class IssueService {
                                        String description,
                                        LocalDate time) {
         return String.format("""
-                New Issue: %s\n
-                Created by %s\n
-                Email: %s/\n
-                Created at %s\n
+                New Issue: %s %n
+                Created by %s %n
+                Email: %s %n
+                Created at %s %n
                 Issue description: %s""", issueName, employee, email, time, description);
     }
+
+    public void ReportNewIssue (Issue issue) {
+
+        Optional<IssueDetailsResponseDto> issueName = issueRepository.findByName(issue.getName());
+        if (issueName.isPresent()){
+            throw new BusyIssueNameException();
+        }
+
+        UUID officeId = issueRepository.getOfficeIdByName(issue.getName());
+
+        issueRepository.insertIssue(
+                IssueEntity.builder()
+                        .id(UUID.randomUUID())
+                        .name(issue.getName())
+                        .status("open")
+                        .description(issue.getDescription())
+                        .commentCount(0.00)
+                        .startTime(Timestamp.valueOf(issue.getTime()))
+                        .finishTime(null)
+                        .employeeId(issue.getEmployeeId())
+                        .officeId(officeId)
+                        .rating(issue.getUpvoteCount())
+                        .build()
+        );
+
+        sendEmailToAdmins(issue);
+
+        }
+
+
+
 }

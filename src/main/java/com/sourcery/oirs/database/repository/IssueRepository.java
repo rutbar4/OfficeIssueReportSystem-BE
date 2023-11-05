@@ -4,10 +4,7 @@ package com.sourcery.oirs.database.repository;
 import com.sourcery.oirs.database.entity.IssueEntity;
 import com.sourcery.oirs.model.IssueDetailsResponseDto;
 import com.sourcery.oirs.model.Issue;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -49,4 +46,13 @@ public interface IssueRepository {
             "LEFT JOIN Office ON Issue.OFFICE_ID = Office.ID " +
             "WHERE issue.ISSUE_NAME = #{name}")
     Optional<IssueDetailsResponseDto> findByName(@Param("name") String name);
+
+    @Select("SELECT * FROM issue WHERE id = #{id}")
+    Optional<Issue> findIssue(@Param("id") UUID id);
+
+    @Delete("DELETE from issue where id = #{id}")
+    void delete(@Param("id") UUID id);
+
+    @Select("SELECT office.id as id FROM office WHERE office_name = #{name}")
+    UUID getOfficeIdByName (@Param("name") String name);
 }
