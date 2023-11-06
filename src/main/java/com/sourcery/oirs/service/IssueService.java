@@ -92,7 +92,7 @@ public class IssueService {
                         .startTime(Timestamp.valueOf(LocalDateTime.now()))
                         .finishTime(null)
                         .employeeId(issue.getEmployeeId())
-                        .officeId(officeId)
+                        .officeId(issue.getOfficeId())
                         .rating(issue.getUpvoteCount())
                         .build()
         );
