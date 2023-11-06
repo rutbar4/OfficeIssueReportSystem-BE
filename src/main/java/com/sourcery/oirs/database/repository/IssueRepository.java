@@ -2,7 +2,6 @@ package com.sourcery.oirs.database.repository;
 
 
 import com.sourcery.oirs.database.entity.IssueEntity;
-import com.sourcery.oirs.model.IssueDetailsResponseDto;
 import com.sourcery.oirs.dto.response.IssueDetailsResponseDto;
 import com.sourcery.oirs.model.Issue;
 import org.apache.ibatis.annotations.*;

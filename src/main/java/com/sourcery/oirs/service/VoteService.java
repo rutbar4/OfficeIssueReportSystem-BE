@@ -31,7 +31,7 @@ public class VoteService {
             return null;
         }
 
-        if(!_userRepository.findByID(voteRequestDto.employeeId).isPresent()){
+        if(!_userRepository.findById(voteRequestDto.employeeId).isPresent()){
             return null;
         }
 
