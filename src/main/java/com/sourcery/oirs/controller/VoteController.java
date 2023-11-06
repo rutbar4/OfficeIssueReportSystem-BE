@@ -24,7 +24,7 @@ public class VoteController{
     public ResponseEntity TakeVote(@Valid @RequestBody VoteRequestDto requestDto){
         var vote = _voteService.CreateVote(requestDto);
         if(vote == null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Issue or Employee does not exist");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("issue or employee does not exist");
         }
         else return ResponseEntity.status(HttpStatus.CREATED).body(vote);
     }
@@ -33,7 +33,7 @@ public class VoteController{
     public IsVotedResponseDto Vote(@PathVariable UUID issueId, @PathVariable UUID employeeId) {
         return _voteService.IsVoted(issueId, employeeId);
     }
-    @GetMapping("/Count/{issueId}")
+    @GetMapping("/count/{issueId}")
     public VoteCountResponseDto VoteCount(@PathVariable UUID issueId) {
         return _voteService.VoteCount(issueId);
     }
