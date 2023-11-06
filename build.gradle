@@ -33,6 +33,7 @@ dependencies {
     implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.2.0'
     implementation "org.springframework.boot:spring-boot-starter-security"
     implementation 'com.auth0:java-jwt:4.4.0'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 
 
     runtimeOnly 'org.postgresql:postgresql'
