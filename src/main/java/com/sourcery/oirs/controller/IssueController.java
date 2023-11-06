@@ -32,15 +32,12 @@ public class IssueController {
     @DeleteMapping("/{id}")
     public void deleteIssue(@PathVariable(value="id") UUID id){
         issueService.deleteIssue(id);
-    };
+    }
 
     @PreAuthorize("hasRole('USER')")
     @PostMapping (consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public void reportIssue (@RequestBody Issue issue){
-        issueService.ReportNewIssue(issue);
+        issueService.reportNewIssue(issue);
     }
-
-
-
 }

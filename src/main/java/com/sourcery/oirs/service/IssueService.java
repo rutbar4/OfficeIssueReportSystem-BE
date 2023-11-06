@@ -76,7 +76,7 @@ public class IssueService {
                 Issue description: %s""", issueName, employee, email, time, description);
     }
 
-    public void ReportNewIssue (Issue issue) {
+    public void reportNewIssue (Issue issue) {
         Optional<IssueDetailsResponseDto> issueName = issueRepository.findByName(issue.getName());
         if (issueName.isPresent()){
             throw new BusyIssueNameException();
