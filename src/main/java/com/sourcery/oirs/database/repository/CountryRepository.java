@@ -16,7 +16,7 @@ public interface CountryRepository {
     @Select("SELECT * FROM country")
     @Results(value ={
             @Result(property = "id", column = "id", typeHandler = UuidTypeHandler.class),
-            @Result(property = "name", column = "name")
+            @Result(property = "name", column = "country_name")
     })
     List<CountryEntity>getAll();
 
