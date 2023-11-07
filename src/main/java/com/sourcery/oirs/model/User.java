@@ -1,28 +1,44 @@
 package com.sourcery.oirs.model;
 
+import com.sourcery.oirs.database.entity.AddressEntity;
+import com.sourcery.oirs.database.entity.CountryEntity;
+import com.sourcery.oirs.database.entity.OfficeEntity;
+import com.sourcery.oirs.database.entity.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+import java.util.UUID;
+
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Builder
 public class User {
+    private UUID id;
     private String fullName;
-    private Department department;
-    private Role role;
+    private String email;
+    private List<Role> roles;
     private Address address;
     private Country country;
+    private Office office;
 
-    public static User buildMockData(){
+    public static User convert(UserEntity entity, CountryEntity countryEntity, AddressEntity addressEntity, OfficeEntity officeEntity) {
         return User.builder()
-                .fullName("John Doe")
-                .department(Department.IT)
-                .role(Role.USER)
-                .address(Address.buildMockAdress())
-                .country(Country.LITHUANIA)
+                .id(entity.getId())
+                .fullName(entity.getFullName())
+                .email(entity.getEmail())
+                .roles(entity.getRoles())
+                .address(Address.convert(addressEntity))
+                .country(Country.convert(countryEntity))
+                .office(Office.convert(officeEntity))
                 .build();
+
+
     }
+
+
 }
+
