@@ -6,6 +6,7 @@ import com.sourcery.oirs.database.repository.UserRepository;
 import com.sourcery.oirs.email.EmailService;
 import com.sourcery.oirs.exceptions.IssueNotFoundException;
 import com.sourcery.oirs.model.Issue;
+import com.sourcery.oirs.model.IssueDetailRequestDto;
 import com.sourcery.oirs.model.IssueDetailsResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -69,5 +70,14 @@ public class IssueService {
                 Email: %s/\n
                 Created at %s\n
                 Issue description: %s""", issueName, employee, email, time, description);
+    }
+
+    public void updateIssue(IssueDetailRequestDto requestDto, UUID id) {
+        Issue existingIssue = issueRepository.findIssue(id)
+                .orElseThrow(() -> new IssueNotFoundException(String.format(ISSUE_NOT_FOUND, id)));
+        existingIssue.setDescription(requestDto.getDescription());
+        existingIssue.setOfficeId(requestDto.getOfficeId());
+        existingIssue.setStatus(requestDto.getStatus());
+        issueRepository.update(existingIssue);
     }
 }

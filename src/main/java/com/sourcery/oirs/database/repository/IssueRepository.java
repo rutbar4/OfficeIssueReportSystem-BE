@@ -39,7 +39,6 @@ public interface IssueRepository {
 
     @Delete("DELETE from issue where id = #{id}")
     void delete(@Param("id") UUID id);
-    @Update("UPDATE issue SET description = #{description}, location = #{location}, status = #{status}, " +
-            "date_modified = #{dateModified} WHERE id = #{id}")
-    void update(IssueDetailsResponseDto issue);
+    @Update("UPDATE issue SET description = #{description}, office_id = #{officeId}, ISSUE_STATUS = #{status} WHERE id = #{id}")
+    void update(Issue issue);
 }
