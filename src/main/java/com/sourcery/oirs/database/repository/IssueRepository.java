@@ -42,4 +42,76 @@ public interface IssueRepository {
 
     @Delete("DELETE from issue where id = #{id}")
     void delete(@Param("id") UUID id);
+
+    @Select("SELECT "
+            + "Issue.ID as id, "
+            + "Issue.ISSUE_NAME as name, "
+            + "Issue.DESCRIPTION as description, "
+            + "Issue.ISSUE_STATUS as status, "
+            + "Issue.RATING as upvoteCount, "
+            + "Issue.COMMENT_COUNT as commentCount, "
+            + "Issue.Start_Time as time, "
+            + "Issue.EMPLOYEE_ID as employee_id, "
+            + "Issue.OFFICE_ID as officeID "
+            + "FROM issue "
+            + "WHERE Issue.ISSUE_STATUS= 'Open' ")
+    List<Issue> findOpen();
+
+    @Select("SELECT "
+            + "Issue.ID as id, "
+            + "Issue.ISSUE_NAME as name, "
+            + "Issue.DESCRIPTION as description, "
+            + "Issue.ISSUE_STATUS as status, "
+            + "Issue.RATING as upvoteCount, "
+            + "Issue.COMMENT_COUNT as commentCount, "
+            + "Issue.Start_Time as time, "
+            + "Issue.EMPLOYEE_ID as employee_id, "
+            + "Issue.OFFICE_ID as officeID "
+            + "FROM issue "
+            + "WHERE Issue.ISSUE_STATUS= 'Pending' ")
+    List<Issue> findPlanned();
+    @Select("SELECT "
+            + "Issue.ID as id, "
+            + "Issue.ISSUE_NAME as name, "
+            + "Issue.DESCRIPTION as description, "
+            + "Issue.ISSUE_STATUS as status, "
+            + "Issue.RATING as upvoteCount, "
+            + "Issue.COMMENT_COUNT as commentCount, "
+            + "Issue.Start_Time as time, "
+            + "Issue.EMPLOYEE_ID as employee_id, "
+            + "Issue.OFFICE_ID as officeID "
+            + "FROM issue "
+            + "WHERE Issue.issue_status= 'Resolved' ")
+    List<Issue> findResolved();
+
+
+    @Select("SELECT "
+            + "Issue.ID as id, "
+            + "Issue.ISSUE_NAME as name, "
+            + "Issue.DESCRIPTION as description, "
+            + "Issue.ISSUE_STATUS as status, "
+            + "Issue.RATING as upvoteCount, "
+            + "Issue.COMMENT_COUNT as commentCount, "
+            + "Issue.Start_Time as time, "
+            + "Issue.EMPLOYEE_ID as employee_id, "
+            + "Issue.OFFICE_ID as officeID "
+            + "FROM issue "
+            + "WHERE Issue.issue_status= 'Closed' ")
+    List<Issue> findClosed();
+
+    @Select("SELECT "
+            + "Issue.ID as id, "
+            + "Issue.ISSUE_NAME as name, "
+            + "Issue.DESCRIPTION as description, "
+            + "Issue.ISSUE_STATUS as status, "
+            + "Issue.RATING as upvoteCount, "
+            + "Issue.COMMENT_COUNT as commentCount, "
+            + "Issue.Start_Time as time, "
+            + "Issue.EMPLOYEE_ID as employee_id, "
+            + "Issue.OFFICE_ID as officeID "
+            + "FROM issue "
+            + "LEFT JOIN employee on issue.employee_id = employee.id "
+            + "WHERE employee.email= #{email} ")
+    List<Issue> findReportedBy(@Param("email") String email);
+
 }

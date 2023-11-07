@@ -31,4 +31,19 @@ public class IssueController {
         issueService.deleteIssue(id);
     }
 
+    @GetMapping("/open")
+    public List<Issue> getOpenIssues(){ return issueService.getOpenIssues(); }
+
+    @GetMapping("/planned")
+    public List<Issue> getPlannedIssues(){ return issueService.getPlannedIssues(); }
+
+    @GetMapping("/resolved")
+    public  List<Issue> getResolvedIssues() { return issueService.getResolvedIssues(); }
+
+    @GetMapping("/closed")
+    public  List<Issue> getClosedIssues() { return issueService.getClosedIssues(); }
+
+    @GetMapping("/reportedBy/{email}")
+    public List<Issue> getUserIssues(@PathVariable(value="email") String email) {return issueService.getUserIssues(email); }
+
 }
