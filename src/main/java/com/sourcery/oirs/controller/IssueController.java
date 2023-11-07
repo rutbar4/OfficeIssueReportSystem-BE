@@ -3,6 +3,7 @@ package com.sourcery.oirs.controller;
 import com.sourcery.oirs.model.IssueDetailRequestDto;
 import com.sourcery.oirs.model.IssueDetailsResponseDto;
 import com.sourcery.oirs.model.Issue;
+import com.sourcery.oirs.model.OfficeResponseDTO;
 import com.sourcery.oirs.service.IssueService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,10 @@ public class IssueController {
                                             @Valid @RequestBody IssueDetailRequestDto requestDto) {
         issueService.updateIssue(requestDto,id);
         return ResponseEntity.noContent().build(); // Respond with HTTP 204 No Content for a successful update
+    }
+    @GetMapping("/offices")
+    public List<OfficeResponseDTO> getAllOffices() {
+        return issueService.getAllOffices();
     }
 
 }

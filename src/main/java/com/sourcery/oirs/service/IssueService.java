@@ -2,12 +2,14 @@ package com.sourcery.oirs.service;
 
 import com.sourcery.oirs.database.entity.UserEntity;
 import com.sourcery.oirs.database.repository.IssueRepository;
+import com.sourcery.oirs.database.repository.OfficeRepository;
 import com.sourcery.oirs.database.repository.UserRepository;
 import com.sourcery.oirs.email.EmailService;
 import com.sourcery.oirs.exceptions.IssueNotFoundException;
 import com.sourcery.oirs.model.Issue;
 import com.sourcery.oirs.model.IssueDetailRequestDto;
 import com.sourcery.oirs.model.IssueDetailsResponseDto;
+import com.sourcery.oirs.model.OfficeResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,8 @@ public class IssueService {
     private final IssueRepository issueRepository;
     private final UserRepository userRepository;
     private final EmailService emailService;
+
+    private final OfficeRepository officeRepository;
 
     public List<Issue> getAllIssue() {
         return issueRepository.findAll();
@@ -79,5 +83,9 @@ public class IssueService {
         existingIssue.setOfficeId(requestDto.getOfficeId());
         existingIssue.setStatus(requestDto.getStatus());
         issueRepository.update(existingIssue);
+    }
+
+    public List<OfficeResponseDTO> getAllOffices() {
+        return officeRepository.findAllOffices();
     }
 }
