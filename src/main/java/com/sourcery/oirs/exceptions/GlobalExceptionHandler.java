@@ -13,11 +13,21 @@ import java.time.LocalDateTime;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {UserNotFoundException.class,
-                               IssueNotFoundException.class})
+                               IssueNotFoundException.class,
+                               AddressNotFoundException.class,
+                               CountryNotFoundException.class,
+                               OfficeNotFoundException.class})
     public ResponseEntity<ErrorMessage> handleNotFoundExceptions(Exception e) {
         ErrorMessage errorMessage = getErrorMessage(e, HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(value = {BusyIssueNameException.class})
+    public ResponseEntity<ErrorMessage> handleConflictExceptions(Exception e) {
+        ErrorMessage errorMessage = getErrorMessage(e, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(errorMessage, HttpStatus.CONFLICT);
+    }
+
 
     private ErrorMessage getErrorMessage(Exception e, HttpStatus httpStatus) {
         ErrorMessage errorMessage = new ErrorMessage();

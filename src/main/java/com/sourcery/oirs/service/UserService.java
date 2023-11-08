@@ -21,29 +21,27 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-
     private final UserRepository userRepository;
     private final OfficeRepository officeRepository;
     private final CountryRepository countryRepository;
     private final AddressRepository addressRepository;
 
     public User getUserById(UUID id) throws UserNotFoundException {
-
-        AddressEntity addressEntity = addressRepository.findUserAddressByEmployeeId(id).orElseThrow(() -> new AddressNotFoundException(String.format("User %s has no address", id)));
-
-        CountryEntity countryEntity = countryRepository.getCountryById(addressEntity.getCountryId()).orElseThrow(() -> new CountryNotFoundException("User has no country assigned"));
-
-        UserEntity entity = userRepository.findById(id).orElseThrow(()-> new UserNotFoundException(String.format("User %s not found", id)));
-
+        AddressEntity addressEntity = addressRepository.findUserAddressByEmployeeId(id)
+                .orElseThrow(() -> new AddressNotFoundException(String.format("User %s has no address", id)));
+        CountryEntity countryEntity = countryRepository.getCountryById(addressEntity.getCountryId())
+                .orElseThrow(() -> new CountryNotFoundException("User has no country assigned"));
+        UserEntity entity = userRepository.findById(id)
+                .orElseThrow(()-> new UserNotFoundException(String.format("User %s not found", id)));
         OfficeEntity officeEntity = getOfficeByUser(id);
-
         return User.convert(entity,countryEntity, addressEntity, officeEntity);
     }
 
     public OfficeEntity getOfficeByUser (UUID userId){
-        UUID officeId = officeRepository.getOfficeIdByEmployeeId(userId).orElseThrow(()-> new OfficeNotFoundException(String.format("user %S has no office assigned", userId)));
-        return officeRepository.getOfficeById(officeId).orElseThrow(() -> new OfficeNotFoundException(String.format("Office %s was not found", officeId)));
+        UUID officeId = officeRepository.getOfficeIdByEmployeeId(userId)
+                .orElseThrow(()-> new OfficeNotFoundException(String.format("user %S has no office assigned", userId)));
+        return officeRepository.getOfficeById(officeId)
+                .orElseThrow(() -> new OfficeNotFoundException(String.format("Office %s was not found", officeId)));
 
     }
-
 }

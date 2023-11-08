@@ -20,6 +20,7 @@ public class User {
     private UUID id;
     private String fullName;
     private String email;
+    private String position;
     private List<Role> roles;
     private Address address;
     private Country country;
@@ -30,15 +31,12 @@ public class User {
                 .id(entity.getId())
                 .fullName(entity.getFullName())
                 .email(entity.getEmail())
+                .position(entity.getPosition())
                 .roles(entity.getRoles())
                 .address(Address.convert(addressEntity))
                 .country(Country.convert(countryEntity))
                 .office(Office.convert(officeEntity))
                 .build();
-
-
     }
-
-
 }
 
