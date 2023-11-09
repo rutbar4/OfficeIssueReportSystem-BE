@@ -13,13 +13,16 @@ import java.util.UUID;
 @Getter
 @SuperBuilder(toBuilder = true)
 public class IssueDetailsResponseDto{
-    private UUID id;
+    public UUID id;
     private String name;
     private String description;
     private String status;
-    private Long rating;
+    private int rating;
     private Long commentCount;
     private LocalDate dateCreated;
     private String employeeName;
     private String officeName;
+    public void setVoteCount(int count){
+        rating = count;
+    }
 }

@@ -1,7 +1,6 @@
 package com.sourcery.oirs.service;
 
 import com.sourcery.oirs.database.repository.IssueRepository;
-import com.sourcery.oirs.dto.VoteRequestDto;
 import com.sourcery.oirs.dto.response.IsVotedResponseDto;
 import com.sourcery.oirs.dto.response.VoteCountResponseDto;
 import com.sourcery.oirs.dto.response.VoteResponseDto;
@@ -26,19 +25,19 @@ public class VoteService {
 
 
     @Transactional
-    public VoteResponseDto CreateVote(VoteRequestDto voteRequestDto) {
-        if(!_issueRepository.findById(voteRequestDto.issueId).isPresent()){
+    public VoteResponseDto CreateVote(UUID issueId, UUID employeeId) {
+        if(!_issueRepository.findById(issueId).isPresent()){
             return null;
         }
 
-        if(!_userRepository.findById(voteRequestDto.employeeId).isPresent()){
+        if(!_userRepository.findById(employeeId).isPresent()){
             return null;
         }
 
         Vote vote = Vote.builder()
                 .id(UUID.randomUUID())
-                .issueId(voteRequestDto.getIssueId())
-                .employeeId(voteRequestDto.getEmployeeId())
+                .issueId(issueId)
+                .employeeId(employeeId)
                 .build();{
         _voteRepository.insert(vote);
         return VoteResponseDto.of(vote);

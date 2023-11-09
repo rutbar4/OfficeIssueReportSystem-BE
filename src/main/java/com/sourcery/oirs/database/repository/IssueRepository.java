@@ -15,7 +15,7 @@ import java.util.UUID;
 @Repository
 public interface IssueRepository {
     @Select("SELECT issue.ISSUE_NAME as name, Employee.FULL_NAME as employeeName, issue.Start_Time as dateCreated, Issue.ISSUE_STATUS as status, " +
-            "Issue.RATING, Office.OFFICE_NAME, Issue.description as description, Issue.Id as id, Issue.COMMENT_COUNT as commentCount " +
+            "Office.OFFICE_NAME, Issue.description as description, Issue.Id as id, Issue.COMMENT_COUNT as commentCount " +
             "FROM issue " +
             "LEFT JOIN Employee ON Issue.EMPLOYEE_ID = Employee.ID " +
             "LEFT JOIN Office ON Issue.OFFICE_ID = Office.ID " +
@@ -27,7 +27,6 @@ public interface IssueRepository {
             "issue.ISSUE_NAME as name, " +
             "Issue.DESCRIPTION as description, " +
             "Issue.ISSUE_STATUS as status, " +
-            "Issue.RATING as upvoteCount, " +
             "Issue.COMMENT_COUNT as commentCount, " +
             "Issue.Start_Time as time, " +
             "Issue.EMPLOYEE_ID as employeeId, " +
@@ -35,12 +34,12 @@ public interface IssueRepository {
             "FROM issue ")
     List<Issue> findAll();
 
-    @Insert("INSERT INTO issue (id, issue_name, issue_status, start_time, finish_time, rating, description, employee_id, office_id)" +
-            "VALUES (#{i.id}, #{i.name}, #{i.status}, #{i.startTime}, #{i.finishTime}, #{i.rating}, #{i.description}, #{i.employeeId}, #{i.officeId}) ")
+    @Insert("INSERT INTO issue (id, issue_name, issue_status, start_time, finish_time, description, employee_id, office_id)" +
+            "VALUES (#{i.id}, #{i.name}, #{i.status}, #{i.startTime}, #{i.finishTime}, #{i.description}, #{i.employeeId}, #{i.officeId}) ")
     void insertIssue (@Param ("i") IssueEntity issue);
 
     @Select("SELECT issue.ISSUE_NAME as name, Employee.FULL_NAME as employeeName, issue.Start_Time as dateCreated, Issue.ISSUE_STATUS as status, " +
-            "Issue.RATING, Office.OFFICE_NAME, Issue.description as description, Issue.Id as id, Issue.COMMENT_COUNT as commentCount " +
+            "Office.OFFICE_NAME, Issue.description as description, Issue.Id as id, Issue.COMMENT_COUNT as commentCount " +
             "FROM issue " +
             "LEFT JOIN Employee ON Issue.EMPLOYEE_ID = Employee.ID " +
             "LEFT JOIN Office ON Issue.OFFICE_ID = Office.ID " +

@@ -28,15 +28,23 @@ public class IssueService {
     private final IssueRepository issueRepository;
     private final UserRepository userRepository;
     private final EmailService emailService;
+    private final VoteService voteService;
 
     public List<Issue> getAllIssue() {
-        return issueRepository.findAll();
+        var issues = issueRepository.findAll();
+        for (var issue :issues) {
+            var count = voteService.VoteCount(issue.id).count;
+            issue.SetVoteCount(count);
+        }
+        return issues;
     }
 
 
     public IssueDetailsResponseDto getIssueDetails(UUID id) {
-        return issueRepository.findById(id)
+         var issue = issueRepository.findById(id)
                 .orElseThrow(() -> new IssueNotFoundException(String.format(ISSUE_NOT_FOUND, id)));
+                issue.setVoteCount(voteService.VoteCount(issue.id).count);
+         return issue;
     }
 
 
@@ -93,7 +101,6 @@ public class IssueService {
                         .finishTime(null)
                         .employeeId(issue.getEmployeeId())
                         .officeId(officeId)
-                        .rating(issue.getUpvoteCount())
                         .build()
         );
 //        sendEmailToAdmins(issue);
