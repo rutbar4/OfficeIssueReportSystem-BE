@@ -45,21 +45,12 @@ public class IssueService {
                 .orElseThrow(() -> new IssueNotFoundException(String.format(ISSUE_NOT_FOUND, id)));
         issueRepository.delete(id);
     }
-    public List<Issue> getOpenIssues() {
-        return issueRepository.findOpen();
-    }
-    public List<Issue> getPlannedIssues(){
-        return issueRepository.findPlanned();
-    }
-    public List<Issue> getResolvedIssues(){
-        return issueRepository.findResolved();
-    }
-    public List<Issue> getClosedIssues(){
-        return issueRepository.findClosed();
-    }
+    public List<Issue> getIssuesByStatus(String status) { return issueRepository.findByStatus(status); }
     public List<Issue> getUserIssues(String email){
         return issueRepository.findReportedBy(email);
     }
+
+
 
 
 

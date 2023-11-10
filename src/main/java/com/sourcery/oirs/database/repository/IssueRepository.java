@@ -64,50 +64,8 @@ public interface IssueRepository {
             + "Issue.EMPLOYEE_ID as employee_id, "
             + "Issue.OFFICE_ID as officeID "
             + "FROM issue "
-            + "WHERE Issue.ISSUE_STATUS= 'Open' ")
-    List<Issue> findOpen();
-
-    @Select("SELECT "
-            + "Issue.ID as id, "
-            + "Issue.ISSUE_NAME as name, "
-            + "Issue.DESCRIPTION as description, "
-            + "Issue.ISSUE_STATUS as status, "
-            + "Issue.RATING as upvoteCount, "
-            + "Issue.COMMENT_COUNT as commentCount, "
-            + "Issue.Start_Time as time, "
-            + "Issue.EMPLOYEE_ID as employee_id, "
-            + "Issue.OFFICE_ID as officeID "
-            + "FROM issue "
-            + "WHERE Issue.ISSUE_STATUS= 'Pending' ")
-    List<Issue> findPlanned();
-    @Select("SELECT "
-            + "Issue.ID as id, "
-            + "Issue.ISSUE_NAME as name, "
-            + "Issue.DESCRIPTION as description, "
-            + "Issue.ISSUE_STATUS as status, "
-            + "Issue.RATING as upvoteCount, "
-            + "Issue.COMMENT_COUNT as commentCount, "
-            + "Issue.Start_Time as time, "
-            + "Issue.EMPLOYEE_ID as employee_id, "
-            + "Issue.OFFICE_ID as officeID "
-            + "FROM issue "
-            + "WHERE Issue.issue_status= 'Resolved' ")
-    List<Issue> findResolved();
-
-
-    @Select("SELECT "
-            + "Issue.ID as id, "
-            + "Issue.ISSUE_NAME as name, "
-            + "Issue.DESCRIPTION as description, "
-            + "Issue.ISSUE_STATUS as status, "
-            + "Issue.RATING as upvoteCount, "
-            + "Issue.COMMENT_COUNT as commentCount, "
-            + "Issue.Start_Time as time, "
-            + "Issue.EMPLOYEE_ID as employee_id, "
-            + "Issue.OFFICE_ID as officeID "
-            + "FROM issue "
-            + "WHERE Issue.issue_status= 'Closed' ")
-    List<Issue> findClosed();
+            + "WHERE Issue.issue_status= #{status}")
+    List<Issue> findByStatus(@Param("status") String status);
 
     @Select("SELECT "
             + "Issue.ID as id, "

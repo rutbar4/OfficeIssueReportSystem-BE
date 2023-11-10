@@ -42,18 +42,19 @@ public class IssueController {
     }
 
     @GetMapping("/open")
-    public List<Issue> getOpenIssues(){ return issueService.getOpenIssues(); }
+    public List<Issue> getOpenIssues(){ return issueService.getIssuesByStatus("Open"); }
 
     @GetMapping("/planned")
-    public List<Issue> getPlannedIssues(){ return issueService.getPlannedIssues(); }
+    public List<Issue> getPlannedIssues(){ return issueService.getIssuesByStatus("Pending"); }
 
     @GetMapping("/resolved")
-    public  List<Issue> getResolvedIssues() { return issueService.getResolvedIssues(); }
+    public  List<Issue> getResolvedIssues() { return issueService.getIssuesByStatus("Resolved"); }
 
     @GetMapping("/closed")
-    public  List<Issue> getClosedIssues() { return issueService.getClosedIssues(); }
+    public  List<Issue> getClosedIssues() { return issueService.getIssuesByStatus("Closed"); }
 
     @GetMapping("/reportedBy/{email}")
     public List<Issue> getUserIssues(@PathVariable(value="email") String email) {return issueService.getUserIssues(email); }
+
 
 }
