@@ -81,7 +81,7 @@ public class IssueService {
                 Issue description: %s""", issueName, employee, email, time, description);
     }
 
-    public void ReportNewIssue (Issue issue) {
+    public void reportNewIssue (Issue issue) {
         Optional<IssueDetailsResponseDto> issueName = issueRepository.findByName(issue.getName());
         if (issueName.isPresent()){
             throw new BusyIssueNameException();
@@ -97,7 +97,7 @@ public class IssueService {
                         .startTime(Timestamp.valueOf(LocalDateTime.now()))
                         .finishTime(null)
                         .employeeId(issue.getEmployeeId())
-                        .officeId(officeId)
+                        .officeId(issue.getOfficeId())
                         .rating(issue.getUpvoteCount())
                         .build()
         );
