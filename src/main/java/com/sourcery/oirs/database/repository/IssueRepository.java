@@ -78,9 +78,8 @@ public interface IssueRepository {
             + "Issue.EMPLOYEE_ID as employee_id, "
             + "Issue.OFFICE_ID as officeID "
             + "FROM issue "
-            + "LEFT JOIN employee on issue.employee_id = employee.id "
-            + "WHERE employee.email= #{email} ")
-    List<Issue> findReportedBy(@Param("email") String email);
+            + "WHERE Issue.employee_id= #{id} ")
+    List<Issue> findReportedBy(@Param("id") UUID id);
     @Select("SELECT office.id as id FROM office WHERE office_name = #{name}")
     UUID getOfficeIdByName (@Param("name") String name);
 }

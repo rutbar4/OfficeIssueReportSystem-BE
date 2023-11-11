@@ -46,7 +46,7 @@ public class IssueService {
         issueRepository.delete(id);
     }
     public List<Issue> getIssuesByStatus(String status) { return issueRepository.findByStatus(status); }
-    public List<Issue> getUserIssues(String email){ return issueRepository.findReportedBy(email); }
+    public List<Issue> getUserIssues(UUID id){ return issueRepository.findReportedBy(id); }
 
 
 

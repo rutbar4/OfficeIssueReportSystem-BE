@@ -61,9 +61,9 @@ public class IssueController {
         return issueService.getIssuesByStatus("Closed");
     }
 
-    @GetMapping("/reportedBy/{email}")
-    public List<Issue> getUserIssues(@PathVariable(value = "email") String email) {
-        return issueService.getUserIssues(email);
+    @GetMapping("/reportedBy/{id}")
+    public List<Issue> getUserIssues(@PathVariable(value = "id") UUID id) {
+        return issueService.getUserIssues(id);
     }
 
 }
