@@ -19,7 +19,7 @@ public class CommentMapper {
                 .votes(commentEntity.getLikes())
                 .parentId(commentEntity.getParentId())
                 .issueId(commentEntity.getIssueId())
-                .user(UserMapper.toUser(commentEntity.getUserEntity()))
+                .employee(UserMapper.toUser(commentEntity.getUserEntity()))
                 .build();
     }
 

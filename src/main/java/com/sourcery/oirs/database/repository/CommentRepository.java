@@ -45,4 +45,10 @@ public interface CommentRepository {
 
     @Update("UPDATE comment SET likes = #{likes} WHERE id = #{id}")
     void updateCommentVotes(@Param("id") UUID id, @Param("likes") Integer likes);
+
+    @Insert("INSERT INTO comment_employee (comment_id, employee_id) VALUES (#{commentId}, #{employeeId})")
+    void saveCommentUpvote(@Param("commentId") UUID commentId, @Param("employeeId") UUID employeeId);
+
+    @Select("SELECT ce.comment_id FROM comment_employee ce WHERE comment_id = #{commentId} AND employee_id = #{employeeId}")
+    UUID checkIfIsVotedForComment(@Param("commentId") UUID commentId, @Param("employeeId") UUID employeeId);
 }

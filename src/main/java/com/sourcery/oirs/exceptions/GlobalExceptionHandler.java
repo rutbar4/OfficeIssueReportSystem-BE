@@ -23,7 +23,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(value = {BusyIssueNameException.class})
+    @ExceptionHandler(value = {BusyIssueNameException.class,
+                               CommentIsVotedException.class})
     public ResponseEntity<ErrorMessage> handleConflictExceptions(Exception e) {
         ErrorMessage errorMessage = getErrorMessage(e, HttpStatus.CONFLICT);
         return new ResponseEntity<>(errorMessage, HttpStatus.CONFLICT);

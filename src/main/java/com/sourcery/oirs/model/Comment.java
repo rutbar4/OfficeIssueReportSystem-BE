@@ -25,5 +25,5 @@ public class Comment {
     Integer votes;
     UUID parentId;
     UUID issueId;
-    UserToComment user;
+    UserToComment employee;
 }
