@@ -43,7 +43,7 @@ public class CommentService {
     }
 
     public Comment updateCommentVotes(UUID id, UUID issueId, Integer votes) {
-        CommentEntity commentEntity = findCommentById(id);
+        findCommentById(id);
         boolean commentIsUpVoted = isVoted(id, issueId);
         commentRepository.updateCommentVotes(id, votes);
         CommentEntity updatedCommentEntity = findCommentById(id);
@@ -52,8 +52,14 @@ public class CommentService {
         return updatedComment;
     }
 
-    public Comment getCommentById(UUID id) {
-        return CommentMapper.toComment(findCommentById(id));
+    public Comment getCommentById(UUID id, UUID issueId) {
+        Comment comment = CommentMapper.toComment(findCommentById(id));
+        UUID customUserId = getCustomUserId();
+        List<UUID> commentsIds = commentRepository.getAllCommentsIdsByEmployeeId(issueId, customUserId);
+        if (commentsIds.contains(id)) {
+            comment.setIsUpVoted(true);
+        }
+        return comment;
     }
 
     private CommentEntity findCommentById(UUID id) {

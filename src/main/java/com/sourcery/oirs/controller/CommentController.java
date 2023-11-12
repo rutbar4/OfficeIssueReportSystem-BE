@@ -30,8 +30,8 @@ public class CommentController {
         return commentService.updateCommentVotes(id, issueId, votes);
     }
 
-    @GetMapping("{id}")
-    public Comment getCommentById(@PathVariable UUID id) {
-        return commentService.getCommentById(id);
+    @GetMapping("{id}/issue/{issueId}")
+    public Comment getCommentById(@PathVariable UUID id, @PathVariable UUID issueId) {
+        return commentService.getCommentById(id, issueId);
     }
 }
