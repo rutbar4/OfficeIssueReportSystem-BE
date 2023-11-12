@@ -45,6 +45,11 @@ public class IssueService {
                 .orElseThrow(() -> new IssueNotFoundException(String.format(ISSUE_NOT_FOUND, id)));
         issueRepository.delete(id);
     }
+    public List<Issue> getIssuesByStatus(String status) { return issueRepository.findByStatus(status); }
+    public List<Issue> getUserIssues(UUID id){ return issueRepository.findReportedBy(id); }
+
+
+
 
 
     // When saving a new issue in the database, use this method to send a message to the office admins about new issue
@@ -98,4 +103,5 @@ public class IssueService {
         );
 //        sendEmailToAdmins(issue);
     }
+
 }
