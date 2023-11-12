@@ -46,9 +46,15 @@ public interface CommentRepository {
     @Update("UPDATE comment SET likes = #{likes} WHERE id = #{id}")
     void updateCommentVotes(@Param("id") UUID id, @Param("likes") Integer likes);
 
-    @Insert("INSERT INTO comment_employee (comment_id, employee_id) VALUES (#{commentId}, #{employeeId})")
-    void saveCommentUpvote(@Param("commentId") UUID commentId, @Param("employeeId") UUID employeeId);
+    @Insert("INSERT INTO comment_employee (comment_id, employee_id, issue_id) VALUES (#{commentId}, #{employeeId}, #{issueId})")
+    void saveCommentUpvote(@Param("commentId") UUID commentId, @Param("employeeId") UUID employeeId, @Param("issueId") UUID issueId);
 
-    @Select("SELECT ce.comment_id FROM comment_employee ce WHERE comment_id = #{commentId} AND employee_id = #{employeeId}")
+    @Select("SELECT ce.comment_id as commentId FROM comment_employee ce WHERE ce.comment_id = #{commentId} AND ce.employee_id = #{employeeId}")
     UUID checkIfIsVotedForComment(@Param("commentId") UUID commentId, @Param("employeeId") UUID employeeId);
+
+    @Select("SELECT ce.comment_id as commentId FROM comment_employee ce WHERE ce.issue_id = #{issueId} AND ce.employee_id = #{employeeId}")
+    List<UUID> getAllCommentsIdsByEmployeeId(@Param("issueId") UUID issueId, @Param("employeeId") UUID employeeId);
+
+    @Delete("DELETE FROM comment_employee ce WHERE ce.comment_id = #{commentId} AND ce.employee_id = #{employeeId}")
+    void deleteCommentUpvote(@Param("commentId") UUID commentId, @Param("employeeId") UUID employeeId);
 }

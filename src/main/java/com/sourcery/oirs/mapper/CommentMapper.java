@@ -20,6 +20,7 @@ public class CommentMapper {
                 .parentId(commentEntity.getParentId())
                 .issueId(commentEntity.getIssueId())
                 .employee(UserMapper.toUser(commentEntity.getUserEntity()))
+                .isUpVoted(false)
                 .build();
     }
 
