@@ -105,4 +105,17 @@ class VoteServiceUnitTest {
         //Assert
         assertEquals(expectedCount, result.count);
     }
+
+    @Test
+    public void VoteCount_validIssueId_Equals0() {
+        //Setup
+        int expectedCount = 0;
+        VoteCountResponseDto returnC = new VoteCountResponseDto(expectedCount);
+        //Act
+        when(voteRepository.GetVoteCount(validIssueId)).thenReturn(returnC);
+        var result = voteService.VoteCount(validIssueId);
+
+        //Assert
+        assertEquals(expectedCount, result.count);
+    }
 }

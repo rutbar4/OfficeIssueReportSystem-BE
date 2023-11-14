@@ -36,10 +36,12 @@ public class VoteController{
         var employeeId = userDetails.getId();
         return _voteService.IsVoted(issueId, employeeId);
     }
+
     @GetMapping("/count/{issueId}")
     public VoteCountResponseDto VoteCount(@PathVariable UUID issueId) {
         return _voteService.VoteCount(issueId);
     }
+
     @DeleteMapping("/{issueId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void DeleteVote(@PathVariable UUID issueId) {
