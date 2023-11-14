@@ -17,7 +17,6 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class VoteService {
-    private static final String ISSUE_NOT_FOUND = "Vote with %s id not found";
 
     private final VoteRepository _voteRepository;
     private final IssueRepository _issueRepository;
@@ -25,7 +24,7 @@ public class VoteService {
 
 
     @Transactional
-    public VoteResponseDto CreateVote(UUID issueId, UUID employeeId) {
+    public VoteResponseDto createVote(UUID issueId, UUID employeeId) {
         var issue = _issueRepository.findById(issueId);
         if (issue.isEmpty() ) {
             return null;
@@ -48,8 +47,8 @@ public class VoteService {
     }
 
     @Transactional
-    public IsVotedResponseDto IsVoted(UUID issueId, UUID employeeId) {
-        Optional<VoteResponseDto> voteDto = _voteRepository.GetVote(issueId, employeeId);
+    public IsVotedResponseDto isVoted(UUID issueId, UUID employeeId) {
+        Optional<VoteResponseDto> voteDto = _voteRepository.getVote(issueId, employeeId);
         IsVotedResponseDto responseDto = IsVotedResponseDto.builder()
                 .isVoted(voteDto.isPresent())
                 .build();
@@ -57,13 +56,13 @@ public class VoteService {
     }
 
     @Transactional
-    public VoteCountResponseDto VoteCount(UUID issueId) {
-        VoteCountResponseDto voteCountDto = _voteRepository.GetVoteCount(issueId);
+    public VoteCountResponseDto voteCount(UUID issueId) {
+        VoteCountResponseDto voteCountDto = _voteRepository.getVoteCount(issueId);
         return voteCountDto;
     }
 
     @Transactional
-    public void DeleteVote(UUID issueId, UUID employeeId) {
-        _voteRepository.DeleteVote(issueId, employeeId);
+    public void deleteVote(UUID issueId, UUID employeeId) {
+        _voteRepository.deleteVote(issueId, employeeId);
     }
 }

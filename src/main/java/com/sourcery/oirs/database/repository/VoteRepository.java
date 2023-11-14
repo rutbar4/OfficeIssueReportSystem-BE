@@ -20,12 +20,12 @@ public interface VoteRepository {
     void insert(Vote vote);
 
     @Select("SELECT * FROM Vote WHERE ISSUE_ID = #{IssueId} AND EMPLOYEE_ID= #{employeeId}")
-    Optional<VoteResponseDto> GetVote(@Param("IssueId") UUID IssueId, @Param("employeeId") UUID EmployeeId);
+    Optional<VoteResponseDto> getVote(@Param("IssueId") UUID IssueId, @Param("employeeId") UUID EmployeeId);
 
     @Select("SELECT COUNT(*) FROM Vote WHERE ISSUE_ID = #{IssueId}")
-    VoteCountResponseDto GetVoteCount(@Param("IssueId") UUID IssueId);
+    VoteCountResponseDto getVoteCount(@Param("IssueId") UUID IssueId);
 
     @Select("DELETE FROM Vote WHERE ISSUE_ID = #{IssueId} AND EMPLOYEE_ID= #{employeeId}")
-    Optional<VoteResponseDto> DeleteVote(@Param("IssueId") UUID IssueId, @Param("employeeId") UUID EmployeeId);
+    Optional<VoteResponseDto> deleteVote(@Param("IssueId") UUID IssueId, @Param("employeeId") UUID EmployeeId);
 
 }

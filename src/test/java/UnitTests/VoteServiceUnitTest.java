@@ -4,7 +4,6 @@ import com.sourcery.oirs.database.entity.UserEntity;
 import com.sourcery.oirs.database.repository.IssueRepository;
 import com.sourcery.oirs.database.repository.UserRepository;
 import com.sourcery.oirs.database.repository.VoteRepository;
-import com.sourcery.oirs.dto.response.IsVotedResponseDto;
 import com.sourcery.oirs.dto.response.IssueDetailsResponseDto;
 import com.sourcery.oirs.dto.response.VoteCountResponseDto;
 import com.sourcery.oirs.dto.response.VoteResponseDto;
@@ -37,7 +36,7 @@ class VoteServiceUnitTest {
     public void CreatVote_notExistingIssueId_returnNull() {
         //Act
         when(issueRepository.findById(Mockito.any())).thenReturn(Optional.empty());
-        var result = voteService.CreateVote(validIssueId, validEmployeeId);
+        var result = voteService.createVote(validIssueId, validEmployeeId);
 
         //Assert
         assertNull(result);
@@ -47,7 +46,7 @@ class VoteServiceUnitTest {
     public void CreatVote_notExistingUserId_returnNull() {
         //Act
         when(userRepository.findById(Mockito.any())).thenReturn(Optional.empty());
-        var result = voteService.CreateVote(validIssueId, validEmployeeId);
+        var result = voteService.createVote(validIssueId, validEmployeeId);
 
         //Assert
         assertNull(result);
@@ -63,7 +62,7 @@ class VoteServiceUnitTest {
         when(issueRepository.findById(Mockito.any())).thenReturn(issueResponse);
         when(userRepository.findById(Mockito.any())).thenReturn(userResponse);
         doNothing().when(voteRepository).insert(Mockito.any());
-        var result = voteService.CreateVote(validIssueId, validEmployeeId);
+        var result = voteService.createVote(validIssueId, validEmployeeId);
 
         //Assert
         assertEquals(result.getClass(), VoteResponseDto.class);
@@ -76,8 +75,8 @@ class VoteServiceUnitTest {
         Optional<VoteResponseDto> voteResponse = Optional.of(voteResponseDto);
 
         //Act
-        when(voteRepository.GetVote(validIssueId, validEmployeeId)).thenReturn(voteResponse);
-        var result = voteService.IsVoted(validIssueId, validEmployeeId);
+        when(voteRepository.getVote(validIssueId, validEmployeeId)).thenReturn(voteResponse);
+        var result = voteService.isVoted(validIssueId, validEmployeeId);
 
         //Assert
         assertTrue(result.isVoted);
@@ -85,8 +84,8 @@ class VoteServiceUnitTest {
     @Test
     void isVoted_ValidVotedIssueIdAndEmployeeId_false() {
         //Act
-        when(voteRepository.GetVote(validIssueId, validEmployeeId)).thenReturn(Optional.empty());
-        var result = voteService.IsVoted(validIssueId, validEmployeeId);
+        when(voteRepository.getVote(validIssueId, validEmployeeId)).thenReturn(Optional.empty());
+        var result = voteService.isVoted(validIssueId, validEmployeeId);
 
         //Assert
         assertFalse(result.isVoted);
@@ -98,8 +97,8 @@ class VoteServiceUnitTest {
         int expectedCount = 5;
         VoteCountResponseDto returnC = new VoteCountResponseDto(expectedCount);
         //Act
-        when(voteRepository.GetVoteCount(validIssueId)).thenReturn(returnC);
-        var result = voteService.VoteCount(validIssueId);
+        when(voteRepository.getVoteCount(validIssueId)).thenReturn(returnC);
+        var result = voteService.voteCount(validIssueId);
 
         //Assert
         assertEquals(expectedCount, result.count);
@@ -111,8 +110,8 @@ class VoteServiceUnitTest {
         int expectedCount = 0;
         VoteCountResponseDto returnC = new VoteCountResponseDto(expectedCount);
         //Act
-        when(voteRepository.GetVoteCount(validIssueId)).thenReturn(returnC);
-        var result = voteService.VoteCount(validIssueId);
+        when(voteRepository.getVoteCount(validIssueId)).thenReturn(returnC);
+        var result = voteService.voteCount(validIssueId);
 
         //Assert
         assertEquals(expectedCount, result.count);

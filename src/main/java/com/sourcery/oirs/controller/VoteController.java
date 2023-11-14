@@ -20,10 +20,10 @@ public class VoteController{
 
     @PostMapping("/{issueId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity TakeVote(@PathVariable UUID issueId){
+    public ResponseEntity takeVote(@PathVariable UUID issueId){
         var userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         var employeeId = userDetails.getId();
-        var vote = _voteService.CreateVote(issueId, employeeId);
+        var vote = _voteService.createVote(issueId, employeeId);
         if(vote == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("issue or employee does not exist");
         }
@@ -31,22 +31,22 @@ public class VoteController{
     }
 
     @GetMapping("/{issueId}")
-    public IsVotedResponseDto Vote(@PathVariable UUID issueId) {
+    public IsVotedResponseDto vote(@PathVariable UUID issueId) {
         var userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         var employeeId = userDetails.getId();
-        return _voteService.IsVoted(issueId, employeeId);
+        return _voteService.isVoted(issueId, employeeId);
     }
 
     @GetMapping("/count/{issueId}")
-    public VoteCountResponseDto VoteCount(@PathVariable UUID issueId) {
-        return _voteService.VoteCount(issueId);
+    public VoteCountResponseDto voteCount(@PathVariable UUID issueId) {
+        return _voteService.voteCount(issueId);
     }
 
     @DeleteMapping("/{issueId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void DeleteVote(@PathVariable UUID issueId) {
+    public void deleteVote(@PathVariable UUID issueId) {
         var userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         var employeeId = userDetails.getId();
-        _voteService.DeleteVote(issueId, employeeId);
+        _voteService.deleteVote(issueId, employeeId);
     }
 }

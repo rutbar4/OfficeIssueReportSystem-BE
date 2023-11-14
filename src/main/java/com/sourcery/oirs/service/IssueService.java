@@ -33,7 +33,7 @@ public class IssueService {
     public List<Issue> getAllIssue() {
         var issues = issueRepository.findAll();
         for (var issue :issues) {
-            var count = voteService.VoteCount(issue.id).count;
+            var count = voteService.voteCount(issue.id).count;
             issue.SetVoteCount(count);
         }
         return issues;
@@ -43,7 +43,7 @@ public class IssueService {
     public IssueDetailsResponseDto getIssueDetails(UUID id) {
          var issue = issueRepository.findById(id)
                 .orElseThrow(() -> new IssueNotFoundException(String.format(ISSUE_NOT_FOUND, id)));
-                issue.setVoteCount(voteService.VoteCount(issue.id).count);
+                issue.setVoteCount(voteService.voteCount(issue.id).count);
          return issue;
     }
 
