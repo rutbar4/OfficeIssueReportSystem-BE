@@ -49,7 +49,6 @@ public class IssueController {
         return issueService.getAllOffices();
     }
 
-}
     @PreAuthorize("hasRole('USER')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
@@ -81,5 +80,6 @@ public class IssueController {
     public List<Issue> getUserIssues(@PathVariable(value = "id") UUID id) {
         return issueService.getUserIssues(id);
     }
+
 
 }

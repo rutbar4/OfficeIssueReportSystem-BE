@@ -21,4 +21,5 @@ public class IssueDetailsResponseDto{
     private LocalDate dateCreated;
     private String employeeName;
     private String officeName;
+    private String officeId;
 }

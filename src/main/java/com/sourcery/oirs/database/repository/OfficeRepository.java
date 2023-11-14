@@ -47,4 +47,5 @@ public interface OfficeRepository {
             "LEFT JOIN Country c ON o.COUNTRY_ID = c.ID")
     List<OfficeResponseDTO> findAllOffices();
 
+
 }
