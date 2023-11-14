@@ -4,6 +4,7 @@ import com.sourcery.oirs.database.entity.UserEntity;
 import com.sourcery.oirs.database.repository.IssueRepository;
 import com.sourcery.oirs.database.repository.UserRepository;
 import com.sourcery.oirs.database.repository.VoteRepository;
+import com.sourcery.oirs.dto.response.IsVotedResponseDto;
 import com.sourcery.oirs.dto.response.IssueDetailsResponseDto;
 import com.sourcery.oirs.dto.response.VoteCountResponseDto;
 import com.sourcery.oirs.dto.response.VoteResponseDto;
@@ -35,8 +36,6 @@ class VoteServiceUnitTest {
     }
     @Test
     public void CreatVote_notExistingIssueId_returnNull() {
-        //Setup
-
         //Act
         when(issueRepository.findById(Mockito.any())).thenReturn(Optional.empty());
         var result = voteService.CreateVote(validIssueId, validEmployeeId);
@@ -47,8 +46,6 @@ class VoteServiceUnitTest {
 
     @Test
     public void CreatVote_notExistingUserId_returnNull() {
-        //Setup
-
         //Act
         when(userRepository.findById(Mockito.any())).thenReturn(Optional.empty());
         var result = voteService.CreateVote(validIssueId, validEmployeeId);
@@ -75,12 +72,25 @@ class VoteServiceUnitTest {
     @Test
     void isVoted_ValidVotedIssueIdAndEmployeeId_true() {
         //Setup
+        UUID validId = UUID.randomUUID();
+        var voteResponseDto = new VoteResponseDto(validId);
+        Optional<VoteResponseDto> voteResponse = Optional.of(voteResponseDto);
 
         //Act
-//        when(voteRepository.GetVote(validIssueId, validEmployeeId)).thenReturn()
+        when(voteRepository.GetVote(validIssueId, validEmployeeId)).thenReturn(voteResponse);
+        var result = voteService.IsVoted(validIssueId, validEmployeeId);
 
         //Assert
-        assertTrue(voteService.IsVoted(validIssueId, validEmployeeId).isVoted);
+        assertTrue(result.isVoted);
+    }
+    @Test
+    void isVoted_ValidVotedIssueIdAndEmployeeId_false() {
+        //Act
+        when(voteRepository.GetVote(validIssueId, validEmployeeId)).thenReturn(Optional.empty());
+        var result = voteService.IsVoted(validIssueId, validEmployeeId);
+
+        //Assert
+        assertFalse(result.isVoted);
     }
 
     @Test
