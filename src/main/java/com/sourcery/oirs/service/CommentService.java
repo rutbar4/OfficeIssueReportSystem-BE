@@ -8,6 +8,7 @@ import com.sourcery.oirs.model.Comment;
 import com.sourcery.oirs.model.CreateCommentForm;
 import com.sourcery.oirs.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class CommentService {
     private final CommentRepository commentRepository;
 
@@ -79,6 +81,7 @@ public class CommentService {
 
     private UUID getCustomUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        log.info("User from context in Commnet Service: " + authentication.getName());
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
         return customUserDetails.getId();
     }
