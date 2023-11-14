@@ -1,6 +1,7 @@
 package com.sourcery.oirs.service;
 
 import com.sourcery.oirs.model.LoginResponse;
+import com.sourcery.oirs.model.User;
 import com.sourcery.oirs.security.CustomUserDetails;
 import com.sourcery.oirs.security.JwtIssuer;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import java.util.List;
 public class AuthenticationService {
     private final JwtIssuer jwtIssuer;
     private final AuthenticationManager authenticationManager;
+    private final UserService userService;
 
     public LoginResponse login(String email, String password) {
         Authentication authentication = authenticationManager.authenticate(
@@ -34,8 +36,10 @@ public class AuthenticationService {
                 customUserDetails.getName(),
                 customUserDetails.getPosition(),
                 roles);
+        User user = userService.getUserById(customUserDetails.getId());
         return LoginResponse.builder()
                 .jwt(token)
+                .user(user)
                 .build();
     }
 }

@@ -52,6 +52,33 @@ public interface IssueRepository {
     @Delete("DELETE from issue where id = #{id}")
     void delete(@Param("id") UUID id);
 
+    @Select("SELECT "
+            + "Issue.ID as id, "
+            + "Issue.ISSUE_NAME as name, "
+            + "Issue.DESCRIPTION as description, "
+            + "Issue.ISSUE_STATUS as status, "
+            + "Issue.RATING as upvoteCount, "
+            + "Issue.COMMENT_COUNT as commentCount, "
+            + "Issue.Start_Time as time, "
+            + "Issue.EMPLOYEE_ID as employee_id, "
+            + "Issue.OFFICE_ID as officeID "
+            + "FROM issue "
+            + "WHERE Issue.issue_status= #{status}")
+    List<Issue> findByStatus(@Param("status") String status);
+
+    @Select("SELECT "
+            + "Issue.ID as id, "
+            + "Issue.ISSUE_NAME as name, "
+            + "Issue.DESCRIPTION as description, "
+            + "Issue.ISSUE_STATUS as status, "
+            + "Issue.RATING as upvoteCount, "
+            + "Issue.COMMENT_COUNT as commentCount, "
+            + "Issue.Start_Time as time, "
+            + "Issue.EMPLOYEE_ID as employee_id, "
+            + "Issue.OFFICE_ID as officeID "
+            + "FROM issue "
+            + "WHERE Issue.employee_id= #{id} ")
+    List<Issue> findReportedBy(@Param("id") UUID id);
     @Select("SELECT office.id as id FROM office WHERE office_name = #{name}")
     UUID getOfficeIdByName (@Param("name") String name);
 }

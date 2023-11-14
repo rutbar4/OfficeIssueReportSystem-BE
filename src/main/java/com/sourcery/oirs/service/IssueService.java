@@ -53,6 +53,11 @@ public class IssueService {
                 .orElseThrow(() -> new IssueNotFoundException(String.format(ISSUE_NOT_FOUND, id)));
         issueRepository.delete(id);
     }
+    public List<Issue> getIssuesByStatus(String status) { return issueRepository.findByStatus(status); }
+    public List<Issue> getUserIssues(UUID id){ return issueRepository.findReportedBy(id); }
+
+
+
 
 
     // When saving a new issue in the database, use this method to send a message to the office admins about new issue
@@ -84,7 +89,7 @@ public class IssueService {
                 Issue description: %s""", issueName, employee, email, time, description);
     }
 
-    public void ReportNewIssue (Issue issue) {
+    public void reportNewIssue (Issue issue) {
         Optional<IssueDetailsResponseDto> issueName = issueRepository.findByName(issue.getName());
         if (issueName.isPresent()){
             throw new BusyIssueNameException();
@@ -100,7 +105,8 @@ public class IssueService {
                         .startTime(Timestamp.valueOf(LocalDateTime.now()))
                         .finishTime(null)
                         .employeeId(issue.getEmployeeId())
-                        .officeId(officeId)
+                        .officeId(issue.getOfficeId())
+                        .rating(issue.getUpvoteCount())
                         .build()
         );
 //        sendEmailToAdmins(issue);
