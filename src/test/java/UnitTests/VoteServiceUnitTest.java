@@ -9,7 +9,6 @@ import com.sourcery.oirs.dto.response.IssueDetailsResponseDto;
 import com.sourcery.oirs.dto.response.VoteCountResponseDto;
 import com.sourcery.oirs.dto.response.VoteResponseDto;
 import com.sourcery.oirs.service.VoteService;
-import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
@@ -29,7 +28,7 @@ class VoteServiceUnitTest {
     UserRepository userRepository = Mockito.mock(UserRepository.class);
     VoteService voteService = new VoteService(voteRepository, issueRepository, userRepository);
 
-    @Before
+    @BeforeEach
     public void Setup() {
         validIssueId = UUID.randomUUID();
         validEmployeeId = UUID.randomUUID();

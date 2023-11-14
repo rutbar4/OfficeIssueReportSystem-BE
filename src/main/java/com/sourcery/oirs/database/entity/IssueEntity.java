@@ -22,6 +22,6 @@ public class IssueEntity {
     private Timestamp finishTime;
     private UUID employeeId;
     private UUID officeId;
-    private Double rating;
+    private int rating;
 
     }
