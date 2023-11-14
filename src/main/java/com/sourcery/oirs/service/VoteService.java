@@ -26,11 +26,13 @@ public class VoteService {
 
     @Transactional
     public VoteResponseDto CreateVote(UUID issueId, UUID employeeId) {
-        if(!_issueRepository.findById(issueId).isPresent()){
+        var issue = _issueRepository.findById(issueId);
+        if (issue.isEmpty() ) {
             return null;
         }
 
-        if(!_userRepository.findById(employeeId).isPresent()){
+        var user = _userRepository.findById(employeeId);
+        if (user.isEmpty()) {
             return null;
         }
 
@@ -38,10 +40,11 @@ public class VoteService {
                 .id(UUID.randomUUID())
                 .issueId(issueId)
                 .employeeId(employeeId)
-                .build();{
-        _voteRepository.insert(vote);
-        return VoteResponseDto.of(vote);
-                }
+                .build();
+        {
+            _voteRepository.insert(vote);
+            return VoteResponseDto.of(vote);
+        }
     }
 
     @Transactional
