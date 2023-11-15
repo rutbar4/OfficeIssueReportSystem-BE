@@ -104,4 +104,8 @@ public class IssueService {
 //        sendEmailToAdmins(issue);
     }
 
+    public int getPaginationCount() {
+        return issueRepository.findAll().size() / 10 + 1;
+    }
+
 }

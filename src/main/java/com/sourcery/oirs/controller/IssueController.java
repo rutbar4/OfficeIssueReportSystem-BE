@@ -65,5 +65,10 @@ public class IssueController {
     public List<Issue> getUserIssues(@PathVariable(value = "id") UUID id) {
         return issueService.getUserIssues(id);
     }
+    @GetMapping("/paginationCount")
+    public int getPaginationCount(){
+        return 5;
+        //return issueService.getPaginationCount();
+    }
 
 }
