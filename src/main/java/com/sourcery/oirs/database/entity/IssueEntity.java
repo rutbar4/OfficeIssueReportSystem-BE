@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.sql.Timestamp;
 import java.util.UUID;
 
@@ -23,5 +24,14 @@ public class IssueEntity {
     private UUID employeeId;
     private UUID officeId;
     private Double rating;
+}
 
-    }
+//    private UUID id;
+//    private String name;
+//    private String description;
+//    private String status;
+//    private Long rating;
+//    private Long commentCount;
+//    private LocalDate dateCreated;
+//    private String employeeName;
+//    private String officeName;

@@ -25,8 +25,8 @@ public class IssueController {
 
 
     @GetMapping("/{id}")
-    public IssueDetailsResponseDto getIssueDetails(@PathVariable UUID id) {
-        return issueService.getIssueDetails(id);
+    public IssueDetailsResponseDto getIssueById(@PathVariable UUID id) {
+        return issueService.getIssueById(id);
     }
 
     @DeleteMapping("/{id}")

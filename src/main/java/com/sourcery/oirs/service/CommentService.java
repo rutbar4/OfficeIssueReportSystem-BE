@@ -2,7 +2,9 @@ package com.sourcery.oirs.service;
 
 import com.sourcery.oirs.database.entity.CommentEntity;
 import com.sourcery.oirs.database.repository.CommentRepository;
+import com.sourcery.oirs.database.repository.IssueRepository;
 import com.sourcery.oirs.exceptions.CommentNotFoundException;
+import com.sourcery.oirs.exceptions.IssueNotFoundException;
 import com.sourcery.oirs.mapper.CommentMapper;
 import com.sourcery.oirs.model.Comment;
 import com.sourcery.oirs.model.CreateCommentForm;
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class CommentService {
     private final CommentRepository commentRepository;
+    private final IssueRepository issueRepository;
 
 
     public List<Comment> getAllCommentsByIssueId(UUID issueId) {
@@ -46,6 +49,8 @@ public class CommentService {
 
     public Comment updateCommentVotes(UUID id, UUID issueId, Integer votes) {
         findCommentById(id);
+        issueRepository.findIssue(issueId)
+                .orElseThrow(() -> new IssueNotFoundException("Such issue doesn't exist. No found by id " + id));
         boolean commentIsUpVoted = isVoted(id, issueId);
         commentRepository.updateCommentVotes(id, votes);
         CommentEntity updatedCommentEntity = findCommentById(id);
