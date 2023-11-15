@@ -81,7 +81,6 @@ public class CommentService {
 
     private UUID getCustomUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        log.info("User from context in Comment Service: " + authentication.getName());
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
         return customUserDetails.getId();
     }
