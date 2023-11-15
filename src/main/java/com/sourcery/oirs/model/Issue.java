@@ -16,7 +16,7 @@ import java.util.UUID;
 @Data
 @Builder
 public class Issue {
-    public UUID id;
+    private UUID id;
     @NotBlank
     @Size(min=10, max = 150)
     private String name;
@@ -33,7 +33,7 @@ public class Issue {
     @NotBlank
     private UUID officeId;
 
-    public void SetVoteCount(int count) {
+    public void setVoteCount(int count) {
         upvoteCount = count;
     }
 }
