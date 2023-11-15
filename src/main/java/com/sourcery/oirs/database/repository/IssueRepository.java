@@ -15,7 +15,7 @@ import java.util.UUID;
 @Repository
 public interface IssueRepository {
     @Select("SELECT issue.ISSUE_NAME as name, Employee.FULL_NAME as employeeName, issue.Start_Time as dateCreated, Issue.ISSUE_STATUS as status, " +
-            "Issue.RATING, Office.OFFICE_NAME, Issue.description as description, Issue.Id as id, Issue.COMMENT_COUNT as commentCount, Issue.office_id as officeId " +
+            "Issue.RATING, Office.OFFICE_NAME, Issue.description as description, Issue.Id as id, Issue.COMMENT_COUNT as commentCount, Issue.office_id as officeId,Issue.employee_id as employeeId " +
             "FROM issue " +
             "LEFT JOIN Employee ON Issue.EMPLOYEE_ID = Employee.ID " +
             "LEFT JOIN Office ON Issue.OFFICE_ID = Office.ID " +

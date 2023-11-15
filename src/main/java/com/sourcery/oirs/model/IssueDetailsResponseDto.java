@@ -22,4 +22,5 @@ public class IssueDetailsResponseDto{
     private String employeeName;
     private String officeName;
     private String officeId;
+    private String employeeId;
 }
