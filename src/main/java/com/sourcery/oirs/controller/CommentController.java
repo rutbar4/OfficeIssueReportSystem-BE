@@ -25,13 +25,8 @@ public class CommentController {
         return commentService.saveComment(createCommentForm);
     }
 
-    @PatchMapping("/{id}/issue/{issueId}/votes/{votes}")
-    public Comment updateCommentVotes(@PathVariable UUID id, @PathVariable UUID issueId, @PathVariable Integer votes) {
-        return commentService.updateCommentVotes(id, issueId, votes);
-    }
-
-    @GetMapping("{id}/issue/{issueId}")
-    public Comment getCommentById(@PathVariable UUID id, @PathVariable UUID issueId) {
-        return commentService.getCommentById(id, issueId);
+    @PatchMapping("/{id}/issue/{issueId}/vote")
+    public Comment updateCommentVotes(@PathVariable UUID id, @PathVariable UUID issueId) {
+        return commentService.updateCommentVotes(id, issueId);
     }
 }

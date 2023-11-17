@@ -47,26 +47,16 @@ public class CommentService {
         return CommentMapper.toComment(savedComment);
     }
 
-    public Comment updateCommentVotes(UUID id, UUID issueId, Integer votes) {
-        findCommentById(id);
+    public Comment updateCommentVotes(UUID id, UUID issueId) {
+        CommentEntity commentEntity = findCommentById(id);
         issueRepository.findIssue(issueId)
                 .orElseThrow(() -> new IssueNotFoundException("Such issue doesn't exist. No found by id " + id));
-        boolean commentIsUpVoted = isVoted(id, issueId);
-        commentRepository.updateCommentVotes(id, votes);
-        CommentEntity updatedCommentEntity = findCommentById(id);
-        Comment updatedComment = CommentMapper.toComment(updatedCommentEntity);
-        updatedComment.setIsUpVoted(commentIsUpVoted);
+        boolean isVoted = updateVote(id, issueId);
+        Integer commentUpdatedLikes = updateCommentLikesByVote(isVoted, commentEntity.getLikes());
+        commentRepository.updateCommentLikes(id, commentUpdatedLikes);
+        Comment updatedComment = CommentMapper.toComment(findCommentById(id));
+        updatedComment.setIsUpVoted(isVoted);
         return updatedComment;
-    }
-
-    public Comment getCommentById(UUID id, UUID issueId) {
-        Comment comment = CommentMapper.toComment(findCommentById(id));
-        UUID customUserId = getCustomUserId();
-        List<UUID> commentsIds = commentRepository.getAllCommentsIdsByEmployeeId(issueId, customUserId);
-        if (commentsIds.contains(id)) {
-            comment.setIsUpVoted(true);
-        }
-        return comment;
     }
 
     private CommentEntity findCommentById(UUID id) {
@@ -74,7 +64,7 @@ public class CommentService {
                 .orElseThrow(() -> new CommentNotFoundException("Such comment doesn't exist. No found by id " + id));
     }
 
-    private boolean isVoted(UUID commentId, UUID IssueId) {
+    private boolean updateVote(UUID commentId, UUID IssueId) {
         UUID customUserId = getCustomUserId();
         if (commentRepository.checkIfIsVotedForComment(commentId, getCustomUserId()) != null) {
             commentRepository.deleteCommentUpvote(commentId, customUserId);
@@ -82,6 +72,10 @@ public class CommentService {
         }
         commentRepository.saveCommentUpvote(commentId, customUserId, IssueId);
         return true;
+    }
+
+    private Integer updateCommentLikesByVote(boolean vote, Integer currentVotes) {
+        return vote ? currentVotes + 1 : (currentVotes > 0 ? currentVotes - 1 : currentVotes);
     }
 
     private UUID getCustomUserId() {
