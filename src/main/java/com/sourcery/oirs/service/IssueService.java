@@ -29,8 +29,8 @@ public class IssueService {
     private final UserRepository userRepository;
     private final EmailService emailService;
 
-    public List<Issue> getAllIssue() {
-        return issueRepository.findAll();
+    public List<Issue> getAllIssue(int offset, int limit) {
+        return issueRepository.findAllIssuesPage(offset-1, limit);
     }
 
 
@@ -45,8 +45,8 @@ public class IssueService {
                 .orElseThrow(() -> new IssueNotFoundException(String.format(ISSUE_NOT_FOUND, id)));
         issueRepository.delete(id);
     }
-    public List<Issue> getIssuesByStatus(String status) { return issueRepository.findByStatus(status); }
-    public List<Issue> getUserIssues(UUID id){ return issueRepository.findReportedBy(id); }
+    public List<Issue> getIssuesByStatus(String status, int offset, int limit) { return issueRepository.findByStatusPage(status, offset-1, limit); }
+    public List<Issue> getUserIssues(UUID id, int offset, int limit){ return issueRepository.findReportedByPage(id, offset-1, limit); }
 
 
 
@@ -104,8 +104,14 @@ public class IssueService {
 //        sendEmailToAdmins(issue);
     }
 
-    public int getPaginationCount() {
+    public int getAllPageCount() {
         return issueRepository.findAll().size() / 10 + 1;
+    }
+    public int getStatusPageCount(String status){
+        return issueRepository.findByStatus(status).size() / 10 + 1;
+    }
+    public int getUserPageCount(UUID id){
+        return issueRepository.findReportedBy(id).size() / 10 + 1;
     }
 
 }

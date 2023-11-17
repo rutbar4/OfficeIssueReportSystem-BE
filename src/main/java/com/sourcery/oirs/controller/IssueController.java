@@ -19,8 +19,10 @@ public class IssueController {
     private final IssueService issueService;
 
     @GetMapping
-    public List<Issue> getAllIssues() {
-        return issueService.getAllIssue();
+
+    public List<Issue> getAllIssues(@RequestParam(value = "page", defaultValue = "0") int page,
+                                    @RequestParam(value = "size", defaultValue = "1") int size) {
+        return issueService.getAllIssue(page, size);
     }
 
 
@@ -42,33 +44,60 @@ public class IssueController {
     }
 
     @GetMapping("/open")
-    public List<Issue> getOpenIssues() {
-        return issueService.getIssuesByStatus("Open");
+    public List<Issue> getOpenIssues(@RequestParam(value = "page", defaultValue = "0") int page,
+                                     @RequestParam(value = "size", defaultValue = "1") int size) {
+        return issueService.getIssuesByStatus("Open", page, size);
     }
-
+    @GetMapping("/open/pageCount")
+    public int getOpenCount(){
+        return 4;
+        //return issueService.getStatusPageCount("Open");
+    }
     @GetMapping("/planned")
-    public List<Issue> getPlannedIssues() {
-        return issueService.getIssuesByStatus("Pending");
+    public List<Issue> getPlannedIssues(@RequestParam(value = "page", defaultValue = "0") int page,
+                                        @RequestParam(value = "size", defaultValue = "1") int size) {
+        return issueService.getIssuesByStatus("Pending", page, size);
     }
-
+    @GetMapping("/planned/pageCount")
+    public int getPlannedCount(){
+        return 3;
+        //return issueService.getStatusPageCount("Pending");
+    }
     @GetMapping("/resolved")
-    public List<Issue> getResolvedIssues() {
-        return issueService.getIssuesByStatus("Resolved");
+    public List<Issue> getResolvedIssues(@RequestParam(value = "page", defaultValue = "0") int page,
+                                         @RequestParam(value = "size", defaultValue = "1") int size) {
+        return issueService.getIssuesByStatus("Resolved", page, size);
+    }
+    @GetMapping("/resolved/pageCount")
+    public int getResolvedCount(){
+        return 2;
+        //return issueService.getStatusPageCount("Resolved");
     }
 
     @GetMapping("/closed")
-    public List<Issue> getClosedIssues() {
-        return issueService.getIssuesByStatus("Closed");
+    public List<Issue> getClosedIssues(@RequestParam(value = "page", defaultValue = "0") int page,
+                                       @RequestParam(value = "size", defaultValue = "1") int size) {
+        return issueService.getIssuesByStatus("Closed", page, size);
     }
-
+    @GetMapping("/closed/pageCount")
+    public int getClosedCount(){
+        return 6;
+        //return issueService.getStatusPageCount("Closed");
+    }
     @GetMapping("/reportedBy/{id}")
-    public List<Issue> getUserIssues(@PathVariable(value = "id") UUID id) {
-        return issueService.getUserIssues(id);
+    public List<Issue> getUserIssues(@PathVariable(value = "id") UUID id, @RequestParam(value = "page", defaultValue = "0") int page,
+                                     @RequestParam(value = "size", defaultValue = "1") int size) {
+        return issueService.getUserIssues(id, page, size);
     }
-    @GetMapping("/paginationCount")
+    @GetMapping("/reportedBy/{id}/pageCount")
+    public int getUserCount(@PathVariable(value = "id") UUID id){
+        return 1;
+        //return issueService.getUserPageCount(id);
+    }
+    @GetMapping("/pageCount")
     public int getPaginationCount(){
-        return 5;
-        //return issueService.getPaginationCount();
+        return 8;
+        //return issueService.getAllPageCount();
     }
 
 }
