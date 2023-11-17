@@ -1,12 +1,16 @@
 package com.sourcery.oirs.controller;
 
 import com.sourcery.oirs.model.Issue;
+import com.sourcery.oirs.model.IssueDetailRequestDto;
 import com.sourcery.oirs.model.IssueDetailsResponseDto;
+import com.sourcery.oirs.model.OfficeResponseDTO;
 import com.sourcery.oirs.service.IssueService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +38,17 @@ public class IssueController {
     @DeleteMapping("/{id}")
     public void deleteIssue(@PathVariable(value = "id") UUID id) {
         issueService.deleteIssue(id);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateIssue(@PathVariable(value="id") UUID id,
+                                            @Valid @RequestBody IssueDetailRequestDto requestDto) {
+        issueService.updateIssue(requestDto,id);
+        return ResponseEntity.noContent().build(); // Respond with HTTP 204 No Content for a successful update
+    }
+    @GetMapping("/offices")
+    public List<OfficeResponseDTO> getAllOffices() {
+        return issueService.getAllOffices();
     }
 
     @PreAuthorize("hasRole('USER')")
@@ -67,5 +82,6 @@ public class IssueController {
     public List<Issue> getUserIssues(@PathVariable(value = "id") UUID id) {
         return issueService.getUserIssues(id);
     }
+
 
 }
