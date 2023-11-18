@@ -1,8 +1,6 @@
 package com.sourcery.oirs.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
@@ -11,9 +9,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Data
 @SuperBuilder(toBuilder = true)
 public class IssueDetailsResponseDto{
-    public UUID id;
+    private UUID id;
     private String name;
     private String description;
     private String status;
@@ -22,6 +21,8 @@ public class IssueDetailsResponseDto{
     private LocalDate dateCreated;
     private String employeeName;
     private String officeName;
+    private String officeId;
+    private String employeeId;
     public void setVoteCount(int count){
         rating = count;
     }

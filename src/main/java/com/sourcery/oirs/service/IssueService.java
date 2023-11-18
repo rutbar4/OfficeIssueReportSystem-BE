@@ -3,12 +3,16 @@ package com.sourcery.oirs.service;
 import com.sourcery.oirs.database.entity.IssueEntity;
 import com.sourcery.oirs.database.entity.UserEntity;
 import com.sourcery.oirs.database.repository.IssueRepository;
+import com.sourcery.oirs.database.repository.OfficeRepository;
 import com.sourcery.oirs.database.repository.UserRepository;
 import com.sourcery.oirs.email.EmailService;
 import com.sourcery.oirs.exceptions.BusyIssueNameException;
 import com.sourcery.oirs.exceptions.IssueNotFoundException;
 import com.sourcery.oirs.model.Issue;
 import com.sourcery.oirs.dto.response.IssueDetailsResponseDto;
+import com.sourcery.oirs.model.IssueDetailRequestDto;
+import com.sourcery.oirs.model.IssueDetailsResponseDto;
+import com.sourcery.oirs.model.OfficeResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -30,6 +34,8 @@ public class IssueService {
     private final EmailService emailService;
     private final VoteService voteService;
 
+    private final OfficeRepository officeRepository;
+
     public List<Issue> getAllIssue() {
         var issues = issueRepository.findAll();
         for (var issue :issues) {
@@ -41,7 +47,7 @@ public class IssueService {
     }
 
 
-    public IssueDetailsResponseDto getIssueDetails(UUID id) {
+    public IssueDetailsResponseDto getIssueById(UUID id) {
          var issue = issueRepository.findById(id)
                 .orElseThrow(() -> new IssueNotFoundException(String.format(ISSUE_NOT_FOUND, id)));
                 issue.setVoteCount(voteService.voteCount(issue.getId()).count);
@@ -90,6 +96,19 @@ public class IssueService {
                 Issue description: %s""", issueName, employee, email, time, description);
     }
 
+    public void updateIssue(IssueDetailRequestDto requestDto, UUID id) {
+        Issue existingIssue = issueRepository.findIssue(id)
+                .orElseThrow(() -> new IssueNotFoundException(String.format(ISSUE_NOT_FOUND, id)));
+        existingIssue.setDescription(requestDto.getDescription());
+        existingIssue.setOfficeId(requestDto.getOfficeId());
+        existingIssue.setStatus(requestDto.getStatus());
+        issueRepository.update(existingIssue);
+    }
+
+    public List<OfficeResponseDTO> getAllOffices() {
+        return officeRepository.findAllOffices();
+    }
+
     public void reportNewIssue (Issue issue) {
         Optional<IssueDetailsResponseDto> issueName = issueRepository.findByName(issue.getName());
         if (issueName.isPresent()){
@@ -112,4 +131,5 @@ public class IssueService {
         );
 //        sendEmailToAdmins(issue);
     }
+
 }
