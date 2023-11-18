@@ -59,12 +59,26 @@ public class IssueService {
                 .orElseThrow(() -> new IssueNotFoundException(String.format(ISSUE_NOT_FOUND, id)));
         issueRepository.delete(id);
     }
-    public List<Issue> getIssuesByStatus(String status) { return issueRepository.findByStatus(status); }
-    public List<Issue> getUserIssues(UUID id){ return issueRepository.findReportedBy(id); }
 
+    public List<Issue> getIssuesByStatus(String status) {
+        var issues = issueRepository.findByStatus(status);
+        for (var issue : issues) {
+            var issueID = issue.getId();
+            var count = voteService.voteCount(issueID).count;
+            issue.setVoteCount(count);
+        }
+        return issues;
+    }
 
-
-
+    public List<Issue> getUserIssues(UUID id){
+        var issues =  issueRepository.findReportedBy(id);
+        for (var issue : issues) {
+            var issueID = issue.getId();
+            var count = voteService.voteCount(issueID).count;
+            issue.setVoteCount(count);
+        }
+        return issues;
+    }
 
     // When saving a new issue in the database, use this method to send a message to the office admins about new issue
     // Also need to create real admins emails in the database
