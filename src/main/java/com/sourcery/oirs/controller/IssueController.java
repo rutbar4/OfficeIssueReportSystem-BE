@@ -2,10 +2,8 @@ package com.sourcery.oirs.controller;
 
 import com.sourcery.oirs.dto.response.IssueDetailsResponseDto;
 import com.sourcery.oirs.model.Issue;
-import com.sourcery.oirs.dto.response.IssueDetailRequestDto;
-import com.sourcery.oirs.model.IssueDetailsResponseDto;
+import com.sourcery.oirs.model.IssueDetailRequestDto;
 import com.sourcery.oirs.model.OfficeResponseDTO;
-import com.sourcery.oirs.dto.response.*;
 import com.sourcery.oirs.service.IssueService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

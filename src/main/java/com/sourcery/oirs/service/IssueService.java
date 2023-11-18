@@ -11,7 +11,6 @@ import com.sourcery.oirs.exceptions.IssueNotFoundException;
 import com.sourcery.oirs.model.Issue;
 import com.sourcery.oirs.dto.response.IssueDetailsResponseDto;
 import com.sourcery.oirs.model.IssueDetailRequestDto;
-import com.sourcery.oirs.model.IssueDetailsResponseDto;
 import com.sourcery.oirs.model.OfficeResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
