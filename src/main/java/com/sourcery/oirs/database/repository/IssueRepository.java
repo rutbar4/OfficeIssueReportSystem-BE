@@ -24,7 +24,7 @@ public interface IssueRepository {
             + "Issue.EMPLOYEE_ID as employee_id, "
             + "Issue.OFFICE_ID as officeID ";
     @Select("SELECT issue.ISSUE_NAME as name, Employee.FULL_NAME as employeeName, issue.Start_Time as dateCreated, Issue.ISSUE_STATUS as status, " +
-            "Issue.RATING, Office.OFFICE_NAME, Issue.description as description, Issue.Id as id, Issue.COMMENT_COUNT as commentCount " +
+            "Issue.RATING, Office.OFFICE_NAME, Issue.description as description, Issue.Id as id, Issue.COMMENT_COUNT as commentCount, Issue.office_id as officeId,Issue.employee_id as employeeId " +
             "FROM issue " +
             "LEFT JOIN Employee ON Issue.EMPLOYEE_ID = Employee.ID " +
             "LEFT JOIN Office ON Issue.OFFICE_ID = Office.ID " +
@@ -53,6 +53,8 @@ public interface IssueRepository {
 
     @Delete("DELETE from issue where id = #{id}")
     void delete(@Param("id") UUID id);
+    @Update("UPDATE issue SET description = #{description}, office_id = #{officeId}, ISSUE_STATUS = #{status} WHERE id = #{id}")
+    void update(Issue issue);
 
     @Select("SELECT " +
             BASE_SELECT_FIELDS +

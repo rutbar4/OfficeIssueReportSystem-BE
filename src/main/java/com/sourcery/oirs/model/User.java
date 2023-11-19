@@ -22,6 +22,7 @@ public class User {
     private String email;
     private String position;
     private List<Role> roles;
+    private String avatar;
     private Address address;
     private Country country;
     private Office office;
@@ -33,6 +34,7 @@ public class User {
                 .email(entity.getEmail())
                 .position(entity.getPosition())
                 .roles(entity.getRoles())
+                .avatar(entity.getAvatar())
                 .address(Address.convert(addressEntity))
                 .country(Country.convert(countryEntity))
                 .office(Office.convert(officeEntity))
