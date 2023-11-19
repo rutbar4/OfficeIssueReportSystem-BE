@@ -33,7 +33,7 @@ public class IssueService {
     private final EmailService emailService;
 
     public List<Issue> getAllIssue(int offset, int limit) {
-        return issueRepository.findAllIssuesPage(offset - 1, limit);
+        return issueRepository.findAllIssuesPage((offset - 1) * limit, limit);
     }
     private final OfficeRepository officeRepository;
 
@@ -53,8 +53,8 @@ public class IssueService {
                 .orElseThrow(() -> new IssueNotFoundException(String.format(ISSUE_NOT_FOUND, id)));
         issueRepository.delete(id);
     }
-    public List<Issue> getIssuesByStatus(String status, int offset, int limit) { return issueRepository.findByStatusPage(status, offset-1, limit); }
-    public List<Issue> getUserIssues(UUID id, int offset, int limit){ return issueRepository.findReportedByPage(id, offset-1, limit); }
+    public List<Issue> getIssuesByStatus(String status, int offset, int limit) { return issueRepository.findByStatusPage(status, (offset - 1) * limit, limit); }
+    public List<Issue> getUserIssues(UUID id, int offset, int limit){ return issueRepository.findReportedByPage(id, (offset - 1) * limit, limit); }
 
 
 
