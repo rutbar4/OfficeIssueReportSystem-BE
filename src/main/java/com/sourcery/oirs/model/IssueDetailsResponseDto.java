@@ -1,8 +1,6 @@
 package com.sourcery.oirs.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
@@ -11,6 +9,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Data
 @SuperBuilder(toBuilder = true)
 public class IssueDetailsResponseDto{
     private UUID id;
@@ -22,4 +21,6 @@ public class IssueDetailsResponseDto{
     private LocalDate dateCreated;
     private String employeeName;
     private String officeName;
+    private String officeId;
+    private String employeeId;
 }
