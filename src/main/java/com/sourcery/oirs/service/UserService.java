@@ -44,4 +44,21 @@ public class UserService {
                 .orElseThrow(() -> new OfficeNotFoundException(String.format("Office %s was not found", officeId)));
 
     }
+
+    public void updateUser(UserUpdateDTO userUpdate){
+
+        UserEntity user = userRepository.findById(userUpdate.getId())
+                .orElseThrow(()-> new UserNotFoundException(String.format("User %s not found", userUpdate.getId())));
+        user.setAvatar(userUpdate.getAvatar());
+        userRepository.updateAvatar(user);
+
+        AddressEntity userAddress = addressRepository.findUserAddressByEmployeeId(userUpdate.getId())
+                .orElseThrow(() -> new AddressNotFoundException(String.format("employer %S address not found", userUpdate.getId())));
+        userAddress.setStreet(userUpdate.getAddress().getStreet());
+        userAddress.setCity(userUpdate.getAddress().getCity());
+        userAddress.setState(userUpdate.getAddress().getState());
+        userAddress.setPostcode(userUpdate.getAddress().getPostcode());
+        userAddress.setCountryId(userUpdate.getAddress().getCountryId());
+        addressRepository.update(userAddress);
+    }
 }
