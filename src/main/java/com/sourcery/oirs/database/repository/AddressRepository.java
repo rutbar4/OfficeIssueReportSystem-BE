@@ -25,7 +25,7 @@ public interface AddressRepository {
     })
     Optional<AddressEntity> findUserAddressByEmployeeId(@Param("id") UUID id);
 
-    @Update("UPDATE address SET street = #{street}, city = #{city}, state = #{state},postcode = #{postcode}, country_id = #{countryId} WHERE employee_id = #{id}")
+    @Update("UPDATE address SET street = #{street}, city = #{city}, state_province = #{state},post_code = #{postcode}, country_id = #{countryId} WHERE employee_id = #{id}")
     void update(AddressEntity address);
 
 
