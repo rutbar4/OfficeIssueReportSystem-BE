@@ -18,19 +18,19 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class VoteService {
 
-    private final VoteRepository _voteRepository;
-    private final IssueRepository _issueRepository;
-    private final UserRepository _userRepository;
+    private final VoteRepository voteRepository;
+    private final IssueRepository issueRepository;
+    private final UserRepository userRepository;
 
 
     @Transactional
-    public VoteResponseDto createVote(UUID issueId, UUID employeeId) {
-        var issue = _issueRepository.findById(issueId);
+    public VoteResponseDto createVote (UUID issueId, UUID employeeId) {
+        var issue = issueRepository.findById(issueId);
         if (issue.isEmpty() ) {
             return null;
         }
 
-        var user = _userRepository.findById(employeeId);
+        var user = userRepository.findById(employeeId);
         if (user.isEmpty()) {
             return null;
         }
@@ -40,29 +40,26 @@ public class VoteService {
                 .issueId(issueId)
                 .employeeId(employeeId)
                 .build();
-        {
-            _voteRepository.insert(vote);
-            return VoteResponseDto.of(vote);
-        }
+
+        voteRepository.insert(vote);
+        return VoteResponseDto.of(vote);
     }
 
     @Transactional
-    public IsVotedResponseDto isVoted(UUID issueId, UUID employeeId) {
-        Optional<VoteResponseDto> voteDto = _voteRepository.getVote(issueId, employeeId);
-        IsVotedResponseDto responseDto = IsVotedResponseDto.builder()
+    public IsVotedResponseDto isVoted (UUID issueId, UUID employeeId) {
+        Optional<VoteResponseDto> voteDto = voteRepository.getVote(issueId, employeeId);
+        return IsVotedResponseDto.builder()
                 .isVoted(voteDto.isPresent())
                 .build();
-        return responseDto;
     }
 
     @Transactional
-    public VoteCountResponseDto voteCount(UUID issueId) {
-        VoteCountResponseDto voteCountDto = _voteRepository.getVoteCount(issueId);
-        return voteCountDto;
+    public VoteCountResponseDto voteCount (UUID issueId) {
+        return voteRepository.getVoteCount(issueId);
     }
 
     @Transactional
-    public void deleteVote(UUID issueId, UUID employeeId) {
-        _voteRepository.deleteVote(issueId, employeeId);
+    public void deleteVote (UUID issueId, UUID employeeId) {
+        voteRepository.deleteVote(issueId, employeeId);
     }
 }

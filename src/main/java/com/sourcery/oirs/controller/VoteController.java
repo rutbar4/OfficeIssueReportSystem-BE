@@ -16,14 +16,14 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping("/vote")
 public class VoteController{
-        private final VoteService _voteService;
+        private final VoteService voteService;
 
     @PostMapping("/{issueId}")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity takeVote(@PathVariable UUID issueId){
         var userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         var employeeId = userDetails.getId();
-        var vote = _voteService.createVote(issueId, employeeId);
+        var vote = voteService.createVote(issueId, employeeId);
         if(vote == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("issue or employee does not exist");
         }
@@ -34,12 +34,12 @@ public class VoteController{
     public IsVotedResponseDto vote(@PathVariable UUID issueId) {
         var userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         var employeeId = userDetails.getId();
-        return _voteService.isVoted(issueId, employeeId);
+        return voteService.isVoted(issueId, employeeId);
     }
 
     @GetMapping("/count/{issueId}")
     public VoteCountResponseDto voteCount(@PathVariable UUID issueId) {
-        return _voteService.voteCount(issueId);
+        return voteService.voteCount(issueId);
     }
 
     @DeleteMapping("/{issueId}")
@@ -47,6 +47,6 @@ public class VoteController{
     public void deleteVote(@PathVariable UUID issueId) {
         var userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         var employeeId = userDetails.getId();
-        _voteService.deleteVote(issueId, employeeId);
+        voteService.deleteVote(issueId, employeeId);
     }
 }
