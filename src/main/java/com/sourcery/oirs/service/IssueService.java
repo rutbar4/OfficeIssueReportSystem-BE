@@ -11,6 +11,7 @@ import com.sourcery.oirs.exceptions.IssueNotFoundException;
 import com.sourcery.oirs.model.Issue;
 import com.sourcery.oirs.dto.response.IssueDetailsResponseDto;
 import com.sourcery.oirs.model.IssueDetailRequestDto;
+import com.sourcery.oirs.model.IssueDetailsResponseDto;
 import com.sourcery.oirs.model.OfficeResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,6 +34,9 @@ public class IssueService {
     private final EmailService emailService;
     private final VoteService voteService;
 
+    public List<Issue> getAllIssue(int offset, int limit) {
+        return issueRepository.findAllIssuesPage((offset - 1) * limit, limit);
+    }
     private final OfficeRepository officeRepository;
 
     public List<Issue> getAllIssue() {
@@ -59,6 +63,9 @@ public class IssueService {
                 .orElseThrow(() -> new IssueNotFoundException(String.format(ISSUE_NOT_FOUND, id)));
         issueRepository.delete(id);
     }
+    public List<Issue> getIssuesByStatus(String status, int offset, int limit) { return issueRepository.findByStatusPage(status, (offset - 1) * limit, limit); }
+    public List<Issue> getUserIssues(UUID id, int offset, int limit){ return issueRepository.findReportedByPage(id, (offset - 1) * limit, limit); }
+
 
     public List<Issue> getIssuesByStatus(String status) {
         var issues = issueRepository.findByStatus(status);
@@ -143,6 +150,16 @@ public class IssueService {
                         .build()
         );
 //        sendEmailToAdmins(issue);
+    }
+
+    public int getAllPageCount() {
+        return issueRepository.findAll().size() / 10 + 1;
+    }
+    public int getStatusPageCount(String status){
+        return issueRepository.findByStatus(status).size() / 10 + 1;
+    }
+    public int getUserPageCount(UUID id){
+        return issueRepository.findReportedBy(id).size() / 10 + 1;
     }
 
 }
