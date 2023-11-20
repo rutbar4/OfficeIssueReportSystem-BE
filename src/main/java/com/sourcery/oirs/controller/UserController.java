@@ -18,7 +18,6 @@ import java.util.UUID;
 public class UserController {
     private final UserService userService;
 
-
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public User getUserById(@PathVariable UUID id) {
         return userService.getUserById(id);

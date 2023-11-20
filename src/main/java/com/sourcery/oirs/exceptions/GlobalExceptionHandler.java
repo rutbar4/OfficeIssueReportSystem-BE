@@ -16,7 +16,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                                IssueNotFoundException.class,
                                AddressNotFoundException.class,
                                CountryNotFoundException.class,
-                               OfficeNotFoundException.class})
+                               OfficeNotFoundException.class,
+                               CommentNotFoundException.class})
     public ResponseEntity<ErrorMessage> handleNotFoundExceptions(Exception e) {
         ErrorMessage errorMessage = getErrorMessage(e, HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
