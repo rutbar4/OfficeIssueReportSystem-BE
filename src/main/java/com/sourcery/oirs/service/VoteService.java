@@ -8,6 +8,8 @@ import com.sourcery.oirs.model.Vote;
 import com.sourcery.oirs.database.repository.VoteRepository;
 import com.sourcery.oirs.database.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -23,15 +25,15 @@ public class VoteService {
     private final UserRepository userRepository;
 
     @Transactional
-    public VoteResponseDto createVote (UUID issueId, UUID employeeId) {
+    public ResponseEntity createVote (UUID issueId, UUID employeeId) {
         var issue = issueRepository.findById(issueId);
         if (issue.isEmpty()) {
-            return null;
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("issue does not exist");
         }
 
-        var user = userRepository.findById(employeeId);
-        if (user.isEmpty()) {
-            return null;
+        var employee = userRepository.findById(employeeId);
+        if (employee.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("employee does not exist");
         }
 
         Vote vote = Vote.builder()
@@ -41,7 +43,7 @@ public class VoteService {
                 .build();
 
         voteRepository.insert(vote);
-        return VoteResponseDto.of(vote);
+        return ResponseEntity.status(HttpStatus.CREATED).body(VoteResponseDto.of(vote));
     }
 
     @Transactional

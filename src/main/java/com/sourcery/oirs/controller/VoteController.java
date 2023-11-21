@@ -23,11 +23,7 @@ public class VoteController{
     public ResponseEntity takeVote(@PathVariable UUID issueId){
         var userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         var employeeId = userDetails.getId();
-        var vote = voteService.createVote(issueId, employeeId);
-        if(vote == null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("issue or employee does not exist");
-        }
-        else return ResponseEntity.status(HttpStatus.CREATED).body(vote);
+        return voteService.createVote(issueId, employeeId);
     }
 
     @GetMapping("/{issueId}")
