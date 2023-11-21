@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -25,7 +24,7 @@ public class Issue {
     @Size(min=10, max = 250)
     private String description;
     private String status;
-    private Double upvoteCount;
+    private int upvoteCount;
     private Double commentCount;
     @JsonFormat(pattern = "dd/MM/yyyy")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, pattern = "dd/MM/yyyy")
@@ -33,4 +32,9 @@ public class Issue {
     private UUID employeeId;
     @NotBlank
     private UUID officeId;
+
+    public void setVoteCount(int count) {
+        upvoteCount = count;
+    }
 }
+

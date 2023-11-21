@@ -9,8 +9,8 @@ import com.sourcery.oirs.email.EmailService;
 import com.sourcery.oirs.exceptions.BusyIssueNameException;
 import com.sourcery.oirs.exceptions.IssueNotFoundException;
 import com.sourcery.oirs.model.Issue;
+import com.sourcery.oirs.dto.response.IssueDetailsResponseDto;
 import com.sourcery.oirs.model.IssueDetailRequestDto;
-import com.sourcery.oirs.model.IssueDetailsResponseDto;
 import com.sourcery.oirs.model.OfficeResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,6 +31,7 @@ public class IssueService {
     private final IssueRepository issueRepository;
     private final UserRepository userRepository;
     private final EmailService emailService;
+    private final VoteService voteService;
 
     public List<Issue> getAllIssue(int offset, int limit) {
         return issueRepository.findAllIssuesPage((offset - 1) * limit, limit);
@@ -38,13 +39,21 @@ public class IssueService {
     private final OfficeRepository officeRepository;
 
     public List<Issue> getAllIssue() {
-        return issueRepository.findAll();
+        var issues = issueRepository.findAll();
+        for (var issue : issues) {
+            var issueID = issue.getId();
+            var count = voteService.voteCount(issueID).count;
+            issue.setVoteCount(count);
+        }
+        return issues;
     }
 
 
     public IssueDetailsResponseDto getIssueById(UUID id) {
-        return issueRepository.findById(id)
+         var issue = issueRepository.findById(id)
                 .orElseThrow(() -> new IssueNotFoundException(String.format(ISSUE_NOT_FOUND, id)));
+                issue.setVoteCount(voteService.voteCount(issue.getId()).count);
+         return issue;
     }
 
 
@@ -57,8 +66,25 @@ public class IssueService {
     public List<Issue> getUserIssues(UUID id, int offset, int limit){ return issueRepository.findReportedByPage(id, (offset - 1) * limit, limit); }
 
 
+    public List<Issue> getIssuesByStatus(String status) {
+        var issues = issueRepository.findByStatus(status);
+        for (var issue : issues) {
+            var issueID = issue.getId();
+            var count = voteService.voteCount(issueID).count;
+            issue.setVoteCount(count);
+        }
+        return issues;
+    }
 
-
+    public List<Issue> getUserIssues(UUID id){
+        var issues =  issueRepository.findReportedBy(id);
+        for (var issue : issues) {
+            var issueID = issue.getId();
+            var count = voteService.voteCount(issueID).count;
+            issue.setVoteCount(count);
+        }
+        return issues;
+    }
 
     // When saving a new issue in the database, use this method to send a message to the office admins about new issue
     // Also need to create real admins emails in the database
