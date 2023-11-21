@@ -63,15 +63,7 @@ public interface IssueRepository {
     List<Issue> findAllIssuesPage(@Param ("offset") int offset, @Param ("limit") int limit);
 
     @Select("SELECT "
-            + "Issue.ID as id, "
-            + "Issue.ISSUE_NAME as name, "
-            + "Issue.DESCRIPTION as description, "
-            + "Issue.ISSUE_STATUS as status, "
-            + "Issue.RATING as upvoteCount, "
-            + "Issue.COMMENT_COUNT as commentCount, "
-            + "Issue.Start_Time as time, "
-            + "Issue.EMPLOYEE_ID as employee_id, "
-            + "Issue.OFFICE_ID as officeID "
+            + BASE_SELECT_FIELDS
             + "FROM issue "
             + "WHERE Issue.issue_status= #{status}")
     List<Issue> findByStatus(@Param("status") String status);
@@ -82,15 +74,7 @@ public interface IssueRepository {
     List<Issue> findByStatusPage(@Param("status") String status, @Param ("offset") int offset, @Param ("limit") int limit);
 
     @Select("SELECT "
-            + "Issue.ID as id, "
-            + "Issue.ISSUE_NAME as name, "
-            + "Issue.DESCRIPTION as description, "
-            + "Issue.ISSUE_STATUS as status, "
-            + "Issue.RATING as upvoteCount, "
-            + "Issue.COMMENT_COUNT as commentCount, "
-            + "Issue.Start_Time as time, "
-            + "Issue.EMPLOYEE_ID as employee_id, "
-            + "Issue.OFFICE_ID as officeID "
+            + BASE_SELECT_FIELDS
             + "FROM issue "
             + "WHERE Issue.employee_id= #{id} ")
     List<Issue> findReportedBy(@Param("id") UUID id);
@@ -101,4 +85,7 @@ public interface IssueRepository {
     List<Issue> findReportedByPage(@Param("id") UUID id,  @Param ("offset") int offset, @Param ("limit") int limit);
     @Select("SELECT office.id as id FROM office WHERE office_name = #{name}")
     UUID getOfficeIdByName (@Param("name") String name);
+
+    @Update("UPDATE issue SET comment_count = comment_count + 1 WHERE id = #{issueId}")
+    void updateIssueCommentCount(@Param("issueId") UUID issueId);
 }
