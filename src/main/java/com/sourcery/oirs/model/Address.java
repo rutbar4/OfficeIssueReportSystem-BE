@@ -1,13 +1,17 @@
 package com.sourcery.oirs.model;
 
 import com.sourcery.oirs.database.entity.AddressEntity;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Address {
     private String street;
     private String city;
