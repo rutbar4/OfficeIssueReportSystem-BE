@@ -85,4 +85,6 @@ public interface IssueRepository {
     @Select("SELECT office.id as id FROM office WHERE office_name = #{name}")
     UUID getOfficeIdByName (@Param("name") String name);
 
+    @Update("UPDATE issue SET comment_count = comment_count + 1 WHERE id = #{issueId}")
+    void updateIssueCommentCount(@Param("issueId") UUID issueId);
 }
