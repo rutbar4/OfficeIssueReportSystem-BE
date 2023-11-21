@@ -40,7 +40,7 @@ public class IssueService {
 
     public List<Issue> getAllIssue() {
         var issues = issueRepository.findAll();
-        for (var issue :issues) {
+        for (var issue : issues) {
             var issueID = issue.getId();
             var count = voteService.voteCount(issueID).count;
             issue.setVoteCount(count);

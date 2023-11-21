@@ -22,11 +22,10 @@ public class VoteService {
     private final IssueRepository issueRepository;
     private final UserRepository userRepository;
 
-
     @Transactional
     public VoteResponseDto createVote (UUID issueId, UUID employeeId) {
         var issue = issueRepository.findById(issueId);
-        if (issue.isEmpty() ) {
+        if (issue.isEmpty()) {
             return null;
         }
 

@@ -23,6 +23,7 @@ public class IssueDetailsResponseDto{
     private String officeName;
     private String officeId;
     private String employeeId;
+
     public void setVoteCount(int count){
         rating = count;
     }
