@@ -1,6 +1,7 @@
 package com.sourcery.oirs.service;
 
 import com.sourcery.oirs.database.entity.IssueEntity;
+import com.sourcery.oirs.database.entity.OfficeEntity;
 import com.sourcery.oirs.database.entity.UserEntity;
 import com.sourcery.oirs.database.repository.IssueRepository;
 import com.sourcery.oirs.database.repository.OfficeRepository;
@@ -8,35 +9,38 @@ import com.sourcery.oirs.database.repository.UserRepository;
 import com.sourcery.oirs.email.EmailService;
 import com.sourcery.oirs.exceptions.BusyIssueNameException;
 import com.sourcery.oirs.exceptions.IssueNotFoundException;
+import com.sourcery.oirs.exceptions.OfficeNotFoundException;
 import com.sourcery.oirs.model.Issue;
 import com.sourcery.oirs.dto.response.IssueDetailsResponseDto;
 import com.sourcery.oirs.model.IssueDetailRequestDto;
 import com.sourcery.oirs.model.OfficeResponseDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class IssueService {
     private static final String ISSUE_NOT_FOUND = "Issue with %s id not found";
 
     private final IssueRepository issueRepository;
     private final UserRepository userRepository;
     private final EmailService emailService;
+    private final OfficeRepository officeRepository;
     private final VoteService voteService;
 
     public List<Issue> getAllIssue(int offset, int limit) {
         return issueRepository.findAllIssuesPage((offset - 1) * limit, limit);
     }
-    private final OfficeRepository officeRepository;
 
     public List<Issue> getAllIssue() {
         var issues = issueRepository.findAll();
@@ -48,7 +52,6 @@ public class IssueService {
         return issues;
     }
 
-
     public IssueDetailsResponseDto getIssueById(UUID id) {
          var issue = issueRepository.findById(id)
                 .orElseThrow(() -> new IssueNotFoundException(String.format(ISSUE_NOT_FOUND, id)));
@@ -56,15 +59,15 @@ public class IssueService {
          return issue;
     }
 
-
     public void deleteIssue(UUID id) {
         issueRepository.findIssue(id)
                 .orElseThrow(() -> new IssueNotFoundException(String.format(ISSUE_NOT_FOUND, id)));
         issueRepository.delete(id);
     }
-    public List<Issue> getIssuesByStatus(String status, int offset, int limit) { return issueRepository.findByStatusPage(status, (offset - 1) * limit, limit); }
-    public List<Issue> getUserIssues(UUID id, int offset, int limit){ return issueRepository.findReportedByPage(id, (offset - 1) * limit, limit); }
 
+    public List<Issue> getIssuesByStatus(String status, int offset, int limit) {
+        return issueRepository.findByStatusPage(status, (offset - 1) * limit, limit);
+    }
 
     public List<Issue> getIssuesByStatus(String status) {
         var issues = issueRepository.findByStatus(status);
@@ -86,33 +89,8 @@ public class IssueService {
         return issues;
     }
 
-    // When saving a new issue in the database, use this method to send a message to the office admins about new issue
-    // Also need to create real admins emails in the database
-    private void sendEmailToAdmins(Issue issue) {
-        List<String> emailsOfAdmins = getAdminsEmailByOffice(issue.getOfficeId());
-        String emailOfIssueCreator = SecurityContextHolder.getContext().getAuthentication().getName();
-        String nameOfIssueCreator = userRepository.getUserNameByEmail(emailOfIssueCreator);
-        String messageToAdmin = createIssueMessage(nameOfIssueCreator, emailOfIssueCreator, issue.getName(),
-                issue.getDescription(), LocalDate.from(issue.getTime()));
-        emailsOfAdmins.forEach(email -> emailService.sendEmail(email, issue.getName(), messageToAdmin));
-    }
-
-    private List<String> getAdminsEmailByOffice(UUID officeId) {
-        return userRepository.getAdminsByOfficeId(officeId)
-                .stream().map(UserEntity::getEmail).toList();
-    }
-
-    private String createIssueMessage (String employee,
-                                       String email,
-                                       String issueName,
-                                       String description,
-                                       LocalDate time) {
-        return String.format("""
-                New Issue: %s%n
-                Created by %s%n
-                Email: %s/%n
-                Created at %s%n
-                Issue description: %s""", issueName, employee, email, time, description);
+    public List<Issue> getUserIssues(UUID id, int offset, int limit) {
+        return issueRepository.findReportedByPage(id, (offset - 1) * limit, limit);
     }
 
     public void updateIssue(IssueDetailRequestDto requestDto, UUID id) {
@@ -130,7 +108,7 @@ public class IssueService {
 
     public void reportNewIssue (Issue issue) {
         Optional<IssueDetailsResponseDto> issueName = issueRepository.findByName(issue.getName());
-        if (issueName.isPresent()){
+        if (issueName.isPresent()) {
             throw new BusyIssueNameException();
         }
         UUID officeId = issueRepository.getOfficeIdByName(issue.getName());
@@ -138,7 +116,7 @@ public class IssueService {
                 IssueEntity.builder()
                         .id(UUID.randomUUID())
                         .name(issue.getName())
-                        .status("open")
+                        .status("Open")
                         .description(issue.getDescription())
                         .commentCount(0.00)
                         .startTime(Timestamp.valueOf(LocalDateTime.now()))
@@ -148,17 +126,52 @@ public class IssueService {
                         .rating(issue.getUpvoteCount())
                         .build()
         );
-//        sendEmailToAdmins(issue);
+        sendEmailToAdmins(issue);
     }
 
     public int getAllPageCount() {
         return issueRepository.findAll().size() / 10 + 1;
     }
-    public int getStatusPageCount(String status){
+
+    public int getStatusPageCount(String status) {
         return issueRepository.findByStatus(status).size() / 10 + 1;
     }
-    public int getUserPageCount(UUID id){
+
+    public int getUserPageCount(UUID id) {
         return issueRepository.findReportedBy(id).size() / 10 + 1;
     }
 
+    private void sendEmailToAdmins(Issue issue) {
+        List<String> emailsOfAdmins = getAdminsEmailByOffice(issue.getOfficeId());
+        String emailOfIssueCreator = SecurityContextHolder.getContext().getAuthentication().getName();
+        String nameOfIssueCreator = userRepository.getUserNameByEmail(emailOfIssueCreator);
+        OfficeEntity office = issueRepository.getIssueOfficeByOfficeId(issue.getOfficeId())
+                .orElseThrow(() -> new OfficeNotFoundException("Such office doesn't exist. No found by id " + issue.getOfficeId()));
+        String messageToAdmin = createIssueMessage(nameOfIssueCreator, emailOfIssueCreator, office.getName(), issue.getName(),
+                issue.getDescription(), LocalDateTime.now());
+        emailsOfAdmins.forEach(email -> emailService.sendEmail(email, issue.getName(), messageToAdmin));
+    }
+
+    private List<String> getAdminsEmailByOffice(UUID officeId) {
+        return userRepository.getAdminsByOfficeId(officeId)
+                .stream().map(UserEntity::getEmail).toList();
+    }
+
+    private String createIssueMessage (String employee,
+                                       String email,
+                                       String office,
+                                       String issueName,
+                                       String description,
+                                       LocalDateTime time) {
+        String formattedTime = time.format(DateTimeFormatter.ofPattern("yyyy MM dd HH:mm"));
+        log.info("Office in message to backend: " + office);
+        log.info("Date in message to backend: " + formattedTime);
+        return String.format("""
+                New Issue: %s%n
+                Office: %s%n
+                Created by: %s%n
+                Email: %s%n
+                Created at: %s%n
+                Issue description: %s""", issueName, office, employee, email, formattedTime, description);
+    }
 }

@@ -1,7 +1,7 @@
 package com.sourcery.oirs.database.repository;
 
-
 import com.sourcery.oirs.database.entity.IssueEntity;
+import com.sourcery.oirs.database.entity.OfficeEntity;
 import com.sourcery.oirs.dto.response.IssueDetailsResponseDto;
 import com.sourcery.oirs.model.Issue;
 import org.apache.ibatis.annotations.*;
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
 
 @Mapper
 @Repository
@@ -119,4 +120,7 @@ public interface IssueRepository {
 
     @Update("UPDATE issue SET comment_count = comment_count + 1 WHERE id = #{issueId}")
     void updateIssueCommentCount(@Param("issueId") UUID issueId);
+
+    @Select("SELECT office_name AS name FROM office WHERE id = #{officeId}")
+    Optional<OfficeEntity> getIssueOfficeByOfficeId(@Param("officeId") UUID officeId);
 }

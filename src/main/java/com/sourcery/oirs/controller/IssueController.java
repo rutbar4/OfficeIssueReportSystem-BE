@@ -30,7 +30,6 @@ public class IssueController {
 
 
     @GetMapping
-
     public List<Issue> getAllIssues(@RequestParam(value = "page", defaultValue = "" + defaultPage) int page,
                                     @RequestParam(value = "size", defaultValue = "" + defaultPageSize) int size) {
         return issueService.getAllIssue(page, size);
