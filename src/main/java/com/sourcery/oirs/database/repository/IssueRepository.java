@@ -77,8 +77,8 @@ public interface IssueRepository {
 
     @Select("SELECT " +
             BASE_SELECT_FIELDS +
-            "(SELECT COUNT(*) FROM Vote WHERE vote.ISSUE_ID = issue.ID) as upvoteCount " +
-            "FROM issue, vote "+
+            "(SELECT COUNT(*) FROM vote WHERE vote.ISSUE_ID = issue.ID) as upvoteCount " +
+            "FROM issue LEFT JOIN vote ON issue.id = vote.issue_id "+
             "GROUP BY issue.id " +
             "LIMIT #{limit} OFFSET #{offset} " )
     List<Issue> findAllIssuesPage(@Param ("offset") int offset, @Param ("limit") int limit);
@@ -93,7 +93,7 @@ public interface IssueRepository {
     @Select("SELECT "
             + BASE_SELECT_FIELDS
             +"(SELECT COUNT(*) FROM Vote WHERE vote.ISSUE_ID = issue.ID) as upvoteCount " +
-            "FROM issue, vote " +
+            "FROM issue LEFT JOIN vote ON issue.id = vote.issue_id "+
             "WHERE Issue.issue_status= #{status} " +
             "GROUP BY issue.id " +
             "LIMIT #{limit} OFFSET #{offset} ")
@@ -102,14 +102,14 @@ public interface IssueRepository {
     @Select("SELECT "
             + BASE_SELECT_FIELDS +
             "(SELECT COUNT(*) FROM Vote WHERE vote.ISSUE_ID = issue.ID) as upvoteCount " +
-            "FROM issue, vote " +
+            "FROM issue LEFT JOIN vote ON issue.id = vote.issue_id "+
             "WHERE Issue.employee_id= #{id} "+
             "GROUP BY issue.id ")
     List<Issue> findReportedBy(@Param("id") UUID id);
     @Select("SELECT "
             + BASE_SELECT_FIELDS
             + "(SELECT COUNT(*) FROM Vote WHERE vote.ISSUE_ID = issue.ID) as upvoteCount " +
-            "FROM issue, vote " +
+            "FROM issue LEFT JOIN vote ON issue.id = vote.issue_id "+
             "WHERE Issue.employee_id= #{id} "+
             "GROUP BY issue.id " +
             "LIMIT #{limit} OFFSET #{offset} ")
