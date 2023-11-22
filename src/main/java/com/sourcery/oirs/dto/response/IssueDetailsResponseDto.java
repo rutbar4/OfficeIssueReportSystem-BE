@@ -1,4 +1,4 @@
-package com.sourcery.oirs.model;
+package com.sourcery.oirs.dto.response;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -16,11 +16,15 @@ public class IssueDetailsResponseDto{
     private String name;
     private String description;
     private String status;
-    private Long rating;
+    private int rating;
     private Long commentCount;
     private LocalDate dateCreated;
     private String employeeName;
     private String officeName;
     private String officeId;
     private String employeeId;
+
+    public void setVoteCount(int count){
+        rating = count;
+    }
 }

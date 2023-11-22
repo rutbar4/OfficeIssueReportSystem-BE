@@ -1,9 +1,6 @@
 package com.sourcery.oirs.database.repository;
 
 
-import com.sourcery.oirs.model.Issue;
-import com.sourcery.oirs.model.IssueDetailsResponseDto;
-import com.sourcery.oirs.model.Office;
 import com.sourcery.oirs.model.OfficeResponseDTO;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
@@ -13,8 +10,6 @@ import com.sourcery.oirs.database.entity.OfficeEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
-import org.springframework.stereotype.Repository;
-import org.apache.ibatis.annotations.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

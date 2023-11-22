@@ -11,8 +11,8 @@ import com.sourcery.oirs.exceptions.BusyIssueNameException;
 import com.sourcery.oirs.exceptions.IssueNotFoundException;
 import com.sourcery.oirs.exceptions.OfficeNotFoundException;
 import com.sourcery.oirs.model.Issue;
+import com.sourcery.oirs.dto.response.IssueDetailsResponseDto;
 import com.sourcery.oirs.model.IssueDetailRequestDto;
-import com.sourcery.oirs.model.IssueDetailsResponseDto;
 import com.sourcery.oirs.model.OfficeResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,23 +36,28 @@ public class IssueService {
     private final UserRepository userRepository;
     private final EmailService emailService;
     private final OfficeRepository officeRepository;
-
+    private final VoteService voteService;
 
     public List<Issue> getAllIssue(int offset, int limit) {
         return issueRepository.findAllIssuesPage((offset - 1) * limit, limit);
     }
 
-
     public List<Issue> getAllIssue() {
-        return issueRepository.findAll();
+        var issues = issueRepository.findAll();
+        for (var issue : issues) {
+            var issueID = issue.getId();
+            var count = voteService.voteCount(issueID).count;
+            issue.setVoteCount(count);
+        }
+        return issues;
     }
-
 
     public IssueDetailsResponseDto getIssueById(UUID id) {
-        return issueRepository.findById(id)
+         var issue = issueRepository.findById(id)
                 .orElseThrow(() -> new IssueNotFoundException(String.format(ISSUE_NOT_FOUND, id)));
+                issue.setVoteCount(voteService.voteCount(issue.getId()).count);
+         return issue;
     }
-
 
     public void deleteIssue(UUID id) {
         issueRepository.findIssue(id)
@@ -60,16 +65,33 @@ public class IssueService {
         issueRepository.delete(id);
     }
 
-
     public List<Issue> getIssuesByStatus(String status, int offset, int limit) {
         return issueRepository.findByStatusPage(status, (offset - 1) * limit, limit);
     }
 
+    public List<Issue> getIssuesByStatus(String status) {
+        var issues = issueRepository.findByStatus(status);
+        for (var issue : issues) {
+            var issueID = issue.getId();
+            var count = voteService.voteCount(issueID).count;
+            issue.setVoteCount(count);
+        }
+        return issues;
+    }
+
+    public List<Issue> getUserIssues(UUID id){
+        var issues =  issueRepository.findReportedBy(id);
+        for (var issue : issues) {
+            var issueID = issue.getId();
+            var count = voteService.voteCount(issueID).count;
+            issue.setVoteCount(count);
+        }
+        return issues;
+    }
 
     public List<Issue> getUserIssues(UUID id, int offset, int limit) {
         return issueRepository.findReportedByPage(id, (offset - 1) * limit, limit);
     }
-
 
     public void updateIssue(IssueDetailRequestDto requestDto, UUID id) {
         Issue existingIssue = issueRepository.findIssue(id)
@@ -80,11 +102,9 @@ public class IssueService {
         issueRepository.update(existingIssue);
     }
 
-
     public List<OfficeResponseDTO> getAllOffices() {
         return officeRepository.findAllOffices();
     }
-
 
     public void reportNewIssue (Issue issue) {
         Optional<IssueDetailsResponseDto> issueName = issueRepository.findByName(issue.getName());
@@ -109,21 +129,17 @@ public class IssueService {
         sendEmailToAdmins(issue);
     }
 
-
     public int getAllPageCount() {
         return issueRepository.findAll().size() / 10 + 1;
     }
-
 
     public int getStatusPageCount(String status) {
         return issueRepository.findByStatus(status).size() / 10 + 1;
     }
 
-
     public int getUserPageCount(UUID id) {
         return issueRepository.findReportedBy(id).size() / 10 + 1;
     }
-
 
     private void sendEmailToAdmins(Issue issue) {
         List<String> emailsOfAdmins = getAdminsEmailByOffice(issue.getOfficeId());

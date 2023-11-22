@@ -1,5 +1,6 @@
 package com.sourcery.oirs.controller;
 
+import com.sourcery.oirs.dto.response.IssueDetailsResponseDto;
 import com.sourcery.oirs.model.*;
 import com.sourcery.oirs.service.IssueService;
 import jakarta.validation.Valid;
