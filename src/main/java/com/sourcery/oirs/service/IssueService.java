@@ -2,7 +2,6 @@ package com.sourcery.oirs.service;
 
 import com.sourcery.oirs.database.entity.IssueEntity;
 import com.sourcery.oirs.database.entity.OfficeEntity;
-import com.sourcery.oirs.database.entity.PictureEntity;
 import com.sourcery.oirs.database.entity.UserEntity;
 import com.sourcery.oirs.database.repository.IssueRepository;
 import com.sourcery.oirs.database.repository.OfficeRepository;

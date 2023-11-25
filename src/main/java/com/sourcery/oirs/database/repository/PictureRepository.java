@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface PictureRepository {
 
     @Insert("INSERT " +
-            "INTO picture (id, limk, issue_id, employee_id)" +
+            "INTO picture (id, link, issue_id, employee_id)" +
             "VALUES (#{i.id}, #{i.url}, #{i.issue_id}, #{i.employeeId}) ")
     void insertPicture (@Param("i") PictureEntity picture);
 }
