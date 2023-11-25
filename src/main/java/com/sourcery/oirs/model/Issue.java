@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -33,6 +34,7 @@ public class Issue {
     private UUID employeeId;
     @NotBlank
     private UUID officeId;
+    private List<Picture> images;
 
     public void setVoteCount(int count) {
         upvoteCount = count;
