@@ -131,9 +131,9 @@ public class IssueService {
                         .build()
         );
 
-       List<Picture> images = issue.getImages();
-       for (Picture picture: images){
-           pictureService.savePicture(picture.getUrl(), issueId, issue.getEmployeeId());
+       List<String> images = issue.getImages();
+       for (String url: images){
+           pictureService.savePicture(url, issueId, issue.getEmployeeId());
        }
 
         sendEmailToAdmins(issue);

@@ -34,7 +34,7 @@ public class Issue {
     private UUID employeeId;
     @NotBlank
     private UUID officeId;
-    private List<Picture> images;
+    private List<String> images;
 
     public void setVoteCount(int count) {
         upvoteCount = count;

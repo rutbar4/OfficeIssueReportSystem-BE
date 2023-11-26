@@ -12,6 +12,6 @@ public interface PictureRepository {
 
     @Insert("INSERT " +
             "INTO picture (id, link, issue_id, employee_id)" +
-            "VALUES (#{i.id}, #{i.url}, #{i.issue_id}, #{i.employeeId}) ")
+            "VALUES (#{i.id}, #{i.url}, #{i.issueId}, #{i.userId}) ")
     void insertPicture (@Param("i") PictureEntity picture);
 }
