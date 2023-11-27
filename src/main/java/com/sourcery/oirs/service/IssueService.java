@@ -14,6 +14,7 @@ import com.sourcery.oirs.model.Issue;
 import com.sourcery.oirs.dto.response.IssueDetailsResponseDto;
 import com.sourcery.oirs.model.IssueDetailRequestDto;
 import com.sourcery.oirs.model.OfficeResponseDTO;
+import com.sourcery.oirs.model.Picture;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,6 +38,7 @@ public class IssueService {
     private final EmailService emailService;
     private final OfficeRepository officeRepository;
     private final VoteService voteService;
+    private final PictureService pictureService;
 
     public List<Issue> getAllIssue(int offset, int limit) {
         return issueRepository.findAllIssuesPage((offset - 1) * limit, limit);
@@ -112,9 +114,11 @@ public class IssueService {
             throw new BusyIssueNameException();
         }
         UUID officeId = issueRepository.getOfficeIdByName(issue.getName());
+
+        UUID issueId = UUID.randomUUID();
         issueRepository.insertIssue(
                 IssueEntity.builder()
-                        .id(UUID.randomUUID())
+                        .id(issueId)
                         .name(issue.getName())
                         .status("Open")
                         .description(issue.getDescription())
@@ -126,6 +130,12 @@ public class IssueService {
                         .rating(issue.getUpvoteCount())
                         .build()
         );
+
+       List<String> images = issue.getImages();
+       for (String url: images){
+           pictureService.savePicture(url, issueId, issue.getEmployeeId());
+       }
+
         sendEmailToAdmins(issue);
     }
 
