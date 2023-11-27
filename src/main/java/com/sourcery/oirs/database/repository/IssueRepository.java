@@ -66,11 +66,21 @@ public interface IssueRepository {
             + "FROM issue "
             + "WHERE Issue.issue_status= #{status}")
     List<Issue> findByStatus(@Param("status") String status);
+
     @Select("SELECT "
             + BASE_SELECT_FIELDS
             + "FROM issue "
-            + "WHERE Issue.issue_status= #{status}" + " LIMIT #{limit} OFFSET #{offset}")
-    List<Issue> findByStatusPage(@Param("status") String status, @Param ("offset") int offset, @Param ("limit") int limit);
+            + "WHERE Issue.issue_status= #{status} "
+            + "AND (#{returnAllOffices} IS TRUE OR Issue.OFFICE_ID = #{officeID}) "
+            + "AND (#{returnAllEmployees} IS TRUE OR Issue.EMPLOYEE_ID = #{employeeID}) "
+            + "LIMIT #{limit} OFFSET #{offset}")
+    List<Issue> findByStatusPage(@Param("status") String status,
+                                 @Param ("offset") int offset,
+                                 @Param ("limit") int limit,
+                                 @Param ("officeID") UUID officeID,
+                                 @Param ("employeeID") UUID employeeID,
+                                 @Param ("returnAllOffices") boolean returnAllOffices,
+                                 @Param ("returnAllEmployees") boolean returnAllEmployees);
 
     @Select("SELECT "
             + BASE_SELECT_FIELDS

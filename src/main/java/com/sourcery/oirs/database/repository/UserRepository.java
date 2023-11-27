@@ -3,6 +3,7 @@ package com.sourcery.oirs.database.repository;
 import com.sourcery.oirs.config.mybatis.UuidTypeHandler;
 import com.sourcery.oirs.database.entity.UserEntity;
 import com.sourcery.oirs.model.Role;
+import com.sourcery.oirs.model.UserMainInfoResponseDTO;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 import java.util.List;
@@ -55,6 +56,9 @@ public interface UserRepository {
             @Result(property = "roles", column = "id", javaType = List.class, many = @Many(select = "getRolesById"))
     })
     Optional<UserEntity> findById(@Param("id") UUID id);
+
+    @Select("SELECT Employee.ID as id, Employee.FULL_NAME as fullName FROM Employee ")
+    List<UserMainInfoResponseDTO> getAllUsers();
 }
 
 

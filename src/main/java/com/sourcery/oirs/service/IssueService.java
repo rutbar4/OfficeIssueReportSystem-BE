@@ -53,7 +53,13 @@ public class IssueService {
                 .orElseThrow(() -> new IssueNotFoundException(String.format(ISSUE_NOT_FOUND, id)));
         issueRepository.delete(id);
     }
-    public List<Issue> getIssuesByStatus(String status, int offset, int limit) { return issueRepository.findByStatusPage(status, (offset - 1) * limit, limit); }
+    public List<Issue> getIssuesByStatus(String status, int offset, int limit, UUID officeID, UUID employeeID) {
+        // If no office ID is given it makes the request return issues from all offices
+        boolean returnAllOffices = officeID == null;
+        // If no employee ID is given it makes the request return issues from all employees
+        boolean returnAllEmployees = employeeID == null;
+        return issueRepository.findByStatusPage(status, (offset - 1) * limit, limit, officeID, employeeID, returnAllOffices, returnAllEmployees);
+    }
     public List<Issue> getUserIssues(UUID id, int offset, int limit){ return issueRepository.findReportedByPage(id, (offset - 1) * limit, limit); }
 
 
