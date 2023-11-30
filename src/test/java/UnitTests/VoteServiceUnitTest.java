@@ -16,6 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.runners.model.MultipleFailureException.assertEmpty;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
@@ -28,32 +29,38 @@ class VoteServiceUnitTest {
     VoteService voteService = new VoteService(voteRepository, issueRepository, userRepository);
 
     @BeforeEach
-    public void Setup() {
+    void init() {
         validIssueId = UUID.randomUUID();
         validEmployeeId = UUID.randomUUID();
     }
     @Test
-    public void CreatVote_notExistingIssueId_returnNull() {
+    void CreatVote_notExistingIssueId_returnNull() {
         //Act
         when(issueRepository.findById(Mockito.any())).thenReturn(Optional.empty());
         var result = voteService.createVote(validIssueId, validEmployeeId);
 
         //Assert
-        assertNull(result);
+        assertEquals("issue does not exist", result.getBody());
+        assertTrue(result.getStatusCode().isError());
     }
 
     @Test
-    public void CreatVote_notExistingUserId_returnNull() {
+    void CreatVote_notExistingUserId_returnMessage_isError() {
+        //Setup
+        Optional<IssueDetailsResponseDto> issueResponse = Optional.of(Mockito.mock(IssueDetailsResponseDto.class));
+
         //Act
         when(userRepository.findById(Mockito.any())).thenReturn(Optional.empty());
+        when(issueRepository.findById(Mockito.any())).thenReturn(issueResponse);
         var result = voteService.createVote(validIssueId, validEmployeeId);
 
         //Assert
-        assertNull(result);
+        assertEquals("employee does not exist", result.getBody());
+        assertTrue(result.getStatusCode().isError());
     }
 
     @Test
-    public void CreatVote_validIssueIdAndUserId_returnNull() {
+    void CreatVote_validIssueIdAndUserId_returnNull() {
         //Setup
         Optional<IssueDetailsResponseDto> issueResponse = Optional.of(Mockito.mock(IssueDetailsResponseDto.class));
         Optional<UserEntity> userResponse = Optional.of(Mockito.mock(UserEntity.class));
@@ -65,7 +72,7 @@ class VoteServiceUnitTest {
         var result = voteService.createVote(validIssueId, validEmployeeId);
 
         //Assert
-        assertEquals(result.getClass(), VoteResponseDto.class);
+        assertEquals(result.getBody().getClass(), VoteResponseDto.class);
     }
     @Test
     void isVoted_ValidVotedIssueIdAndEmployeeId_true() {
@@ -92,7 +99,7 @@ class VoteServiceUnitTest {
     }
 
     @Test
-    public void VoteCount_validIssueId_Equals5() {
+    void VoteCount_validIssueId_Equals5() {
         //Setup
         int expectedCount = 5;
         VoteCountResponseDto returnC = new VoteCountResponseDto(expectedCount);
@@ -105,7 +112,7 @@ class VoteServiceUnitTest {
     }
 
     @Test
-    public void VoteCount_validIssueId_Equals0() {
+    void VoteCount_validIssueId_Equals0() {
         //Setup
         int expectedCount = 0;
         VoteCountResponseDto returnC = new VoteCountResponseDto(expectedCount);
