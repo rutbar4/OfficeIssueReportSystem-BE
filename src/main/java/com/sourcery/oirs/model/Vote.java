@@ -1,16 +1,18 @@
-package com.sourcery.oirs.database.entity;
+package com.sourcery.oirs.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class OfficeEntity {
+public class Vote {
     private UUID id;
-    private String name;
+    private UUID issueId;
+    private UUID employeeId;
 }
-

@@ -44,6 +44,9 @@ public interface UserRepository {
     @Select("SELECT e.full_name FROM employee e WHERE e.email = #{email}")
     String getUserNameByEmail(@Param("email") String email);
 
+    @Update("UPDATE employee SET  avatar = #{avatar} WHERE id = #{id}")
+    void updateAvatar (UserEntity user);
+
         @Select("SELECT * FROM employee e WHERE e.id = #{id}")
     @Results(value = {
             @Result(property = "id", column = "id", typeHandler = UuidTypeHandler.class),

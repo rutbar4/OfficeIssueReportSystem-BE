@@ -2,13 +2,11 @@ package com.sourcery.oirs.controller;
 
 import com.sourcery.oirs.model.User;
 import com.sourcery.oirs.model.UserMainInfoResponseDTO;
+import com.sourcery.oirs.model.UserUpdateDTO;
 import com.sourcery.oirs.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -28,4 +26,9 @@ public class UserController {
     @GetMapping("/all")
     public List<UserMainInfoResponseDTO> getAllUsers() { return userService.getUserList(); }
 
+    @PutMapping("/update")
+    public User updateUser (@RequestBody UserUpdateDTO user){
+        userService.updateUser(user);
+        return userService.getUserById(user.getId());
+    }
 }

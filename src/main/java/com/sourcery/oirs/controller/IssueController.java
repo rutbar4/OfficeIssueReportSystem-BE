@@ -1,5 +1,6 @@
 package com.sourcery.oirs.controller;
 
+import com.sourcery.oirs.dto.response.IssueDetailsResponseDto;
 import com.sourcery.oirs.model.*;
 import com.sourcery.oirs.service.IssueService;
 import jakarta.validation.Valid;
@@ -30,7 +31,6 @@ public class IssueController {
 
 
     @GetMapping
-
     public List<Issue> getAllIssues(@RequestParam(value = "page", defaultValue = "" + defaultPage) int page,
                                     @RequestParam(value = "size", defaultValue = "" + defaultPageSize) int size) {
         return issueService.getAllIssue(page, size);

@@ -43,6 +43,7 @@ public class CommentService {
         CommentEntity commentEntity = CommentMapper.toCommentEntity(createCommentForm);
         UUID commentId = commentEntity.getId();
         commentRepository.saveComment(commentEntity);
+        issueRepository.updateIssueCommentCount(commentEntity.getIssueId());
         CommentEntity savedComment = findCommentById(commentId);
         return CommentMapper.toComment(savedComment);
     }

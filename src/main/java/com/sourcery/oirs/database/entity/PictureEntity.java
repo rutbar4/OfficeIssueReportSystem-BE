@@ -1,16 +1,19 @@
 package com.sourcery.oirs.database.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
-public class OfficeEntity {
+@Builder
+public class PictureEntity {
     private UUID id;
-    private String name;
+    private String url;
+    private UUID issueId;
+    private UUID userId;
 }
-
