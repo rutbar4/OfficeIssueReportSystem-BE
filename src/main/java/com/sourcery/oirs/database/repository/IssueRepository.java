@@ -77,12 +77,19 @@ public interface IssueRepository {
     void update(Issue issue);
 
     @Select("SELECT " +
-            BASE_SELECT_FIELDS +
-            "(SELECT COUNT(*) FROM vote WHERE vote.ISSUE_ID = issue.ID) as upvoteCount " +
-            "FROM issue LEFT JOIN vote ON issue.id = vote.issue_id "+
-            "GROUP BY issue.id " +
-            "LIMIT #{limit} OFFSET #{offset} " )
-    List<Issue> findAllIssuesPage(@Param ("offset") int offset, @Param ("limit") int limit);
+            BASE_SELECT_FIELDS
+            + "(SELECT COUNT(*) FROM vote WHERE vote.ISSUE_ID = issue.ID) as upvoteCount "
+            + "FROM issue LEFT JOIN vote ON issue.id = vote.issue_id "
+            + "WHERE (#{returnAllOffices} IS TRUE OR Issue.OFFICE_ID = #{officeID}) "
+            + "AND (#{returnAllEmployees} IS TRUE OR Issue.EMPLOYEE_ID = #{employeeID}) "
+            + "GROUP BY issue.id "
+            + "LIMIT #{limit} OFFSET #{offset} " )
+    List<Issue> findAllIssuesPage(@Param ("offset") int offset,
+                                  @Param ("limit") int limit,
+                                  @Param ("officeID") UUID officeID,
+                                  @Param ("employeeID") UUID employeeID,
+                                  @Param ("returnAllOffices") boolean returnAllOffices,
+                                  @Param ("returnAllEmployees") boolean returnAllEmployees);
 
     @Select("SELECT "
             + BASE_SELECT_FIELDS +

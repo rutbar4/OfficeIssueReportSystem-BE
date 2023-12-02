@@ -32,8 +32,10 @@ public class IssueController {
 
     @GetMapping
     public List<Issue> getAllIssues(@RequestParam(value = "page", defaultValue = "" + defaultPage) int page,
-                                    @RequestParam(value = "size", defaultValue = "" + defaultPageSize) int size) {
-        return issueService.getAllIssue(page, size);
+                                    @RequestParam(value = "size", defaultValue = "" + defaultPageSize) int size,
+                                    @RequestParam(value = "officeID", defaultValue = "") UUID officeID,
+                                    @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID) {
+        return issueService.getAllIssue(page, size, officeID, employeeID);
     }
 
 

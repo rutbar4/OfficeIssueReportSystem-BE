@@ -40,8 +40,12 @@ public class IssueService {
     private final VoteService voteService;
     private final PictureService pictureService;
 
-    public List<Issue> getAllIssue(int offset, int limit) {
-        return issueRepository.findAllIssuesPage((offset - 1) * limit, limit);
+    public List<Issue> getAllIssue(int offset, int limit, UUID officeID, UUID employeeID) {
+        // If no office ID is given it makes the request return issues from all offices
+        boolean returnAllOffices = officeID == null;
+        // If no employee ID is given it makes the request return issues from all employees
+        boolean returnAllEmployees = employeeID == null;
+        return issueRepository.findAllIssuesPage((offset - 1) * limit, limit, officeID, employeeID, returnAllOffices, returnAllEmployees);
     }
 
     public List<Issue> getAllIssue() {
