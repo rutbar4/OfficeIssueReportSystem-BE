@@ -74,10 +74,13 @@ public class IssueController {
                                      @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID) {
         return issueService.getIssuesByStatus(OPEN, page, size, officeID, employeeID);
     }
+
     @GetMapping("/open/page-count")
-    public int getOpenCount(){
-        return issueService.getStatusPageCount(OPEN);
+    public int getOpenCount(@RequestParam(value = "officeID", defaultValue = "") UUID officeID,
+                            @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID){
+        return issueService.getStatusPageCount(OPEN, officeID, employeeID);
     }
+
     @GetMapping("/planned")
     public List<Issue> getPlannedIssues(@RequestParam(value = "page", defaultValue = "" + defaultPage) int page,
                                         @RequestParam(value = "size", defaultValue = "" + defaultPageSize) int size,
@@ -85,10 +88,13 @@ public class IssueController {
                                         @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID) {
         return issueService.getIssuesByStatus(PENDING, page, size, officeID, employeeID);
     }
+
     @GetMapping("/planned/page-count")
-    public int getPlannedCount(){
-        return issueService.getStatusPageCount(PENDING);
+    public int getPlannedCount(@RequestParam(value = "officeID", defaultValue = "") UUID officeID,
+                               @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID){
+        return issueService.getStatusPageCount(PENDING, officeID, employeeID);
     }
+
     @GetMapping("/resolved")
     public List<Issue> getResolvedIssues(@RequestParam(value = "page", defaultValue = "" + defaultPage) int page,
                                          @RequestParam(value = "size", defaultValue = "" + defaultPageSize) int size,
@@ -96,9 +102,11 @@ public class IssueController {
                                          @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID) {
         return issueService.getIssuesByStatus(RESOLVED, page, size, officeID, employeeID);
     }
+
     @GetMapping("/resolved/page-count")
-    public int getResolvedCount(){
-        return issueService.getStatusPageCount(RESOLVED);
+    public int getResolvedCount(@RequestParam(value = "officeID", defaultValue = "") UUID officeID,
+                                @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID){
+        return issueService.getStatusPageCount(RESOLVED, officeID, employeeID);
     }
 
     @GetMapping("/closed")
@@ -108,21 +116,30 @@ public class IssueController {
                                        @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID) {
         return issueService.getIssuesByStatus(CLOSED, page, size, officeID, employeeID);
     }
+
     @GetMapping("/closed/page-count")
-    public int getClosedCount(){
-        return issueService.getStatusPageCount(CLOSED);
+    public int getClosedCount(@RequestParam(value = "officeID", defaultValue = "") UUID officeID,
+                              @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID){
+        return issueService.getStatusPageCount(CLOSED, officeID, employeeID);
     }
+
     @GetMapping("/reportedBy/{id}")
     public List<Issue> getUserIssues(@PathVariable(value = "id") UUID id, @RequestParam(value = "page", defaultValue = "" + defaultPage) int page,
-                                     @RequestParam(value = "size", defaultValue = "" + defaultPageSize) int size) {
-        return issueService.getUserIssues(id, page, size);
+                                     @RequestParam(value = "size", defaultValue = "" + defaultPageSize) int size,
+                                     @RequestParam(value = "officeID", defaultValue = "") UUID officeID,
+                                     @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID) {
+        return issueService.getUserIssues(id, page, size, officeID, employeeID);
     }
+
     @GetMapping("/reportedBy/{id}/page-count")
     public int getUserCount(@PathVariable(value = "id") UUID id){
         return issueService.getUserPageCount(id);
     }
+
     @GetMapping("/page-count")
-    public int getPaginationCount(){
-        return issueService.getAllPageCount();
+    public int getPaginationCount(
+            @RequestParam(value = "officeID", defaultValue = "") UUID officeID,
+            @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID){
+        return issueService.getAllPageCount(officeID, employeeID);
     }
 }

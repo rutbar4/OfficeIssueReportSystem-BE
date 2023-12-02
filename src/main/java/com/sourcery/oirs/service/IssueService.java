@@ -48,16 +48,6 @@ public class IssueService {
         return issueRepository.findAllIssuesPage((offset - 1) * limit, limit, officeID, employeeID, returnAllOffices, returnAllEmployees);
     }
 
-    public List<Issue> getAllIssue() {
-        var issues = issueRepository.findAll();
-        for (var issue : issues) {
-            var issueID = issue.getId();
-            var count = voteService.voteCount(issueID).count;
-            issue.setVoteCount(count);
-        }
-        return issues;
-    }
-
     public IssueDetailsResponseDto getIssueById(UUID id) {
          var issue = issueRepository.findById(id)
                 .orElseThrow(() -> new IssueNotFoundException(String.format(ISSUE_NOT_FOUND, id)));
@@ -80,17 +70,6 @@ public class IssueService {
         return issueRepository.findByStatusPage(status, (offset - 1) * limit, limit, officeID, employeeID, returnAllOffices, returnAllEmployees);
     }
 
-
-    public List<Issue> getIssuesByStatus(String status) {
-        var issues = issueRepository.findByStatus(status);
-        for (var issue : issues) {
-            var issueID = issue.getId();
-            var count = voteService.voteCount(issueID).count;
-            issue.setVoteCount(count);
-        }
-        return issues;
-    }
-
     public List<Issue> getUserIssues(UUID id){
         var issues =  issueRepository.findReportedBy(id);
         for (var issue : issues) {
@@ -101,8 +80,12 @@ public class IssueService {
         return issues;
     }
 
-    public List<Issue> getUserIssues(UUID id, int offset, int limit) {
-        return issueRepository.findReportedByPage(id, (offset - 1) * limit, limit);
+    public List<Issue> getUserIssues(UUID id, int offset, int limit, UUID officeID, UUID employeeID) {
+        // If no office ID is given it makes the request return issues from all offices
+        boolean returnAllOffices = officeID == null;
+        // If no employee ID is given it makes the request return issues from all employees
+        boolean returnAllEmployees = employeeID == null;
+        return issueRepository.findReportedByPage(id, (offset - 1) * limit, limit, officeID, employeeID, returnAllOffices, returnAllEmployees);
     }
 
     public void updateIssue(IssueDetailRequestDto requestDto, UUID id) {
@@ -149,12 +132,20 @@ public class IssueService {
         sendEmailToAdmins(issue);
     }
 
-    public int getAllPageCount() {
-        return issueRepository.findAll().size() / 10 + 1;
+    public int getAllPageCount(UUID officeID, UUID employeeID) {
+        // If no office ID is given it makes the request return issues from all offices
+        boolean returnAllOffices = officeID == null;
+        // If no employee ID is given it makes the request return issues from all employees
+        boolean returnAllEmployees = employeeID == null;
+        return issueRepository.findAll(officeID, employeeID, returnAllOffices, returnAllEmployees).size() / 10 + 1;
     }
 
-    public int getStatusPageCount(String status) {
-        return issueRepository.findByStatus(status).size() / 10 + 1;
+    public int getStatusPageCount(String status, UUID officeID, UUID employeeID) {
+        // If no office ID is given it makes the request return issues from all offices
+        boolean returnAllOffices = officeID == null;
+        // If no employee ID is given it makes the request return issues from all employees
+        boolean returnAllEmployees = employeeID == null;
+        return issueRepository.findByStatus(status, officeID, employeeID, returnAllOffices, returnAllEmployees).size() / 10 + 1;
     }
 
     public int getUserPageCount(UUID id) {
