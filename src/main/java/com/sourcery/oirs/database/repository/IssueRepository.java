@@ -23,6 +23,8 @@ public interface IssueRepository {
             + "Issue.Start_Time as time, "
             + "Issue.EMPLOYEE_ID as employee_id, "
             + "Issue.OFFICE_ID as officeID, ";
+    String ISSUES_DEFAULT_SORT = "ORDER BY Issue.Start_time DESC ";
+
     @Select("SELECT " +
             "issue.ISSUE_NAME as name, " +
             "Employee.FULL_NAME as employeeName, " +
@@ -89,6 +91,7 @@ public interface IssueRepository {
             + "WHERE (#{returnAllOffices} IS TRUE OR Issue.OFFICE_ID = #{officeID}) "
             + "AND (#{returnAllEmployees} IS TRUE OR Issue.EMPLOYEE_ID = #{employeeID}) "
             + "GROUP BY issue.id "
+            + ISSUES_DEFAULT_SORT
             + "LIMIT #{limit} OFFSET #{offset} " )
     List<Issue> findAllIssuesPage(@Param ("offset") int offset,
                                   @Param ("limit") int limit,
@@ -119,6 +122,7 @@ public interface IssueRepository {
             + "AND (#{returnAllOffices} IS TRUE OR Issue.OFFICE_ID = #{officeID}) "
             + "AND (#{returnAllEmployees} IS TRUE OR Issue.EMPLOYEE_ID = #{employeeID}) "
             + "GROUP BY issue.id "
+            + ISSUES_DEFAULT_SORT
             + "LIMIT #{limit} OFFSET #{offset}")
     List<Issue> findByStatusPage(@Param("status") String status,
                                  @Param ("offset") int offset,
@@ -144,6 +148,7 @@ public interface IssueRepository {
             + "AND (#{returnAllOffices} IS TRUE OR Issue.OFFICE_ID = #{officeID}) "
             + "AND (#{returnAllEmployees} IS TRUE OR Issue.EMPLOYEE_ID = #{employeeID}) "
             + "GROUP BY issue.id "
+            + ISSUES_DEFAULT_SORT
             + "LIMIT #{limit} OFFSET #{offset} ")
     List<Issue> findReportedByPage(@Param("id") UUID id,  @Param ("offset") int offset, @Param ("limit") int limit,
                                    @Param ("officeID") UUID officeID,
