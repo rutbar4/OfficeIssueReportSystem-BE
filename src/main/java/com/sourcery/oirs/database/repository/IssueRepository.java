@@ -23,6 +23,8 @@ public interface IssueRepository {
             + "Issue.Start_Time as time, "
             + "Issue.EMPLOYEE_ID as employee_id, "
             + "Issue.OFFICE_ID as officeID, ";
+    String ISSUES_DEFAULT_SORT = "ORDER BY Issue.Start_time DESC ";
+
     @Select("SELECT " +
             "issue.ISSUE_NAME as name, " +
             "Employee.FULL_NAME as employeeName, " +
@@ -81,6 +83,7 @@ public interface IssueRepository {
             "(SELECT COUNT(*) FROM vote WHERE vote.ISSUE_ID = issue.ID) as upvoteCount " +
             "FROM issue LEFT JOIN vote ON issue.id = vote.issue_id "+
             "GROUP BY issue.id " +
+            ISSUES_DEFAULT_SORT +
             "LIMIT #{limit} OFFSET #{offset} " )
     List<Issue> findAllIssuesPage(@Param ("offset") int offset, @Param ("limit") int limit);
 
@@ -97,6 +100,7 @@ public interface IssueRepository {
             "FROM issue LEFT JOIN vote ON issue.id = vote.issue_id "+
             "WHERE Issue.issue_status= #{status} " +
             "GROUP BY issue.id " +
+            ISSUES_DEFAULT_SORT +
             "LIMIT #{limit} OFFSET #{offset} ")
     List<Issue> findByStatusPage(@Param("status") String status, @Param ("offset") int offset, @Param ("limit") int limit);
 
@@ -113,6 +117,7 @@ public interface IssueRepository {
             "FROM issue LEFT JOIN vote ON issue.id = vote.issue_id "+
             "WHERE Issue.employee_id= #{id} "+
             "GROUP BY issue.id " +
+            ISSUES_DEFAULT_SORT +
             "LIMIT #{limit} OFFSET #{offset} ")
     List<Issue> findReportedByPage(@Param("id") UUID id,  @Param ("offset") int offset, @Param ("limit") int limit);
     @Select("SELECT office.id as id FROM office WHERE office_name = #{name}")
