@@ -38,8 +38,9 @@ public class IssueController {
     public List<Issue> getAllIssues(@RequestParam(value = "page", defaultValue = "" + defaultPage) int page,
                                     @RequestParam(value = "size", defaultValue = "" + defaultPageSize) int size,
                                     @RequestParam(value = "officeID", defaultValue = "") UUID officeID,
-                                    @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID) {
-        return issueService.getAllIssue(page, size, officeID, employeeID);
+                                    @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID,
+                                    @RequestParam(value = "sortParameter", defaultValue = "") String sortParameter) {
+        return issueService.getAllIssue(page, size, officeID, employeeID, sortParameter);
     }
 
 

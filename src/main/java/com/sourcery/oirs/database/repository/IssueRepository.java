@@ -92,14 +92,15 @@ public interface IssueRepository {
             + "WHERE (#{returnAllOffices} IS TRUE OR Issue.OFFICE_ID = #{officeID}) "
             + "AND (#{returnAllEmployees} IS TRUE OR Issue.EMPLOYEE_ID = #{employeeID}) "
             + "GROUP BY issue.id "
-            + ISSUES_DEFAULT_SORT
+            + "ORDER BY ${sortParameter} Issue.Start_time DESC "
             + "LIMIT #{limit} OFFSET #{offset} " )
     List<Issue> findAllIssuesPage(@Param ("offset") int offset,
                                   @Param ("limit") int limit,
                                   @Param ("officeID") UUID officeID,
                                   @Param ("employeeID") UUID employeeID,
                                   @Param ("returnAllOffices") boolean returnAllOffices,
-                                  @Param ("returnAllEmployees") boolean returnAllEmployees);
+                                  @Param ("returnAllEmployees") boolean returnAllEmployees,
+                                  @Param ("sortParameter") String sortParameter);
 
     @Select("SELECT "
             + BASE_SELECT_FIELDS
