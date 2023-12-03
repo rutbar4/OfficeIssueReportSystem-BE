@@ -1,8 +1,10 @@
 package com.sourcery.oirs.controller;
 
+import com.sourcery.oirs.database.entity.PictureEntity;
 import com.sourcery.oirs.dto.response.IssueDetailsResponseDto;
 import com.sourcery.oirs.model.*;
 import com.sourcery.oirs.service.IssueService;
+import com.sourcery.oirs.service.PictureService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +24,8 @@ import java.util.UUID;
 @Slf4j
 public class IssueController {
     private final IssueService issueService;
+
+    private final PictureService pictureService;
     private final int defaultPage = IssueControllerConstants.DEFAULT_PAGE;
     private final int defaultPageSize = IssueControllerConstants.DEFAULT_PAGE_SIZE;
     private final String OPEN = IssueControllerConstants.OPEN;
@@ -141,5 +145,21 @@ public class IssueController {
             @RequestParam(value = "officeID", defaultValue = "") UUID officeID,
             @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID){
         return issueService.getAllPageCount(officeID, employeeID);
+    }
+
+    @GetMapping("/{issueId}/links")
+    public List<String> getPictureLinksByIssueId(@PathVariable UUID issueId) {
+        return pictureService.getPictureLinksByIssueId(issueId);
+    }
+
+    @PostMapping(path ="/addpicture",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addPicture(@RequestBody PictureEntity picture) {
+
+            pictureService.addPicture(picture.getUrl(), picture.getIssueId(),picture.getUserId());
+    }
+    @DeleteMapping("/deletePicture")
+    public void deletePicture(@RequestParam(value = "issueId") UUID issueId, @RequestParam(value = "link") String link) {
+        pictureService.deletePicture(issueId, link);
     }
 }

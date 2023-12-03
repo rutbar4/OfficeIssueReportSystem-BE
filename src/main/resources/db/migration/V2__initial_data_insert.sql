@@ -31,3 +31,4 @@ values('d96e1892-3019-4304-bd5a-1ef750be3aca', 'Agnes bike is taking two parking
 
 insert into picture (id, link, issue_id, employee_id)
 values ('bb2db642-6681-4e96-bff9-d226d6384efb', 'https://qph.cf2.quoracdn.net/main-qimg-c14ac71e4ef826f76526863971ef539e-lq', 'abdee4f9-5763-4afc-85ed-98b2fdefb39d', 'd06cb831-9427-41ee-adcc-271f7b02d626');
+
