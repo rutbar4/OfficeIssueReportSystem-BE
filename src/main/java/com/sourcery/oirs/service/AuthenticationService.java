@@ -1,6 +1,8 @@
 package com.sourcery.oirs.service;
 
+import com.sourcery.oirs.exceptions.UserNotAuthenticatedException;
 import com.sourcery.oirs.model.LoginResponse;
+import com.sourcery.oirs.model.RefreshResponse;
 import com.sourcery.oirs.model.User;
 import com.sourcery.oirs.security.CustomUserDetails;
 import com.sourcery.oirs.security.JwtIssuer;
@@ -41,6 +43,21 @@ public class AuthenticationService {
                 .jwt(token)
                 .user(user)
                 .build();
+    }
+
+    public RefreshResponse refreshSession() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new UserNotAuthenticatedException("User not authenticated");
+        }
+        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+        List<String> roles = customUserDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
+        String token = jwtIssuer.issue(customUserDetails.getId(),
+                customUserDetails.getEmail(),
+                customUserDetails.getName(),
+                customUserDetails.getPosition(),
+                roles);
+        return RefreshResponse.builder().jwt(token).build();
     }
 }
 
