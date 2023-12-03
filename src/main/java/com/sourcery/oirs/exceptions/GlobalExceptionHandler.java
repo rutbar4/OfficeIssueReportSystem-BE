@@ -29,6 +29,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorMessage, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(value = {UserNotAuthenticatedException.class})
+    public ResponseEntity<ErrorMessage> handleForbiddenException(Exception e) {
+        ErrorMessage errorMessage = getErrorMessage(e, HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(errorMessage, HttpStatus.FORBIDDEN);
+    }
+
 
     private ErrorMessage getErrorMessage(Exception e, HttpStatus httpStatus) {
         ErrorMessage errorMessage = new ErrorMessage();
