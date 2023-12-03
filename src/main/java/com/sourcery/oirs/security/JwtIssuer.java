@@ -20,7 +20,7 @@ public class JwtIssuer {
         Algorithm algorithm = Algorithm.RSA256(keys.getPrivateKey());
         return JWT.create()
                 .withSubject(String.valueOf(id))
-                .withExpiresAt(Instant.now().plus(Duration.of(600, ChronoUnit.MINUTES)))
+                .withExpiresAt(Instant.now().plus(Duration.of(6, ChronoUnit.MINUTES)))
                 .withClaim("email", email)
                 .withClaim("fullName", name)
                 .withClaim("position", position)
