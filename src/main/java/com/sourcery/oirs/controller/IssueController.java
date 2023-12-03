@@ -76,8 +76,9 @@ public class IssueController {
     public List<Issue> getOpenIssues(@RequestParam(value = "page", defaultValue = "" + defaultPage) int page,
                                      @RequestParam(value = "size", defaultValue = "" + defaultPageSize) int size,
                                      @RequestParam(value = "officeID", defaultValue = "") UUID officeID,
-                                     @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID) {
-        return issueService.getIssuesByStatus(OPEN, page, size, officeID, employeeID);
+                                     @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID,
+    @RequestParam(value = "sortParameter", defaultValue = "") String sortParameter) {
+        return issueService.getIssuesByStatus(OPEN, page, size, officeID, employeeID, sortParameter);
     }
 
     @GetMapping("/open/page-count")
@@ -90,8 +91,9 @@ public class IssueController {
     public List<Issue> getPlannedIssues(@RequestParam(value = "page", defaultValue = "" + defaultPage) int page,
                                         @RequestParam(value = "size", defaultValue = "" + defaultPageSize) int size,
                                         @RequestParam(value = "officeID", defaultValue = "") UUID officeID,
-                                        @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID) {
-        return issueService.getIssuesByStatus(PENDING, page, size, officeID, employeeID);
+                                        @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID,
+                                        @RequestParam(value = "sortParameter", defaultValue = "") String sortParameter) {
+        return issueService.getIssuesByStatus(PENDING, page, size, officeID, employeeID, sortParameter);
     }
 
     @GetMapping("/planned/page-count")
@@ -104,8 +106,9 @@ public class IssueController {
     public List<Issue> getResolvedIssues(@RequestParam(value = "page", defaultValue = "" + defaultPage) int page,
                                          @RequestParam(value = "size", defaultValue = "" + defaultPageSize) int size,
                                          @RequestParam(value = "officeID", defaultValue = "") UUID officeID,
-                                         @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID) {
-        return issueService.getIssuesByStatus(RESOLVED, page, size, officeID, employeeID);
+                                         @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID,
+                                         @RequestParam(value = "sortParameter", defaultValue = "") String sortParameter) {
+        return issueService.getIssuesByStatus(RESOLVED, page, size, officeID, employeeID, sortParameter);
     }
 
     @GetMapping("/resolved/page-count")
@@ -118,8 +121,9 @@ public class IssueController {
     public List<Issue> getClosedIssues(@RequestParam(value = "page", defaultValue = "" + defaultPage) int page,
                                        @RequestParam(value = "size", defaultValue = "" + defaultPageSize) int size,
                                        @RequestParam(value = "officeID", defaultValue = "") UUID officeID,
-                                       @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID) {
-        return issueService.getIssuesByStatus(CLOSED, page, size, officeID, employeeID);
+                                       @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID,
+                                       @RequestParam(value = "sortParameter", defaultValue = "") String sortParameter) {
+        return issueService.getIssuesByStatus(CLOSED, page, size, officeID, employeeID, sortParameter);
     }
 
     @GetMapping("/closed/page-count")
@@ -132,8 +136,9 @@ public class IssueController {
     public List<Issue> getUserIssues(@PathVariable(value = "id") UUID id, @RequestParam(value = "page", defaultValue = "" + defaultPage) int page,
                                      @RequestParam(value = "size", defaultValue = "" + defaultPageSize) int size,
                                      @RequestParam(value = "officeID", defaultValue = "") UUID officeID,
-                                     @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID) {
-        return issueService.getUserIssues(id, page, size, officeID, employeeID);
+                                     @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID,
+                                     @RequestParam(value = "sortParameter", defaultValue = "") String sortParameter) {
+        return issueService.getUserIssues(id, page, size, officeID, employeeID, sortParameter);
     }
 
     @GetMapping("/reportedBy/{id}/page-count")
