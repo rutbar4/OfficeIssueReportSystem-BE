@@ -30,4 +30,6 @@ values('d96e1892-3019-4304-bd5a-1ef750be3aca', 'Agnes bike is taking two parking
       ('d96e1892-3019-4304-bd5a-1ef750be5aca', 'I totaly agree', '2023-07-22 08:23:02.933', '1', 'abdee4f9-5763-4afc-85ed-98b2fdefb46d', 'd06cb831-9427-41ee-adcc-271f7b02d626');
 
 insert into picture (id, link, issue_id, employee_id)
-values ('bb2db642-6681-4e96-bff9-d226d6384efb', 'https://qph.cf2.quoracdn.net/main-qimg-c14ac71e4ef826f76526863971ef539e-lq', 'abdee4f9-5763-4afc-85ed-98b2fdefb39d', 'd06cb831-9427-41ee-adcc-271f7b02d626');
+values ('bb2db642-6681-4e96-bff9-d226d6384efb', 'https://qph.cf2.quoracdn.net/main-qimg-c14ac71e4ef826f76526863971ef539e-lq', 'abdee4f9-5763-4afc-85ed-98b2fdefb39d', 'd06cb831-9427-41ee-adcc-271f7b02d626'),
+       ('bb2db642-6681-4e96-bff9-d226d6384efa', 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png', 'abdee4f9-5763-4afc-85ed-98b2fdefb39d', 'd06cb831-9427-41ee-adcc-271f7b02d626');
+
