@@ -44,10 +44,16 @@ public interface IssueRepository {
 
     @Select("SELECT " +
             BASE_SELECT_FIELDS +
-            "(SELECT COUNT(*) FROM Vote WHERE vote.ISSUE_ID = issue.ID) as upvoteCount " +
-            "FROM issue, vote " +
-            "GROUP BY issue.id ")
-    List<Issue> findAll();
+            "(SELECT COUNT(*) FROM Vote WHERE vote.ISSUE_ID = issue.ID) as upvoteCount "
+            + "FROM issue, vote "
+            + "WHERE (#{returnAllOffices} IS TRUE OR Issue.OFFICE_ID = #{officeID}) "
+            + "AND (#{returnAllEmployees} IS TRUE OR Issue.EMPLOYEE_ID = #{employeeID}) "
+            + "GROUP BY issue.id ")
+    List<Issue> findAll(
+            @Param ("officeID") UUID officeID,
+            @Param ("employeeID") UUID employeeID,
+            @Param ("returnAllOffices") boolean returnAllOffices,
+            @Param ("returnAllEmployees") boolean returnAllEmployees);
 
     @Insert("INSERT " +
             "INTO issue (id, issue_name, issue_status, start_time, finish_time, description, employee_id, office_id)" +
@@ -79,30 +85,52 @@ public interface IssueRepository {
     void update(Issue issue);
 
     @Select("SELECT " +
-            BASE_SELECT_FIELDS +
-            "(SELECT COUNT(*) FROM vote WHERE vote.ISSUE_ID = issue.ID) as upvoteCount " +
-            "FROM issue LEFT JOIN vote ON issue.id = vote.issue_id "+
-            "GROUP BY issue.id " +
-            ISSUES_DEFAULT_SORT +
-            "LIMIT #{limit} OFFSET #{offset} " )
-    List<Issue> findAllIssuesPage(@Param ("offset") int offset, @Param ("limit") int limit);
+            BASE_SELECT_FIELDS
+            + "(SELECT COUNT(*) FROM vote WHERE vote.ISSUE_ID = issue.ID) as upvoteCount "
+            + "FROM issue LEFT JOIN vote ON issue.id = vote.issue_id "
+            + "WHERE (#{returnAllOffices} IS TRUE OR Issue.OFFICE_ID = #{officeID}) "
+            + "AND (#{returnAllEmployees} IS TRUE OR Issue.EMPLOYEE_ID = #{employeeID}) "
+            + "GROUP BY issue.id "
+            + ISSUES_DEFAULT_SORT
+            + "LIMIT #{limit} OFFSET #{offset} " )
+    List<Issue> findAllIssuesPage(@Param ("offset") int offset,
+                                  @Param ("limit") int limit,
+                                  @Param ("officeID") UUID officeID,
+                                  @Param ("employeeID") UUID employeeID,
+                                  @Param ("returnAllOffices") boolean returnAllOffices,
+                                  @Param ("returnAllEmployees") boolean returnAllEmployees);
 
     @Select("SELECT "
-            + BASE_SELECT_FIELDS +
-            "(SELECT COUNT(*) FROM Vote WHERE vote.ISSUE_ID = issue.ID) as upvoteCount " +
-            "FROM issue, vote " +
-            "WHERE Issue.issue_status= #{status} " +
-            "GROUP BY issue.id ")
-    List<Issue> findByStatus(@Param("status") String status);
+            + BASE_SELECT_FIELDS
+            + "(SELECT COUNT(*) FROM Vote WHERE vote.ISSUE_ID = issue.ID) as upvoteCount "
+            + "FROM issue, vote "
+            + "WHERE Issue.issue_status= #{status} "
+            + "AND (#{returnAllOffices} IS TRUE OR Issue.OFFICE_ID = #{officeID}) "
+            + "AND (#{returnAllEmployees} IS TRUE OR Issue.EMPLOYEE_ID = #{employeeID}) "
+            + "GROUP BY issue.id ")
+    List<Issue> findByStatus(@Param("status") String status,
+                             @Param ("officeID") UUID officeID,
+                             @Param ("employeeID") UUID employeeID,
+                             @Param ("returnAllOffices") boolean returnAllOffices,
+                             @Param ("returnAllEmployees") boolean returnAllEmployees);
+
     @Select("SELECT "
             + BASE_SELECT_FIELDS
-            +"(SELECT COUNT(*) FROM Vote WHERE vote.ISSUE_ID = issue.ID) as upvoteCount " +
-            "FROM issue LEFT JOIN vote ON issue.id = vote.issue_id "+
-            "WHERE Issue.issue_status= #{status} " +
-            "GROUP BY issue.id " +
-            ISSUES_DEFAULT_SORT +
-            "LIMIT #{limit} OFFSET #{offset} ")
-    List<Issue> findByStatusPage(@Param("status") String status, @Param ("offset") int offset, @Param ("limit") int limit);
+            + "(SELECT COUNT(*) FROM Vote WHERE vote.ISSUE_ID = issue.ID) as upvoteCount "
+            + "FROM issue LEFT JOIN vote ON issue.id = vote.issue_id "
+            + "WHERE Issue.issue_status= #{status} "
+            + "AND (#{returnAllOffices} IS TRUE OR Issue.OFFICE_ID = #{officeID}) "
+            + "AND (#{returnAllEmployees} IS TRUE OR Issue.EMPLOYEE_ID = #{employeeID}) "
+            + "GROUP BY issue.id "
+            + ISSUES_DEFAULT_SORT
+            + "LIMIT #{limit} OFFSET #{offset}")
+    List<Issue> findByStatusPage(@Param("status") String status,
+                                 @Param ("offset") int offset,
+                                 @Param ("limit") int limit,
+                                 @Param ("officeID") UUID officeID,
+                                 @Param ("employeeID") UUID employeeID,
+                                 @Param ("returnAllOffices") boolean returnAllOffices,
+                                 @Param ("returnAllEmployees") boolean returnAllEmployees);
 
     @Select("SELECT "
             + BASE_SELECT_FIELDS +
@@ -111,15 +139,23 @@ public interface IssueRepository {
             "WHERE Issue.employee_id= #{id} "+
             "GROUP BY issue.id ")
     List<Issue> findReportedBy(@Param("id") UUID id);
+
     @Select("SELECT "
             + BASE_SELECT_FIELDS
-            + "(SELECT COUNT(*) FROM Vote WHERE vote.ISSUE_ID = issue.ID) as upvoteCount " +
-            "FROM issue LEFT JOIN vote ON issue.id = vote.issue_id "+
-            "WHERE Issue.employee_id= #{id} "+
-            "GROUP BY issue.id " +
-            ISSUES_DEFAULT_SORT +
-            "LIMIT #{limit} OFFSET #{offset} ")
-    List<Issue> findReportedByPage(@Param("id") UUID id,  @Param ("offset") int offset, @Param ("limit") int limit);
+            + "(SELECT COUNT(*) FROM Vote WHERE vote.ISSUE_ID = issue.ID) as upvoteCount "
+            + "FROM issue LEFT JOIN vote ON issue.id = vote.issue_id "
+            + "WHERE Issue.employee_id= #{id} "
+            + "AND (#{returnAllOffices} IS TRUE OR Issue.OFFICE_ID = #{officeID}) "
+            + "AND (#{returnAllEmployees} IS TRUE OR Issue.EMPLOYEE_ID = #{employeeID}) "
+            + "GROUP BY issue.id "
+            + ISSUES_DEFAULT_SORT
+            + "LIMIT #{limit} OFFSET #{offset} ")
+    List<Issue> findReportedByPage(@Param("id") UUID id,  @Param ("offset") int offset, @Param ("limit") int limit,
+                                   @Param ("officeID") UUID officeID,
+                                   @Param ("employeeID") UUID employeeID,
+                                   @Param ("returnAllOffices") boolean returnAllOffices,
+                                   @Param ("returnAllEmployees") boolean returnAllEmployees);
+
     @Select("SELECT office.id as id FROM office WHERE office_name = #{name}")
     UUID getOfficeIdByName (@Param("name") String name);
 
