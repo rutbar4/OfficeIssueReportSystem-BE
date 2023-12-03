@@ -28,6 +28,7 @@ public interface IssueRepository {
     @Select("SELECT " +
             "issue.ISSUE_NAME as name, " +
             "Employee.FULL_NAME as employeeName, " +
+            "Employee.avatar as employeeAvatar, " +
             "issue.Start_Time as dateCreated, " +
             "Issue.ISSUE_STATUS as status, " +
             "Office.OFFICE_NAME, " +
