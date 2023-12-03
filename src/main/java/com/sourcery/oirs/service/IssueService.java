@@ -24,6 +24,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -40,12 +41,13 @@ public class IssueService {
     private final VoteService voteService;
     private final PictureService pictureService;
 
-    public List<Issue> getAllIssue(int offset, int limit, UUID officeID, UUID employeeID) {
+    public List<Issue> getAllIssue(int offset, int limit, UUID officeID, UUID employeeID, String sortParameter) {
         // If no office ID is given it makes the request return issues from all offices
         boolean returnAllOffices = officeID == null;
         // If no employee ID is given it makes the request return issues from all employees
         boolean returnAllEmployees = employeeID == null;
-        return issueRepository.findAllIssuesPage((offset - 1) * limit, limit, officeID, employeeID, returnAllOffices, returnAllEmployees);
+        if(!Objects.equals(sortParameter, "")) sortParameter += ',';
+        return issueRepository.findAllIssuesPage((offset - 1) * limit, limit, officeID, employeeID, returnAllOffices, returnAllEmployees, sortParameter);
     }
 
     public IssueDetailsResponseDto getIssueById(UUID id) {
@@ -62,30 +64,22 @@ public class IssueService {
     }
 
 
-    public List<Issue> getIssuesByStatus(String status, int offset, int limit, UUID officeID, UUID employeeID) {
+    public List<Issue> getIssuesByStatus(String status, int offset, int limit, UUID officeID, UUID employeeID, String sortParameter) {
         // If no office ID is given it makes the request return issues from all offices
         boolean returnAllOffices = officeID == null;
         // If no employee ID is given it makes the request return issues from all employees
         boolean returnAllEmployees = employeeID == null;
-        return issueRepository.findByStatusPage(status, (offset - 1) * limit, limit, officeID, employeeID, returnAllOffices, returnAllEmployees);
+        if(!Objects.equals(sortParameter, "")) sortParameter += ',';
+        return issueRepository.findByStatusPage(status, (offset - 1) * limit, limit, officeID, employeeID, returnAllOffices, returnAllEmployees, sortParameter);
     }
 
-    public List<Issue> getUserIssues(UUID id){
-        var issues =  issueRepository.findReportedBy(id);
-        for (var issue : issues) {
-            var issueID = issue.getId();
-            var count = voteService.voteCount(issueID).count;
-            issue.setVoteCount(count);
-        }
-        return issues;
-    }
-
-    public List<Issue> getUserIssues(UUID id, int offset, int limit, UUID officeID, UUID employeeID) {
+    public List<Issue> getUserIssues(UUID id, int offset, int limit, UUID officeID, UUID employeeID, String sortParameter) {
         // If no office ID is given it makes the request return issues from all offices
         boolean returnAllOffices = officeID == null;
         // If no employee ID is given it makes the request return issues from all employees
         boolean returnAllEmployees = employeeID == null;
-        return issueRepository.findReportedByPage(id, (offset - 1) * limit, limit, officeID, employeeID, returnAllOffices, returnAllEmployees);
+        if(!Objects.equals(sortParameter, "")) sortParameter += ',';
+        return issueRepository.findReportedByPage(id, (offset - 1) * limit, limit, officeID, employeeID, returnAllOffices, returnAllEmployees, sortParameter);
     }
 
     public void updateIssue(IssueDetailRequestDto requestDto, UUID id) {
