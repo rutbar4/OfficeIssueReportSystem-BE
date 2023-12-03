@@ -16,6 +16,8 @@ import com.sourcery.oirs.model.*;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.UUID;
 @Builder
 @Service
@@ -43,6 +45,11 @@ public class UserService {
         return officeRepository.getOfficeById(officeId)
                 .orElseThrow(() -> new OfficeNotFoundException(String.format("Office %s was not found", officeId)));
 
+    }
+
+
+    public List<UserMainInfoResponseDTO> getUserList() {
+        return userRepository.getAllUsers();
     }
 
     public void updateUser(UserUpdateDTO userUpdate){

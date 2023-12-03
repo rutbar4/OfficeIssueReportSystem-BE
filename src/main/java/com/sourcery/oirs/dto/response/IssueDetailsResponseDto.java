@@ -20,6 +20,7 @@ public class IssueDetailsResponseDto{
     private Long commentCount;
     private LocalDate dateCreated;
     private String employeeName;
+    private String employeeAvatar;
     private String officeName;
     private String officeId;
     private String employeeId;
