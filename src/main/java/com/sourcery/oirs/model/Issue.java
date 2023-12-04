@@ -28,8 +28,8 @@ public class Issue {
     private String status;
     private int upvoteCount;
     private Double commentCount;
-    @JsonFormat(pattern = "dd/MM/yyyy")
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private LocalDateTime time;
     private UUID employeeId;
     @NotBlank
