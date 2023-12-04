@@ -39,8 +39,9 @@ public class IssueController {
                                     @RequestParam(value = "size", defaultValue = "" + defaultPageSize) int size,
                                     @RequestParam(value = "officeID", defaultValue = "") UUID officeID,
                                     @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID,
-                                    @RequestParam(value = "sortParameter", defaultValue = "") String sortParameter) {
-        return issueService.getAllIssue(page, size, officeID, employeeID, sortParameter);
+                                    @RequestParam(value = "sortParameter", defaultValue = "") String sortParameter,
+                                    @RequestParam(value = "searchParameter", defaultValue = "") String searchParameter) {
+        return issueService.getAllIssue(page, size, officeID, employeeID, sortParameter, searchParameter);
     }
 
 
@@ -77,14 +78,16 @@ public class IssueController {
                                      @RequestParam(value = "size", defaultValue = "" + defaultPageSize) int size,
                                      @RequestParam(value = "officeID", defaultValue = "") UUID officeID,
                                      @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID,
-    @RequestParam(value = "sortParameter", defaultValue = "") String sortParameter) {
-        return issueService.getIssuesByStatus(OPEN, page, size, officeID, employeeID, sortParameter);
+                                     @RequestParam(value = "sortParameter", defaultValue = "") String sortParameter,
+                                     @RequestParam(value = "searchParameter", defaultValue = "") String searchParameter) {
+        return issueService.getIssuesByStatus(OPEN, page, size, officeID, employeeID, sortParameter, searchParameter);
     }
 
     @GetMapping("/open/page-count")
     public int getOpenCount(@RequestParam(value = "officeID", defaultValue = "") UUID officeID,
-                            @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID){
-        return issueService.getStatusPageCount(OPEN, officeID, employeeID);
+                            @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID,
+                            @RequestParam(value = "searchParameter", defaultValue = "") String searchParameter){
+        return issueService.getStatusPageCount(OPEN, officeID, employeeID, searchParameter);
     }
 
     @GetMapping("/planned")
@@ -92,14 +95,16 @@ public class IssueController {
                                         @RequestParam(value = "size", defaultValue = "" + defaultPageSize) int size,
                                         @RequestParam(value = "officeID", defaultValue = "") UUID officeID,
                                         @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID,
-                                        @RequestParam(value = "sortParameter", defaultValue = "") String sortParameter) {
-        return issueService.getIssuesByStatus(PENDING, page, size, officeID, employeeID, sortParameter);
+                                        @RequestParam(value = "sortParameter", defaultValue = "") String sortParameter,
+                                        @RequestParam(value = "searchParameter", defaultValue = "") String searchParameter) {
+        return issueService.getIssuesByStatus(PENDING, page, size, officeID, employeeID, sortParameter, searchParameter);
     }
 
     @GetMapping("/planned/page-count")
     public int getPlannedCount(@RequestParam(value = "officeID", defaultValue = "") UUID officeID,
-                               @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID){
-        return issueService.getStatusPageCount(PENDING, officeID, employeeID);
+                               @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID,
+                               @RequestParam(value = "searchParameter", defaultValue = "") String searchParameter){
+        return issueService.getStatusPageCount(PENDING, officeID, employeeID, searchParameter);
     }
 
     @GetMapping("/resolved")
@@ -107,14 +112,16 @@ public class IssueController {
                                          @RequestParam(value = "size", defaultValue = "" + defaultPageSize) int size,
                                          @RequestParam(value = "officeID", defaultValue = "") UUID officeID,
                                          @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID,
-                                         @RequestParam(value = "sortParameter", defaultValue = "") String sortParameter) {
-        return issueService.getIssuesByStatus(RESOLVED, page, size, officeID, employeeID, sortParameter);
+                                         @RequestParam(value = "sortParameter", defaultValue = "") String sortParameter,
+                                         @RequestParam(value = "searchParameter", defaultValue = "") String searchParameter) {
+        return issueService.getIssuesByStatus(RESOLVED, page, size, officeID, employeeID, sortParameter, searchParameter);
     }
 
     @GetMapping("/resolved/page-count")
     public int getResolvedCount(@RequestParam(value = "officeID", defaultValue = "") UUID officeID,
-                                @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID){
-        return issueService.getStatusPageCount(RESOLVED, officeID, employeeID);
+                                @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID,
+                                @RequestParam(value = "searchParameter", defaultValue = "") String searchParameter){
+        return issueService.getStatusPageCount(RESOLVED, officeID, employeeID, searchParameter);
     }
 
     @GetMapping("/closed")
@@ -122,14 +129,16 @@ public class IssueController {
                                        @RequestParam(value = "size", defaultValue = "" + defaultPageSize) int size,
                                        @RequestParam(value = "officeID", defaultValue = "") UUID officeID,
                                        @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID,
-                                       @RequestParam(value = "sortParameter", defaultValue = "") String sortParameter) {
-        return issueService.getIssuesByStatus(CLOSED, page, size, officeID, employeeID, sortParameter);
+                                       @RequestParam(value = "sortParameter", defaultValue = "") String sortParameter,
+                                       @RequestParam(value = "searchParameter", defaultValue = "") String searchParameter) {
+        return issueService.getIssuesByStatus(CLOSED, page, size, officeID, employeeID, sortParameter, searchParameter);
     }
 
     @GetMapping("/closed/page-count")
     public int getClosedCount(@RequestParam(value = "officeID", defaultValue = "") UUID officeID,
-                              @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID){
-        return issueService.getStatusPageCount(CLOSED, officeID, employeeID);
+                              @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID,
+                              @RequestParam(value = "searchParameter", defaultValue = "") String searchParameter){
+        return issueService.getStatusPageCount(CLOSED, officeID, employeeID, searchParameter);
     }
 
     @GetMapping("/reportedBy/{id}")
@@ -137,8 +146,9 @@ public class IssueController {
                                      @RequestParam(value = "size", defaultValue = "" + defaultPageSize) int size,
                                      @RequestParam(value = "officeID", defaultValue = "") UUID officeID,
                                      @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID,
-                                     @RequestParam(value = "sortParameter", defaultValue = "") String sortParameter) {
-        return issueService.getUserIssues(id, page, size, officeID, employeeID, sortParameter);
+                                     @RequestParam(value = "sortParameter", defaultValue = "") String sortParameter,
+                                     @RequestParam(value = "searchParameter", defaultValue = "") String searchParameter) {
+        return issueService.getUserIssues(id, page, size, officeID, employeeID, sortParameter, searchParameter);
     }
 
     @GetMapping("/reportedBy/{id}/page-count")
@@ -149,8 +159,9 @@ public class IssueController {
     @GetMapping("/page-count")
     public int getPaginationCount(
             @RequestParam(value = "officeID", defaultValue = "") UUID officeID,
-            @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID){
-        return issueService.getAllPageCount(officeID, employeeID);
+            @RequestParam(value = "employeeID", defaultValue = "") UUID employeeID,
+            @RequestParam(value = "searchParameter", defaultValue = "") String searchParameter){
+        return issueService.getAllPageCount(officeID, employeeID, searchParameter);
     }
 
     @GetMapping("/{issueId}/links")
