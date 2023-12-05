@@ -23,7 +23,6 @@ public interface IssueRepository {
             + "Issue.Start_Time as time, "
             + "Issue.EMPLOYEE_ID as employee_id, "
             + "Issue.OFFICE_ID as officeID, ";
-
     @Select("SELECT " +
             "issue.ISSUE_NAME as name, " +
             "Employee.FULL_NAME as employeeName, " +
@@ -48,12 +47,14 @@ public interface IssueRepository {
             + "FROM issue, vote "
             + "WHERE (#{returnAllOffices} IS TRUE OR Issue.OFFICE_ID = #{officeID}) "
             + "AND (#{returnAllEmployees} IS TRUE OR Issue.EMPLOYEE_ID = #{employeeID}) "
+            + "AND (Issue.ISSUE_NAME ILIKE \'%${searchParameter}%\') "
             + "GROUP BY issue.id ")
     List<Issue> findAll(
             @Param ("officeID") UUID officeID,
             @Param ("employeeID") UUID employeeID,
             @Param ("returnAllOffices") boolean returnAllOffices,
-            @Param ("returnAllEmployees") boolean returnAllEmployees);
+            @Param ("returnAllEmployees") boolean returnAllEmployees,
+            @Param ("searchParameter") String searchParameter);
 
     @Insert("INSERT " +
             "INTO issue (id, issue_name, issue_status, start_time, finish_time, description, employee_id, office_id)" +
@@ -90,6 +91,7 @@ public interface IssueRepository {
             + "FROM issue LEFT JOIN vote ON issue.id = vote.issue_id "
             + "WHERE (#{returnAllOffices} IS TRUE OR Issue.OFFICE_ID = #{officeID}) "
             + "AND (#{returnAllEmployees} IS TRUE OR Issue.EMPLOYEE_ID = #{employeeID}) "
+            + "AND (Issue.ISSUE_NAME ILIKE \'%${searchParameter}%\') "
             + "GROUP BY issue.id "
             + "ORDER BY ${sortParameter} Issue.Start_time DESC "
             + "LIMIT #{limit} OFFSET #{offset} " )
@@ -99,7 +101,8 @@ public interface IssueRepository {
                                   @Param ("employeeID") UUID employeeID,
                                   @Param ("returnAllOffices") boolean returnAllOffices,
                                   @Param ("returnAllEmployees") boolean returnAllEmployees,
-                                  @Param ("sortParameter") String sortParameter);
+                                  @Param ("sortParameter") String sortParameter,
+                                  @Param ("searchParameter") String searchParameter);
 
     @Select("SELECT "
             + BASE_SELECT_FIELDS
@@ -108,12 +111,14 @@ public interface IssueRepository {
             + "WHERE Issue.issue_status= #{status} "
             + "AND (#{returnAllOffices} IS TRUE OR Issue.OFFICE_ID = #{officeID}) "
             + "AND (#{returnAllEmployees} IS TRUE OR Issue.EMPLOYEE_ID = #{employeeID}) "
+            + "AND (Issue.ISSUE_NAME ILIKE \'%${searchParameter}%\') "
             + "GROUP BY issue.id ")
     List<Issue> findByStatus(@Param("status") String status,
                              @Param ("officeID") UUID officeID,
                              @Param ("employeeID") UUID employeeID,
                              @Param ("returnAllOffices") boolean returnAllOffices,
-                             @Param ("returnAllEmployees") boolean returnAllEmployees);
+                             @Param ("returnAllEmployees") boolean returnAllEmployees,
+                             @Param ("searchParameter") String searchParameter);
 
     @Select("SELECT "
             + BASE_SELECT_FIELDS
@@ -122,6 +127,7 @@ public interface IssueRepository {
             + "WHERE Issue.issue_status= #{status} "
             + "AND (#{returnAllOffices} IS TRUE OR Issue.OFFICE_ID = #{officeID}) "
             + "AND (#{returnAllEmployees} IS TRUE OR Issue.EMPLOYEE_ID = #{employeeID}) "
+            + "AND (Issue.ISSUE_NAME ILIKE \'%${searchParameter}%\') "
             + "GROUP BY issue.id "
             + "ORDER BY ${sortParameter} Issue.Start_time DESC "
             + "LIMIT #{limit} OFFSET #{offset}")
@@ -132,7 +138,8 @@ public interface IssueRepository {
                                  @Param ("employeeID") UUID employeeID,
                                  @Param ("returnAllOffices") boolean returnAllOffices,
                                  @Param ("returnAllEmployees") boolean returnAllEmployees,
-                                 @Param ("sortParameter") String sortParameter);
+                                 @Param ("sortParameter") String sortParameter,
+                                 @Param ("searchParameter") String searchParameter);
 
     @Select("SELECT "
             + BASE_SELECT_FIELDS +
@@ -149,6 +156,7 @@ public interface IssueRepository {
             + "WHERE Issue.employee_id= #{id} "
             + "AND (#{returnAllOffices} IS TRUE OR Issue.OFFICE_ID = #{officeID}) "
             + "AND (#{returnAllEmployees} IS TRUE OR Issue.EMPLOYEE_ID = #{employeeID}) "
+            + "AND (Issue.ISSUE_NAME ILIKE \'%${searchParameter}%\') "
             + "GROUP BY issue.id "
             + "ORDER BY ${sortParameter} Issue.Start_time DESC "
             + "LIMIT #{limit} OFFSET #{offset} ")
@@ -157,7 +165,8 @@ public interface IssueRepository {
                                    @Param ("employeeID") UUID employeeID,
                                    @Param ("returnAllOffices") boolean returnAllOffices,
                                    @Param ("returnAllEmployees") boolean returnAllEmployees,
-                                   @Param ("sortParameter") String sortParameter);
+                                   @Param ("sortParameter") String sortParameter,
+                                   @Param ("searchParameter") String searchParameter);
 
     @Select("SELECT office.id as id FROM office WHERE office_name = #{name}")
     UUID getOfficeIdByName (@Param("name") String name);

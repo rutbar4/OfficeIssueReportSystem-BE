@@ -40,13 +40,13 @@ public class IssueService {
     private final VoteService voteService;
     private final PictureService pictureService;
 
-    public List<Issue> getAllIssue(int offset, int limit, UUID officeID, UUID employeeID, String sortParameter) {
+    public List<Issue> getAllIssue(int offset, int limit, UUID officeID, UUID employeeID, String sortParameter, String searchParameter) {
         // If no office ID is given it makes the request return issues from all offices
         boolean returnAllOffices = officeID == null;
         // If no employee ID is given it makes the request return issues from all employees
         boolean returnAllEmployees = employeeID == null;
         if(!Objects.equals(sortParameter, "")) sortParameter += ',';
-        return issueRepository.findAllIssuesPage((offset - 1) * limit, limit, officeID, employeeID, returnAllOffices, returnAllEmployees, sortParameter);
+        return issueRepository.findAllIssuesPage((offset - 1) * limit, limit, officeID, employeeID, returnAllOffices, returnAllEmployees, sortParameter, searchParameter);
     }
 
     public IssueDetailsResponseDto getIssueById(UUID id) {
@@ -63,22 +63,22 @@ public class IssueService {
     }
 
 
-    public List<Issue> getIssuesByStatus(String status, int offset, int limit, UUID officeID, UUID employeeID, String sortParameter) {
+    public List<Issue> getIssuesByStatus(String status, int offset, int limit, UUID officeID, UUID employeeID, String sortParameter, String searchParameter) {
         // If no office ID is given it makes the request return issues from all offices
         boolean returnAllOffices = officeID == null;
         // If no employee ID is given it makes the request return issues from all employees
         boolean returnAllEmployees = employeeID == null;
         if(!Objects.equals(sortParameter, "")) sortParameter += ',';
-        return issueRepository.findByStatusPage(status, (offset - 1) * limit, limit, officeID, employeeID, returnAllOffices, returnAllEmployees, sortParameter);
+        return issueRepository.findByStatusPage(status, (offset - 1) * limit, limit, officeID, employeeID, returnAllOffices, returnAllEmployees, sortParameter, searchParameter);
     }
 
-    public List<Issue> getUserIssues(UUID id, int offset, int limit, UUID officeID, UUID employeeID, String sortParameter) {
+    public List<Issue> getUserIssues(UUID id, int offset, int limit, UUID officeID, UUID employeeID, String sortParameter, String searchParameter) {
         // If no office ID is given it makes the request return issues from all offices
         boolean returnAllOffices = officeID == null;
         // If no employee ID is given it makes the request return issues from all employees
         boolean returnAllEmployees = employeeID == null;
         if(!Objects.equals(sortParameter, "")) sortParameter += ',';
-        return issueRepository.findReportedByPage(id, (offset - 1) * limit, limit, officeID, employeeID, returnAllOffices, returnAllEmployees, sortParameter);
+        return issueRepository.findReportedByPage(id, (offset - 1) * limit, limit, officeID, employeeID, returnAllOffices, returnAllEmployees, sortParameter, searchParameter);
     }
 
     public void updateIssue(IssueDetailRequestDto requestDto, UUID id) {
@@ -125,20 +125,20 @@ public class IssueService {
         sendEmailToAdmins(issue);
     }
 
-    public int getAllPageCount(UUID officeID, UUID employeeID) {
+    public int getAllPageCount(UUID officeID, UUID employeeID, String searchParameter) {
         // If no office ID is given it makes the request return issues from all offices
         boolean returnAllOffices = officeID == null;
         // If no employee ID is given it makes the request return issues from all employees
         boolean returnAllEmployees = employeeID == null;
-        return issueRepository.findAll(officeID, employeeID, returnAllOffices, returnAllEmployees).size() / 10 + 1;
+        return issueRepository.findAll(officeID, employeeID, returnAllOffices, returnAllEmployees, searchParameter).size() / 10 + 1;
     }
 
-    public int getStatusPageCount(String status, UUID officeID, UUID employeeID) {
+    public int getStatusPageCount(String status, UUID officeID, UUID employeeID, String searchParameter) {
         // If no office ID is given it makes the request return issues from all offices
         boolean returnAllOffices = officeID == null;
         // If no employee ID is given it makes the request return issues from all employees
         boolean returnAllEmployees = employeeID == null;
-        return issueRepository.findByStatus(status, officeID, employeeID, returnAllOffices, returnAllEmployees).size() / 10 + 1;
+        return issueRepository.findByStatus(status, officeID, employeeID, returnAllOffices, returnAllEmployees, searchParameter).size() / 10 + 1;
     }
 
     public int getUserPageCount(UUID id) {
