@@ -130,7 +130,7 @@ public class IssueService {
         boolean returnAllOffices = officeID == null;
         // If no employee ID is given it makes the request return issues from all employees
         boolean returnAllEmployees = employeeID == null;
-        return issueRepository.findAll(officeID, employeeID, returnAllOffices, returnAllEmployees, searchParameter).size() / 10 + 1;
+        return (int) Math.ceil((double) (issueRepository.findAll(officeID, employeeID, returnAllOffices, returnAllEmployees, searchParameter).size()) / 10);
     }
 
     public int getStatusPageCount(String status, UUID officeID, UUID employeeID, String searchParameter) {
