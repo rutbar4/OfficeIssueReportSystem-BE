@@ -6,15 +6,14 @@ import com.sourcery.oirs.database.entity.UserEntity;
 import com.sourcery.oirs.database.repository.IssueRepository;
 import com.sourcery.oirs.database.repository.OfficeRepository;
 import com.sourcery.oirs.database.repository.UserRepository;
+import com.sourcery.oirs.dto.response.IssueDetailsResponseDto;
 import com.sourcery.oirs.email.EmailService;
 import com.sourcery.oirs.exceptions.BusyIssueNameException;
 import com.sourcery.oirs.exceptions.IssueNotFoundException;
 import com.sourcery.oirs.exceptions.OfficeNotFoundException;
 import com.sourcery.oirs.model.Issue;
-import com.sourcery.oirs.dto.response.IssueDetailsResponseDto;
 import com.sourcery.oirs.model.IssueDetailRequestDto;
 import com.sourcery.oirs.model.OfficeResponseDTO;
-import com.sourcery.oirs.model.Picture;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -168,6 +167,7 @@ public class IssueService {
                                        String issueName,
                                        String description,
                                        LocalDateTime time) {
+        String formattedDescription = removeHtmlTagsFromText(description);
         String formattedTime = time.format(DateTimeFormatter.ofPattern("yyyy MM dd HH:mm"));
         log.info("Office in message to backend: " + office);
         log.info("Date in message to backend: " + formattedTime);
@@ -177,6 +177,10 @@ public class IssueService {
                 Created by: %s%n
                 Email: %s%n
                 Created at: %s%n
-                Issue description: %s""", issueName, office, employee, email, formattedTime, description);
+                Issue description: %s""", issueName, office, employee, email, formattedTime, formattedDescription);
+    }
+
+    private String removeHtmlTagsFromText(String input) {
+        return input.replaceAll("<[^>]*>", "");
     }
 }
